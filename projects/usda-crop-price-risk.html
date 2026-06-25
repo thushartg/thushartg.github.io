@@ -76,6 +76,18 @@
     </ul>
   </section>
 
+  <section class="p-section" id="forecast">
+    <h2>Interactive forecast</h2>
+    <p>The real Prophet model output — monthly farm-gate price (2010–2025) with a 90% confidence band and a 6-month forward forecast. Switch crops and hover any point.</p>
+    <div class="seg" id="cropToggle">
+      <button class="seg-btn is-active" data-crop="soybeans">Soybeans</button>
+      <button class="seg-btn" data-crop="corn">Corn</button>
+      <button class="seg-btn" data-crop="wheat">Wheat</button>
+    </div>
+    <div class="chart-wrap"><canvas id="forecastChart"></canvas></div>
+    <p class="note" id="chartNote">Shaded area = 90% confidence interval · the highlighted tail is the 6-month forecast.</p>
+  </section>
+
   <section class="p-section" id="outputs">
     <h2>Outputs — analysis charts</h2>
     <p>Generated directly by the pipeline. Click any chart to enlarge.</p>
@@ -101,5 +113,63 @@
 <footer>© <span id="yr"></span> Thushar Thorenur Govindaraju · Buffalo, NY</footer>
 <div class="lb" id="lb"><img alt="" /></div>
 <script src="../assets/js/site.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="../assets/projects/crop/forecast-data.js"></script>
+<script>
+(function(){
+  var canvas = document.getElementById('forecastChart');
+  if(!canvas || !window.Chart || !window.CROP_FORECAST) return;
+  var INK='#111110', MUT='#6b6a63', LINE='#d9d3c5';
+  var chart;
+  function build(crop){
+    var d = window.CROP_FORECAST[crop];
+    var labels = d.rows.map(function(r){return r.d});
+    var price  = d.rows.map(function(r){return r.p});
+    var lo     = d.rows.map(function(r){return r.lo});
+    var hi     = d.rows.map(function(r){return r.hi});
+    var firstFc = d.rows.findIndex(function(r){return r.f});
+    // emphasize the forecast tail with a thicker segment + point styling
+    var ptR = d.rows.map(function(r){return r.f?3:0});
+    var cfg = {
+      type:'line',
+      data:{labels:labels, datasets:[
+        {label:'Upper 90%', data:hi, borderWidth:0, pointRadius:0, fill:'+1',
+         backgroundColor:'rgba(17,17,16,0.07)', tension:.25},
+        {label:'Lower 90%', data:lo, borderWidth:0, pointRadius:0, fill:false, tension:.25},
+        {label:d.label+' price ($/unit)', data:price, borderColor:INK, borderWidth:2,
+         pointRadius:ptR, pointBackgroundColor:INK, tension:.25,
+         segment:{borderDash:function(ctx){return ctx.p0DataIndex>=firstFc-1?[5,4]:undefined}}}
+      ]},
+      options:{
+        responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+        plugins:{
+          legend:{display:false},
+          tooltip:{backgroundColor:INK, padding:12, callbacks:{
+            title:function(it){return it[0].label},
+            label:function(it){
+              var i=it.dataIndex, r=window.CROP_FORECAST[crop].rows[i];
+              if(it.datasetIndex===2) return (r.f?'Forecast: ':'Actual: ')+'$'+r.p+'  (90% CI '+r.lo+'–'+r.hi+')';
+              return null;
+            }
+          }}
+        },
+        scales:{
+          x:{ticks:{color:MUT, maxTicksLimit:9, autoSkip:true}, grid:{display:false}},
+          y:{ticks:{color:MUT, callback:function(v){return '$'+v}}, grid:{color:LINE}}
+        }
+      }
+    };
+    if(chart){chart.data=cfg.data; chart.options=cfg.options; chart.update();}
+    else chart=new Chart(canvas, cfg);
+  }
+  build('soybeans');
+  document.getElementById('cropToggle').addEventListener('click', function(e){
+    var b=e.target.closest('.seg-btn'); if(!b) return;
+    this.querySelectorAll('.seg-btn').forEach(function(x){x.classList.remove('is-active')});
+    b.classList.add('is-active');
+    build(b.dataset.crop);
+  });
+})();
+</script>
 </body>
 </html>
