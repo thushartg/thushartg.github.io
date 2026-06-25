@@ -175,6 +175,18 @@ tr:last-child td{border-bottom:0}
 
 .note{background:var(--cream-2);border:1px dashed var(--line);border-radius:12px;padding:16px 18px;font-size:14px;color:var(--muted);max-width:80ch}
 
+/* audio A/B comparison */
+.audio-ab{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:80ch;margin:8px 0}
+.audio-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.audio-card.after{border-color:var(--ink)}
+.audio-card .lbl{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;margin-bottom:4px}
+.audio-card .badge{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--cream-2);border:1px solid var(--line);color:var(--muted)}
+.audio-card.after .badge{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.audio-card .desc{font-size:13px;color:var(--muted);margin-bottom:14px}
+.audio-card audio{width:100%;margin-top:4px}
+.audio-card .missing{font-size:13px;color:var(--muted);font-style:italic}
+@media(max-width:860px){.audio-ab{grid-template-columns:1fr}}
+
 .p-nav{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--line);padding:40px 0;flex-wrap:wrap}
 .p-nav a{font-weight:700}
 .p-nav a span{display:block;font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
