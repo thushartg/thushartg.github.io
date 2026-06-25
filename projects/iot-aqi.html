@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IoT Air Quality Index Monitor — Thushar T. Govindaraju</title>
+<meta name="description" content="A real-time IoT pipeline streaming sensor AQI readings to ThingSpeak Cloud with a Swift/Xcode mobile dashboard." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../assets/css/site.css" />
+</head>
+<body>
+
+<header id="top">
+  <div class="wrap nav">
+    <a href="../index.html" class="logo">Thushar<sup>®</sup></a>
+    <nav class="nav-links" id="menu">
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#skills">Skills</a>
+      <a href="../index.html#experience">Experience</a>
+      <a href="../index.html#contact" class="nav-cta">Get in touch</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="wrap p-hero">
+  <a href="../index.html#projects" class="back">← All projects</a>
+  <div class="p-kicker">06 · IoT · Mobile</div>
+  <h1 class="p-title">IoT Air Quality<br>Index Monitor</h1>
+  <p class="p-sub">An IoT-based AQI monitoring system that collects real-time readings from hardware sensors, streams them to the cloud, and serves live metrics through a mobile dashboard. Built as my undergraduate capstone — a complete demonstration of pipeline design from physical sensors to cloud to app.</p>
+  <div class="p-meta">
+    <span class="tag">Swift</span><span class="tag">Xcode</span><span class="tag">ThingSpeak IoT Cloud</span><span class="tag">Hardware Sensors</span>
+  </div>
+  <div class="p-actions">
+    <a class="btn" href="https://github.com/thushartg" target="_blank" rel="noopener">View on GitHub ↗</a>
+    <a class="btn ghost" href="../index.html#contact">Get in touch</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="p-section">
+    <h2>End-to-end flow</h2>
+    <div class="flow">
+      <div class="node">Hardware AQI sensors</div><span class="arr">→</span>
+      <div class="node">Real-time ingestion</div><span class="arr">→</span>
+      <div class="node">ThingSpeak IoT Cloud</div><span class="arr">→</span>
+      <div class="node">Cloud analytics</div><span class="arr">→</span>
+      <div class="node">Mobile dashboard (Xcode)</div>
+    </div>
+    <ul>
+      <li>Built a real-time ingestion pipeline collecting AQI readings from hardware sensors and streaming to ThingSpeak IoT Cloud.</li>
+      <li>Integrated multiple sensor streams into a unified cloud analytics layer with normalization and threshold-based alerting.</li>
+      <li>A Swift/Xcode mobile app served as the presentation layer for live metric visualization.</li>
+      <li>Demonstrated the full pipeline — ingestion, storage, and serving — covering every layer end to end.</li>
+    </ul>
+  </section>
+
+  <nav class="p-nav">
+    <a href="taskq.html"><span>Previous project</span>← TaskQ</a>
+    <a href="../index.html#projects"><span>Back to</span>All projects →</a>
+  </nav>
+</div>
+
+<footer>© <span id="yr"></span> Thushar Thorenur Govindaraju · Buffalo, NY</footer>
+<div class="lb" id="lb"><img alt="" /></div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

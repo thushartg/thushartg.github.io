@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Financial Markets Data Platform — Thushar T. Govindaraju</title>
+<meta name="description" content="End-to-end data engineering pipeline: Yahoo Finance + FRED → BigQuery → dbt → Airflow → Looker Studio." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../assets/css/site.css" />
+</head>
+<body>
+
+<header id="top">
+  <div class="wrap nav">
+    <a href="../index.html" class="logo">Thushar<sup>®</sup></a>
+    <nav class="nav-links" id="menu">
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#skills">Skills</a>
+      <a href="../index.html#experience">Experience</a>
+      <a href="../index.html#contact" class="nav-cta">Get in touch</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="wrap p-hero">
+  <a href="../index.html#projects" class="back">← All projects</a>
+  <div class="p-kicker">01 · Data Engineering</div>
+  <h1 class="p-title">Financial Markets<br>Data Platform</h1>
+  <p class="p-sub">An end-to-end data engineering pipeline that ingests real-time stock prices and macroeconomic indicators, transforms them into analytics-ready models, and serves insight through a live dashboard — orchestrated to run every weekday at 6am.</p>
+  <div class="p-meta">
+    <span class="tag">Python</span><span class="tag">Google BigQuery</span><span class="tag">dbt</span><span class="tag">Apache Airflow</span><span class="tag">Looker Studio</span><span class="tag">Docker</span>
+  </div>
+  <div class="p-actions">
+    <a class="btn" href="https://github.com/thushartg/Financial-Markets-Data-Platform" target="_blank" rel="noopener">View code on GitHub ↗</a>
+    <a class="btn ghost" href="../index.html#contact">Get in touch</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="p-section">
+    <h2>Architecture</h2>
+    <p>A classic ELT pipeline. Two source APIs land raw, immutable data into BigQuery; dbt transforms it into staging and mart layers; Airflow orchestrates the whole run on a weekday cron; Looker Studio serves the result.</p>
+    <div class="flow">
+      <div class="node">Yahoo Finance API</div><span class="arr">+</span>
+      <div class="node">FRED API</div><span class="arr">→</span>
+      <div class="node">Python ingestion</div><span class="arr">→</span>
+      <div class="node">BigQuery — raw</div><span class="arr">→</span>
+      <div class="node">dbt — staging &amp; marts</div><span class="arr">→</span>
+      <div class="node">Looker Studio</div>
+    </div>
+    <p class="note">Orchestrated end to end by an Apache Airflow DAG (Dockerized), running every weekday at 6am.</p>
+  </section>
+
+  <section class="p-section">
+    <h2>At a glance</h2>
+    <div class="metrics">
+      <div class="metric"><div class="n">5</div><div class="t">Tickers — SPY, AAPL, MSFT, TSLA, NVDA</div></div>
+      <div class="metric"><div class="n">5</div><div class="t">FRED macro indicators</div></div>
+      <div class="metric"><div class="n">7</div><div class="t">Automated dbt data-quality tests</div></div>
+      <div class="metric"><div class="n">3</div><div class="t">Transformation layers (raw → staging → mart)</div></div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <h2>What it does</h2>
+    <h3>Ingestion</h3>
+    <p>Two Python scripts land raw data into BigQuery's raw layer unchanged. Raw data is append-only and immutable — if a downstream transformation breaks, data can be reprocessed without re-hitting the APIs.</p>
+    <ul>
+      <li><b>Yahoo Finance</b> — daily OHLCV prices for SPY, AAPL, MSFT, TSLA, NVDA (1 year of history).</li>
+      <li><b>FRED API</b> — Federal Funds Rate, CPI, Unemployment Rate, 10Y–2Y yield curve spread, and GDP (from 2020).</li>
+    </ul>
+
+    <h3>Transformation (dbt)</h3>
+    <ul>
+      <li><b>Staging</b> — <code>stg_stock_prices</code>, <code>stg_macro_indicators</code> materialize as views: clean column names, cast types, remove nulls.</li>
+      <li><b>Marts</b> — <code>mart_stock_macro_analysis</code> materializes as a table: daily returns via a LAG window function, 30-day rolling average prices, and macro conditions joined to each trading day.</li>
+    </ul>
+
+    <h3>Data quality &amp; orchestration</h3>
+    <ul>
+      <li>7 dbt tests run after every transformation — not-null checks on key columns and accepted-values checks on ticker symbols.</li>
+      <li>An Airflow DAG runs the full ingest → transform → test flow on a weekday cron, fully containerized with Docker.</li>
+    </ul>
+  </section>
+
+  <section class="p-section">
+    <h2>Output — live dashboard</h2>
+    <p>The mart layer feeds an interactive Looker Studio dashboard with ticker filtering, returns, rolling averages and macro overlays.</p>
+    <div class="p-actions">
+      <a class="btn" id="dashLink" href="https://github.com/thushartg/Financial-Markets-Data-Platform" target="_blank" rel="noopener">Open Looker Studio dashboard ↗</a>
+    </div>
+    <p class="note">Replace this link with the public Looker Studio URL to embed the live dashboard.</p>
+  </section>
+
+  <nav class="p-nav">
+    <a href="../index.html#projects"><span>Back to</span>All projects</a>
+    <a href="usda-crop-price-risk.html"><span>Next project</span>Crop Price Risk Model →</a>
+  </nav>
+</div>
+
+<footer>© <span id="yr"></span> Thushar Thorenur Govindaraju · Buffalo, NY</footer>
+<div class="lb" id="lb"><img alt="" /></div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

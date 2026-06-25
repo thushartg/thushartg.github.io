@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Emoji Generation GAN — Thushar T. Govindaraju</title>
+<meta name="description" content="A GAN in PyTorch that generates novel emoji images — Master's capstone." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../assets/css/site.css" />
+</head>
+<body>
+
+<header id="top">
+  <div class="wrap nav">
+    <a href="../index.html" class="logo">Thushar<sup>®</sup></a>
+    <nav class="nav-links" id="menu">
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#skills">Skills</a>
+      <a href="../index.html#experience">Experience</a>
+      <a href="../index.html#contact" class="nav-cta">Get in touch</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="wrap p-hero">
+  <a href="../index.html#projects" class="back">← All projects</a>
+  <div class="p-kicker">04 · Generative ML · Master's Capstone</div>
+  <h1 class="p-title">Emoji<br>Generation GAN</h1>
+  <p class="p-sub">A Generative Adversarial Network built in PyTorch that learns to generate novel emoji images from an open-source dataset. The project covered the full lifecycle — data pipeline, generator/discriminator training loop, and quality evaluation through sampled generations across epochs.</p>
+  <div class="p-meta">
+    <span class="tag">PyTorch</span><span class="tag">GANs</span><span class="tag">Computer Vision</span><span class="tag">Generative AI</span>
+  </div>
+  <div class="p-actions">
+    <a class="btn" href="https://github.com/thushartg" target="_blank" rel="noopener">View on GitHub ↗</a>
+    <a class="btn ghost" href="../index.html#contact">Get in touch</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="p-section">
+    <h2>How it works</h2>
+    <div class="flow">
+      <div class="node">Random noise vector</div><span class="arr">→</span>
+      <div class="node">Generator</div><span class="arr">→</span>
+      <div class="node">Fake emoji</div><span class="arr">→</span>
+      <div class="node">Discriminator</div><span class="arr">→</span>
+      <div class="node">Real / fake</div>
+    </div>
+    <ul>
+      <li>Two networks trained adversarially — a generator that synthesizes emoji from noise, and a discriminator that learns to tell real from generated.</li>
+      <li>Built the <b>full training pipeline</b> in PyTorch: data loading, training loop, checkpointing, and sampling.</li>
+      <li>Evaluated output quality by sampling generations <b>across training epochs</b> to track how realism improves over time.</li>
+    </ul>
+    <p class="note">Have a grid of generated samples (epoch progression)? Add the PNG and I'll drop in an image gallery with a lightbox here.</p>
+  </section>
+
+  <nav class="p-nav">
+    <a href="cleanunet-speech-denoising.html"><span>Previous project</span>← CleanUNet Denoising</a>
+    <a href="taskq.html"><span>Next project</span>TaskQ →</a>
+  </nav>
+</div>
+
+<footer>© <span id="yr"></span> Thushar Thorenur Govindaraju · Buffalo, NY</footer>
+<div class="lb" id="lb"><img alt="" /></div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

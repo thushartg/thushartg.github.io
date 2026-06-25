@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CleanUNet for Speech Denoising — Thushar T. Govindaraju</title>
+<meta name="description" content="A CleanUNet denoising autoencoder for real-time speech enhancement on the Microsoft DNS Challenge dataset." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../assets/css/site.css" />
+</head>
+<body>
+
+<header id="top">
+  <div class="wrap nav">
+    <a href="../index.html" class="logo">Thushar<sup>®</sup></a>
+    <nav class="nav-links" id="menu">
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#skills">Skills</a>
+      <a href="../index.html#experience">Experience</a>
+      <a href="../index.html#contact" class="nav-cta">Get in touch</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="wrap p-hero">
+  <a href="../index.html#projects" class="back">← All projects</a>
+  <div class="p-kicker">03 · Deep Learning · Audio</div>
+  <h1 class="p-title">CleanUNet<br>Speech Denoising</h1>
+  <p class="p-sub">A CleanUNet-based denoising autoencoder for real-time speech enhancement, trained on the Microsoft DNS Challenge dataset. It operates directly on raw waveforms to preserve phase information — rather than on spectrograms — using gated 1D convolutions and transposed layers.</p>
+  <div class="p-meta">
+    <span class="tag">PyTorch</span><span class="tag">Deep Learning</span><span class="tag">Signal Processing</span><span class="tag">Autoencoder</span>
+  </div>
+  <div class="p-actions">
+    <a class="btn" href="https://github.com/thushartg" target="_blank" rel="noopener">View on GitHub ↗</a>
+    <a class="btn ghost" href="../index.html#contact">Get in touch</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="p-section">
+    <h2>Approach</h2>
+    <div class="flow">
+      <div class="node">Noisy raw waveform</div><span class="arr">→</span>
+      <div class="node">Gated 1D conv encoder</div><span class="arr">→</span>
+      <div class="node">Bottleneck</div><span class="arr">→</span>
+      <div class="node">Transposed-conv decoder</div><span class="arr">→</span>
+      <div class="node">Clean waveform</div>
+    </div>
+    <ul>
+      <li>Works on <b>raw time-domain waveforms</b>, preserving phase information that spectrogram methods discard.</li>
+      <li>Encoder–decoder (U-Net style) with <b>gated 1D convolutions</b> and transposed layers for upsampling.</li>
+      <li>Trained and evaluated on the <b>Microsoft DNS Challenge</b> dataset.</li>
+      <li>Achieved significant, audible noise suppression on held-out samples.</li>
+    </ul>
+  </section>
+
+  <section class="p-section">
+    <h2>Why it matters</h2>
+    <p>Real-time speech enhancement is a core building block for calls, transcription and voice interfaces. Operating on raw waveforms avoids the phase-reconstruction artifacts of spectrogram-based denoisers, producing more natural output — a strong demonstration of applied deep learning on a hard signal-processing problem.</p>
+    <p class="note">Want the demo audio (before/after) embedded here? Drop the sample <code>.wav</code> files in and I'll add an audio player to this page.</p>
+  </section>
+
+  <nav class="p-nav">
+    <a href="usda-crop-price-risk.html"><span>Previous project</span>← Crop Price Risk Model</a>
+    <a href="emoji-gan.html"><span>Next project</span>Emoji GAN →</a>
+  </nav>
+</div>
+
+<footer>© <span id="yr"></span> Thushar Thorenur Govindaraju · Buffalo, NY</footer>
+<div class="lb" id="lb"><img alt="" /></div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>
