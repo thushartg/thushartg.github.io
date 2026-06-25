@@ -57,12 +57,6 @@
     </ul>
   </section>
 
-  <section class="p-section">
-    <h2>Generated samples — epoch by epoch</h2>
-    <p>Scrub through the slider to watch the generator's output sharpen across training epochs.</p>
-    <div id="epochViewer"></div>
-  </section>
-
   <nav class="p-nav">
     <a href="cleanunet-speech-denoising.html"><span>Previous project</span>← CleanUNet Denoising</a>
     <a href="taskq.html"><span>Next project</span>TaskQ →</a>
@@ -72,28 +66,5 @@
 <footer>© <span id="yr"></span> Thushar Thorenur Govindaraju · Buffalo, NY</footer>
 <div class="lb" id="lb"><img alt="" /></div>
 <script src="../assets/js/site.js"></script>
-<script>
-(function(){
-  // Add filenames here once the real sample grids exist in assets/projects/emoji/
-  // e.g. EPOCHS = [{epoch:1,src:'../assets/projects/emoji/epoch_01.png'}, ...]
-  var EPOCHS = [];
-  var host = document.getElementById('epochViewer');
-  if(!host) return;
-  if(!EPOCHS.length){
-    host.innerHTML = '<p class="note">Interactive epoch viewer is wired up and ready. Drop your generated-sample grids into '+
-      '<code>assets/projects/emoji/</code> (e.g. <code>epoch_01.png … epoch_NN.png</code>) and the slider activates automatically.</p>';
-    return;
-  }
-  var i = EPOCHS.length-1;
-  host.innerHTML =
-    '<div class="shot" style="max-width:520px"><img id="epImg" alt="Generated emoji samples"></div>'+
-    '<div class="epoch-ctl"><input type="range" id="epRange" min="0" max="'+(EPOCHS.length-1)+'" value="'+i+'">'+
-    '<span id="epLbl"></span></div>';
-  var img=document.getElementById('epImg'), rng=document.getElementById('epRange'), lbl=document.getElementById('epLbl');
-  function render(){var e=EPOCHS[i]; img.src=e.src; lbl.textContent='Epoch '+e.epoch+' / '+EPOCHS[EPOCHS.length-1].epoch;}
-  rng.addEventListener('input',function(){i=+rng.value; render();});
-  render();
-})();
-</script>
 </body>
 </html>
