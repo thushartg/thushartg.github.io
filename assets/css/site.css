@@ -33,8 +33,8 @@ header.scrolled{border-color:var(--line)}
 .nav-links{display:flex;gap:34px;align-items:center}
 .nav-links a{font-size:14px;font-weight:500;letter-spacing:.04em;color:var(--ink-soft);transition:color .2s}
 .nav-links a:hover{color:var(--ink)}
-.nav-cta{background:var(--ink);color:#fff;padding:10px 20px;border-radius:999px;font-size:13px;font-weight:600}
-.nav-cta:hover{opacity:.88}
+.nav-links a.nav-cta{background:var(--ink);color:#fff;padding:10px 20px;border-radius:999px;font-size:13px;font-weight:600}
+.nav-links a.nav-cta:hover{color:#fff;opacity:.88}
 .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:0;padding:6px}
 .burger span{width:24px;height:2px;background:var(--ink);transition:.3s}
 
