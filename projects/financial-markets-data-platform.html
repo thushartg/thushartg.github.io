@@ -65,6 +65,27 @@
     </div>
   </section>
 
+  <section class="p-section" id="explore">
+    <h2>Explore the data</h2>
+    <p>Pick a ticker to chart its daily closing price over the last year — the same securities the pipeline ingests. Toggle between absolute price and percentage return.</p>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:6px">
+      <div class="seg" id="tickerToggle">
+        <button class="seg-btn is-active" data-t="SPY">SPY</button>
+        <button class="seg-btn" data-t="AAPL">AAPL</button>
+        <button class="seg-btn" data-t="MSFT">MSFT</button>
+        <button class="seg-btn" data-t="TSLA">TSLA</button>
+        <button class="seg-btn" data-t="NVDA">NVDA</button>
+      </div>
+      <div class="seg" id="viewToggle">
+        <button class="seg-btn is-active" data-v="price">Price&nbsp;$</button>
+        <button class="seg-btn" data-v="return">Return&nbsp;%</button>
+      </div>
+    </div>
+    <div class="metrics" id="tickerStats"></div>
+    <div class="chart-wrap"><canvas id="tickerChart"></canvas></div>
+    <p class="note" id="asofNote">Daily close from Yahoo Finance. Snapshot — not live.</p>
+  </section>
+
   <section class="p-section">
     <h2>What it does</h2>
     <h3>Ingestion</h3>
@@ -109,5 +130,76 @@
 <footer>© <span id="yr"></span> Thushar Thorenur Govindaraju · Buffalo, NY</footer>
 <div class="lb" id="lb"><img alt="" /></div>
 <script src="../assets/js/site.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="../assets/projects/financial/ticker-data.js"></script>
+<script>
+(function(){
+  var canvas=document.getElementById('tickerChart');
+  if(!canvas||!window.Chart||!window.TICKERS) return;
+  var INK='#111110', MUT='#6b6a63', LINE='#d9d3c5';
+  var state={t:'SPY', v:'price'}, chart;
+
+  var asof=window.TICKERS.meta.asof;
+  var note=document.getElementById('asofNote');
+  if(note) note.textContent='Daily close from Yahoo Finance · snapshot as of '+asof+' (not live).';
+
+  function fmt(n){return n>=1e9?(n/1e9).toFixed(1)+'B':n>=1e6?(n/1e6).toFixed(1)+'M':n.toLocaleString()}
+
+  function render(){
+    var rows=window.TICKERS.data[state.t];
+    var labels=rows.map(function(r){return r.d});
+    var base=rows[0].c;
+    var series=rows.map(function(r){return state.v==='price'?r.c:+(((r.c-base)/base*100).toFixed(2))});
+    var last=rows[rows.length-1].c;
+    var chg=((last-base)/base*100);
+    var hi=Math.max.apply(null,rows.map(function(r){return r.c}));
+    var lo=Math.min.apply(null,rows.map(function(r){return r.c}));
+    var up=chg>=0;
+
+    document.getElementById('tickerStats').innerHTML=
+      '<div class="metric"><div class="n">$'+last.toFixed(2)+'</div><div class="t">Last close ('+state.t+')</div></div>'+
+      '<div class="metric"><div class="n">'+(up?'+':'')+chg.toFixed(1)+'%</div><div class="t">1-year change</div></div>'+
+      '<div class="metric"><div class="n">$'+hi.toFixed(0)+'</div><div class="t">52-week high</div></div>'+
+      '<div class="metric"><div class="n">$'+lo.toFixed(0)+'</div><div class="t">52-week low</div></div>';
+
+    var unit=state.v==='price'?'$':'%';
+    var cfg={
+      type:'line',
+      data:{labels:labels,datasets:[{
+        label:state.t, data:series, borderColor:INK, borderWidth:2, pointRadius:0,
+        tension:.2, fill:true,
+        backgroundColor:function(c){
+          var a=c.chart.ctx.createLinearGradient(0,0,0,c.chart.height||400);
+          a.addColorStop(0,'rgba(17,17,16,0.14)');a.addColorStop(1,'rgba(17,17,16,0)');return a;
+        }
+      }]},
+      options:{
+        responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+        plugins:{legend:{display:false},tooltip:{backgroundColor:INK,padding:12,callbacks:{
+          label:function(it){return (state.v==='price'?'$':'')+it.parsed.y+(state.v==='return'?'%':'')}
+        }}},
+        scales:{
+          x:{ticks:{color:MUT,maxTicksLimit:8,autoSkip:true},grid:{display:false}},
+          y:{ticks:{color:MUT,callback:function(v){return state.v==='price'?'$'+v:v+'%'}},grid:{color:LINE}}
+        }
+      }
+    };
+    if(chart){chart.data=cfg.data;chart.options=cfg.options;chart.update();}
+    else chart=new Chart(canvas,cfg);
+  }
+
+  function wire(id,key){
+    document.getElementById(id).addEventListener('click',function(e){
+      var b=e.target.closest('.seg-btn'); if(!b) return;
+      this.querySelectorAll('.seg-btn').forEach(function(x){x.classList.remove('is-active')});
+      b.classList.add('is-active');
+      state[key]=b.dataset.t||b.dataset.v;
+      render();
+    });
+  }
+  wire('tickerToggle','t'); wire('viewToggle','v');
+  render();
+})();
+</script>
 </body>
 </html>
