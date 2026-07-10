@@ -55,6 +55,87 @@
     <p class="note">Orchestrated end to end by an Apache Airflow DAG (Dockerized), running every weekday at 6am.</p>
   </section>
 
+  <section class="p-section" id="orchestration">
+    <h2>Orchestration — watch the DAG run</h2>
+    <p>This is the Airflow DAG that runs every weekday morning, drawn like Airflow's own Graph view. Hit <b>Trigger DAG</b> and watch tasks move through <b>queued → running → success</b> in dependency order — ingestion fans out, staging runs in parallel, then the mart, data-quality tests and dashboard refresh.</p>
+    <div class="dag-wrap">
+      <div class="dag-top">
+        <span class="dname">market_elt</span>
+        <span class="dsched">schedule: 0 6 * * 1-5 · Docker · LocalExecutor</span>
+        <span class="dclock" id="dagClock">idle</span>
+        <button class="dag-run" id="dagRun">▶ Trigger DAG</button>
+      </div>
+      <div class="dag-scroll">
+        <svg class="dag" viewBox="0 0 1270 360" role="img" aria-label="Airflow DAG for the market_elt pipeline">
+          <g class="edges">
+            <path class="edge" id="e-ingest_stocks-stg_stocks" d="M215 96 C255 96,245 96,285 96"/>
+            <path class="edge" id="e-ingest_macro-stg_macro"  d="M215 264 C255 264,245 264,285 264"/>
+            <path class="edge" id="e-stg_stocks-mart_analysis" d="M475 96 C520 96,510 180,555 180"/>
+            <path class="edge" id="e-stg_macro-mart_analysis"  d="M475 264 C520 264,510 180,555 180"/>
+            <path class="edge" id="e-mart_analysis-dbt_tests"  d="M745 180 C780 180,770 180,805 180"/>
+            <path class="edge" id="e-dbt_tests-publish_looker" d="M995 180 C1030 180,1020 180,1045 180"/>
+          </g>
+
+          <g class="node queued" id="n-ingest_stocks">
+            <rect x="25" y="68" width="190" height="56" rx="11"/>
+            <circle class="led" cx="43" cy="96" r="5"/>
+            <text class="ntitle" x="57" y="92">ingest_stocks</text>
+            <text class="nsub" x="57" y="108">Yahoo Finance API</text>
+            <path class="check" d="M185 98 l5 6 l10 -13"/>
+          </g>
+          <g class="node queued" id="n-ingest_macro">
+            <rect x="25" y="236" width="190" height="56" rx="11"/>
+            <circle class="led" cx="43" cy="264" r="5"/>
+            <text class="ntitle" x="57" y="260">ingest_macro</text>
+            <text class="nsub" x="57" y="276">FRED API</text>
+            <path class="check" d="M185 266 l5 6 l10 -13"/>
+          </g>
+          <g class="node queued" id="n-stg_stocks">
+            <rect x="285" y="68" width="190" height="56" rx="11"/>
+            <circle class="led" cx="303" cy="96" r="5"/>
+            <text class="ntitle" x="317" y="92">stg_stocks</text>
+            <text class="nsub" x="317" y="108">dbt · view</text>
+            <path class="check" d="M445 98 l5 6 l10 -13"/>
+          </g>
+          <g class="node queued" id="n-stg_macro">
+            <rect x="285" y="236" width="190" height="56" rx="11"/>
+            <circle class="led" cx="303" cy="264" r="5"/>
+            <text class="ntitle" x="317" y="260">stg_macro</text>
+            <text class="nsub" x="317" y="276">dbt · view</text>
+            <path class="check" d="M445 266 l5 6 l10 -13"/>
+          </g>
+          <g class="node queued" id="n-mart_analysis">
+            <rect x="555" y="152" width="190" height="56" rx="11"/>
+            <circle class="led" cx="573" cy="180" r="5"/>
+            <text class="ntitle" x="587" y="176">mart_analysis</text>
+            <text class="nsub" x="587" y="192">dbt · table</text>
+            <path class="check" d="M715 182 l5 6 l10 -13"/>
+          </g>
+          <g class="node queued" id="n-dbt_tests">
+            <rect x="805" y="152" width="190" height="56" rx="11"/>
+            <circle class="led" cx="823" cy="180" r="5"/>
+            <text class="ntitle" x="837" y="176">dbt_tests</text>
+            <text class="nsub" x="837" y="192">7 data-quality tests</text>
+            <path class="check" d="M965 182 l5 6 l10 -13"/>
+          </g>
+          <g class="node queued" id="n-publish_looker">
+            <rect x="1045" y="152" width="190" height="56" rx="11"/>
+            <circle class="led" cx="1063" cy="180" r="5"/>
+            <text class="ntitle" x="1077" y="176">publish_looker</text>
+            <text class="nsub" x="1077" y="192">refresh dashboard</text>
+            <path class="check" d="M1205 182 l5 6 l10 -13"/>
+          </g>
+        </svg>
+      </div>
+      <div class="dag-legend">
+        <span><i style="background:#c9c2b2"></i> queued</span>
+        <span><i style="background:#c9a24b"></i> running</span>
+        <span><i style="background:#7d9b6a"></i> success</span>
+        <span style="margin-left:auto">7 tasks · simulated run</span>
+      </div>
+    </div>
+  </section>
+
   <section class="p-section">
     <h2>At a glance</h2>
     <div class="metrics">
@@ -195,6 +276,92 @@
   }
   wire('tickerToggle','t'); wire('viewToggle','v');
   render();
+})();
+</script>
+
+<!-- Animated Airflow DAG: tasks execute in dependency order -->
+<script>
+(function(){
+  var svg=document.querySelector('svg.dag'); if(!svg) return;
+  var runBtn=document.getElementById('dagRun');
+  var clock=document.getElementById('dagClock');
+  var SPEED=820; // ms of real time per simulated second
+
+  var NODES=[
+    {id:'ingest_stocks', dur:1.3, deps:[]},
+    {id:'ingest_macro',  dur:0.9, deps:[]},
+    {id:'stg_stocks',    dur:0.6, deps:['ingest_stocks']},
+    {id:'stg_macro',     dur:0.6, deps:['ingest_macro']},
+    {id:'mart_analysis', dur:0.9, deps:['stg_stocks','stg_macro']},
+    {id:'dbt_tests',     dur:0.7, deps:['mart_analysis']},
+    {id:'publish_looker',dur:0.5, deps:['dbt_tests']}
+  ];
+  var EDGES=[
+    ['ingest_stocks','stg_stocks'],['ingest_macro','stg_macro'],
+    ['stg_stocks','mart_analysis'],['stg_macro','mart_analysis'],
+    ['mart_analysis','dbt_tests'],['dbt_tests','publish_looker']
+  ];
+  var by={}; NODES.forEach(function(n){by[n.id]=n;});
+  // topological schedule
+  function start(n){ return n.deps.length? Math.max.apply(null,n.deps.map(function(d){return end(by[d]);})) : 0; }
+  function end(n){ return start(n)+n.dur; }
+  NODES.forEach(function(n){ n.start=start(n); n.end=end(n); });
+  var TOTAL=Math.max.apply(null,NODES.map(function(n){return n.end;}));
+
+  function setNode(id,state){
+    var g=document.getElementById('n-'+id); if(!g) return;
+    g.setAttribute('class','node '+state);
+  }
+  function setEdge(s,t,cls){
+    var e=document.getElementById('e-'+s+'-'+t); if(!e) return;
+    e.setAttribute('class','edge'+(cls?' '+cls:''));
+  }
+  function reset(){
+    NODES.forEach(function(n){setNode(n.id,'queued');});
+    EDGES.forEach(function(p){setEdge(p[0],p[1],'');});
+    clock.textContent='idle';
+  }
+
+  var raf,t0;
+  function draw(sim){
+    NODES.forEach(function(n){
+      setNode(n.id, sim>=n.end?'success':(sim>=n.start?'running':'queued'));
+    });
+    EDGES.forEach(function(p){
+      var src=by[p[0]];
+      setEdge(p[0],p[1], sim>=src.end?'done':(sim>=src.start?'active':''));
+    });
+  }
+  function frame(now){
+    var sim=(now-t0)/SPEED;
+    if(sim>=TOTAL){
+      draw(TOTAL);
+      clock.textContent='✓ success · 7 tasks · '+TOTAL.toFixed(1)+'s';
+      runBtn.disabled=false; runBtn.textContent='↻ Re-run';
+      return;
+    }
+    draw(sim);
+    var done=NODES.filter(function(n){return sim>=n.end;}).length;
+    clock.textContent='running · '+sim.toFixed(1)+'s · '+done+'/7 tasks';
+    raf=requestAnimationFrame(frame);
+  }
+  function run(){
+    cancelAnimationFrame(raf);
+    reset();
+    runBtn.disabled=true; runBtn.textContent='running…';
+    t0=performance.now();
+    raf=requestAnimationFrame(frame);
+  }
+  runBtn.addEventListener('click',run);
+
+  // auto-run once when scrolled into view
+  var seen=false;
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(en){
+      en.forEach(function(x){ if(x.isIntersecting && !seen){ seen=true; setTimeout(run,350); io.disconnect(); } });
+    },{threshold:.35});
+    io.observe(svg);
+  } else { run(); }
 })();
 </script>
 </body>
