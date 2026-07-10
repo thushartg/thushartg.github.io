@@ -79,6 +79,33 @@
     <p class="note" id="qNote"></p>
   </section>
 
+  <section class="p-section" id="query">
+    <h2>Query it yourself</h2>
+    <p>This isn't a screenshot. It's the <b>real 150,000-row claims dataset</b> loaded into an in-browser <b>DuckDB</b> engine — no server, no backend. Write SQL and run it against the <code>claims</code> table, exactly like querying the Hive layer. Pick a sample or write your own.</p>
+    <div class="sql-console">
+      <div class="sql-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="title">duckdb · claims.parquet</span>
+        <span class="status" id="sqlStatus"><span class="sql-spin"></span> booting engine…</span>
+      </div>
+      <div class="sql-chips" id="sqlChips"></div>
+      <div class="sql-editor-wrap">
+        <textarea id="sqlInput" spellcheck="false">SELECT diagnosis_category,
+       COUNT(*) AS claims,
+       ROUND(SUM(paid_amount)/1e6, 2) AS paid_millions
+FROM claims
+GROUP BY 1
+ORDER BY paid_millions DESC;</textarea>
+        <div class="sql-actions">
+          <button class="sql-run" id="sqlRun" disabled>▶ Run query</button>
+          <span class="sql-hint"><kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>Enter</kbd> to run · 150,000 rows · 18 columns</span>
+        </div>
+      </div>
+      <div class="sql-result" id="sqlResult"></div>
+    </div>
+    <p class="note">Runs entirely client-side in WebAssembly — queries never leave your browser. Columns: claim_id, member_id, provider_id, provider_type, plan_type, member_age_band, member_state, claim_type, diagnosis_category, procedure_category, service_date, submission_date, billed_amount, allowed_amount, paid_amount, claim_status, denial_reason, is_readmission_within_30d.</p>
+  </section>
+
   <section class="p-section">
     <h2>What the data says</h2>
     <ul>
@@ -219,6 +246,154 @@
     b.classList.add('is-active'); q=b.dataset.q; render();
   });
   render();
+})();
+</script>
+
+<!-- Live in-browser SQL console (DuckDB-WASM over the real claims dataset) -->
+<script type="module">
+import * as duckdb from 'https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.0/+esm';
+
+const statusEl = document.getElementById('sqlStatus');
+const runBtn   = document.getElementById('sqlRun');
+const input    = document.getElementById('sqlInput');
+const resultEl = document.getElementById('sqlResult');
+const chipsEl  = document.getElementById('sqlChips');
+
+const SAMPLES = [
+  {label:'Cost by diagnosis', sql:
+`SELECT diagnosis_category,
+       COUNT(*) AS claims,
+       ROUND(SUM(paid_amount)/1e6, 2) AS paid_millions
+FROM claims
+GROUP BY 1
+ORDER BY paid_millions DESC;`},
+  {label:'Top billing providers', sql:
+`SELECT provider_id, provider_type,
+       COUNT(*) AS claims,
+       ROUND(AVG(billed_amount)) AS avg_billed
+FROM claims
+GROUP BY 1, 2
+HAVING COUNT(*) > 100
+ORDER BY avg_billed DESC
+LIMIT 10;`},
+  {label:'Denial reasons', sql:
+`SELECT denial_reason,
+       COUNT(*) AS denied,
+       ROUND(SUM(billed_amount)/1e6, 2) AS billed_denied_m
+FROM claims
+WHERE claim_status = 'denied'
+GROUP BY 1
+ORDER BY denied DESC;`},
+  {label:'30-day readmissions', sql:
+`SELECT diagnosis_category,
+       COUNT(*) AS inpatient_stays,
+       ROUND(100.0 * AVG(CASE WHEN is_readmission_within_30d THEN 1 ELSE 0 END), 1) AS readmit_pct
+FROM claims
+WHERE claim_type = 'inpatient'
+GROUP BY 1
+ORDER BY readmit_pct DESC;`},
+  {label:'Billed vs paid gap', sql:
+`SELECT plan_type,
+       ROUND(SUM(billed_amount)/1e6, 1) AS billed_m,
+       ROUND(SUM(paid_amount)/1e6, 1)  AS paid_m,
+       ROUND(100.0 * (SUM(billed_amount) - SUM(paid_amount)) / SUM(billed_amount), 1) AS gap_pct
+FROM claims
+GROUP BY 1
+ORDER BY gap_pct DESC;`},
+  {label:'Monthly spend trend', sql:
+`SELECT strftime(service_date, '%Y-%m') AS month,
+       COUNT(*) AS claims,
+       ROUND(SUM(paid_amount)/1e6, 1) AS paid_m
+FROM claims
+GROUP BY 1
+ORDER BY 1;`},
+  {label:'Schema', sql:`DESCRIBE claims;`}
+];
+
+let conn = null;
+
+function setStatus(html){ statusEl.innerHTML = html; }
+function esc(s){ return String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+
+// render chips
+SAMPLES.forEach(s => {
+  const b = document.createElement('button');
+  b.className = 'sql-chip'; b.textContent = s.label;
+  b.addEventListener('click', () => { input.value = s.sql; runQuery(); });
+  chipsEl.appendChild(b);
+});
+
+function renderTable(res){
+  const cols = res.schema.fields.map(f => f.name);
+  const rows = res.toArray();
+  const numeric = {};
+  cols.forEach(c => numeric[c] = true);
+  const cells = rows.map(r => cols.map(c => {
+    let v = r[c];
+    if (v === null || v === undefined) { numeric[c] = false; return '<td class="nul">∅</td>'; }
+    if (typeof v === 'bigint') v = Number(v);
+    if (typeof v !== 'number') numeric[c] = false;
+    return {v};
+  }));
+  let html = '<div class="sql-meta">' + rows.length + ' row' + (rows.length===1?'':'s') + ' · ' + cols.length + ' columns</div>';
+  html += '<table><thead><tr>' + cols.map(c => '<th>' + esc(c) + '</th>').join('') + '</tr></thead><tbody>';
+  html += cells.map(row => '<tr>' + row.map((cell, i) => {
+    if (typeof cell === 'string') return cell; // null placeholder
+    const cls = numeric[cols[i]] ? ' class="num"' : '';
+    let val = cell.v;
+    if (typeof val === 'number' && !Number.isInteger(val)) val = val.toLocaleString(undefined,{maximumFractionDigits:2});
+    else if (typeof val === 'number') val = val.toLocaleString();
+    return '<td' + cls + '>' + esc(val) + '</td>';
+  }).join('') + '</tr>').join('');
+  html += '</tbody></table>';
+  resultEl.innerHTML = html;
+}
+
+async function runQuery(){
+  if (!conn) return;
+  const sql = input.value.trim();
+  if (!sql) return;
+  runBtn.disabled = true;
+  resultEl.innerHTML = '<div class="sql-loading"><span class="sql-spin"></span> running…</div>';
+  const t0 = performance.now();
+  try {
+    const res = await conn.query(sql);
+    const ms = Math.max(1, Math.round(performance.now() - t0));
+    renderTable(res);
+    const meta = resultEl.querySelector('.sql-meta');
+    if (meta) meta.innerHTML += ' · <b>' + ms + ' ms</b>';
+  } catch (e) {
+    resultEl.innerHTML = '<div class="sql-err">✖ ' + esc(e.message || e) + '</div>';
+  } finally {
+    runBtn.disabled = false;
+  }
+}
+
+runBtn.addEventListener('click', runQuery);
+input.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); runQuery(); }
+});
+
+(async function boot(){
+  try {
+    const bundles = duckdb.getJsDelivrBundles();
+    const bundle  = await duckdb.selectBundle(bundles);
+    const worker  = await duckdb.createWorker(bundle.mainWorker);
+    const db      = new duckdb.AsyncDuckDB(new duckdb.ConsoleLogger(), worker);
+    await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
+    setStatus('<span class="sql-spin"></span> loading 150k claims…');
+    const resp = await fetch('../assets/projects/claims/claims.parquet');
+    const buf  = new Uint8Array(await resp.arrayBuffer());
+    await db.registerFileBuffer('claims.parquet', buf);
+    conn = await db.connect();
+    await conn.query("CREATE VIEW claims AS SELECT * FROM parquet_scan('claims.parquet')");
+    setStatus('<span class="live"></span> connected · 150,000 rows');
+    runBtn.disabled = false;
+    runQuery(); // run the prefilled query
+  } catch (e) {
+    setStatus('engine failed to load');
+    resultEl.innerHTML = '<div class="sql-err">Could not start the SQL engine in this browser.\n' + esc(e.message || e) + '</div>';
+  }
 })();
 </script>
 </body>
