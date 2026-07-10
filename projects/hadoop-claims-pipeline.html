@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hadoop Healthcare Claims Pipeline — Thushar T. Govindaraju</title>
+<meta name="description" content="A big-data pipeline on Hadoop, Spark and Hive that turns 150,000 raw medical claims into business answers — cost drivers, overcharging providers, denials and readmissions." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../assets/css/site.css" />
+</head>
+<body>
+
+<header id="top">
+  <div class="wrap nav">
+    <a href="../index.html" class="logo">Thushar<sup>®</sup></a>
+    <nav class="nav-links" id="menu">
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#skills">Skills</a>
+      <a href="../index.html#experience">Experience</a>
+      <a href="../index.html#contact" class="nav-cta">Get in touch</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="wrap p-hero">
+  <a href="../index.html#projects" class="back">← All projects</a>
+  <div class="p-kicker">07 · Big Data Engineering</div>
+  <h1 class="p-title">Hadoop Healthcare<br>Claims Pipeline</h1>
+  <p class="p-sub">A distributed data pipeline that turns <b>150,000 raw medical claims</b> into answers a health insurer actually cares about — which conditions cost the most, which providers overcharge, how often claims get denied and why, and which patients come back too soon. Raw data lands in <b>HDFS</b>, <b>Spark</b> cleans and crunches it, <b>Hive</b> serves it as SQL tables, and Python draws the charts.</p>
+  <div class="p-meta">
+    <span class="tag">Hadoop / HDFS</span><span class="tag">Apache Spark</span><span class="tag">Hive</span><span class="tag">Python</span><span class="tag">Docker</span><span class="tag">Parquet</span>
+  </div>
+  <div class="p-actions">
+    <a class="btn" href="https://github.com/thushartg" target="_blank" rel="noopener">View code on GitHub ↗</a>
+    <a class="btn ghost" href="#explore">Explore the results ↓</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="p-section">
+    <h2>Architecture</h2>
+    <p>Data flows through five stages, each a separate tool doing one job well — storage, heavy computation and easy querying kept apart. The whole stack runs locally on Docker containers standing in for a Hadoop cluster.</p>
+    <div class="flow">
+      <div class="node">generate_data.py</div><span class="arr">→</span>
+      <div class="node">HDFS — raw claims</div><span class="arr">→</span>
+      <div class="node">Spark — clean &amp; aggregate</div><span class="arr">→</span>
+      <div class="node">Parquet — curated</div><span class="arr">→</span>
+      <div class="node">Hive — SQL tables</div><span class="arr">→</span>
+      <div class="node">Python — charts</div>
+    </div>
+    <p class="note">Why Hadoop &amp; Spark? A spreadsheet chokes on 150,000+ rows across many files. These tools split the work across many machines at once — that's the whole reason they exist.</p>
+  </section>
+
+  <section class="p-section">
+    <h2>At a glance</h2>
+    <div class="metrics">
+      <div class="metric"><div class="n">150K</div><div class="t">Claims processed (Jan–Jul 2026)</div></div>
+      <div class="metric"><div class="n">$498.6M</div><div class="t">Total paid · from $756.9M billed</div></div>
+      <div class="metric"><div class="n">34.1%</div><div class="t">Billed-to-paid gap (allowed adjustments)</div></div>
+      <div class="metric"><div class="n">6</div><div class="t">Hive analytics tables served</div></div>
+    </div>
+  </section>
+
+  <section class="p-section" id="explore">
+    <h2>Explore the results</h2>
+    <p>Four business questions, each answered by a Hive table the Spark job writes. Pick one — every number here is computed directly over the 150,000 claims.</p>
+    <div class="seg" id="qToggle">
+      <button class="seg-btn is-active" data-q="cost">Costliest conditions</button>
+      <button class="seg-btn" data-q="providers">Provider outliers</button>
+      <button class="seg-btn" data-q="rejections">Denials</button>
+      <button class="seg-btn" data-q="readmissions">Readmissions</button>
+    </div>
+    <div class="metrics" id="qStats"></div>
+    <div class="chart-wrap" style="height:460px"><canvas id="claimsChart"></canvas></div>
+    <p class="note" id="qNote"></p>
+  </section>
+
+  <section class="p-section">
+    <h2>What the data says</h2>
+    <ul>
+      <li><b>Cost is spread, not concentrated.</b> Spend is remarkably even across conditions ($40–43M each) — <b>Injury &amp; Trauma</b> ($43.2M) and <b>Chronic Kidney Disease</b> ($43.1M) edge out the rest. No single diagnosis dominates the book.</li>
+      <li><b>A handful of providers drive cost risk.</b> Five providers are flagged as statistical outliers, billing above the $7,919 threshold (2σ over the $5,049 cohort mean). <b>PRV-00244</b> bills $20,555 per claim — over 4× its peers.</li>
+      <li><b>Denials are broad-based.</b> 7.96% of claims are denied, spread fairly evenly across seven reasons; <b>incomplete documentation</b> denies the most billed value ($9.5M).</li>
+      <li><b>Readmissions cluster in chronic care.</b> 10.16% of inpatient stays end in a 30-day readmission, led by <b>Chronic Kidney Disease</b> (12.3%) and musculoskeletal (11.7%).</li>
+    </ul>
+  </section>
+
+  <section class="p-section" id="outputs">
+    <h2>Outputs — analysis charts</h2>
+    <p>Generated by the Python analytics layer straight from the Hive tables. Click any chart to enlarge.</p>
+    <div class="gallery">
+      <figure class="shot"><img src="../assets/projects/claims/charts/diagnosis_cost_burden.png" alt="Diagnosis cost burden"><figcaption>Total paid by diagnosis category</figcaption></figure>
+      <figure class="shot"><img src="../assets/projects/claims/charts/provider_cost_outliers.png" alt="Provider cost outliers"><figcaption>Provider cost outliers vs. cohort</figcaption></figure>
+      <figure class="shot"><img src="../assets/projects/claims/charts/denial_rate_by_provider_type.png" alt="Denial rate by provider type"><figcaption>Denial rate by provider type</figcaption></figure>
+      <figure class="shot"><img src="../assets/projects/claims/charts/readmission_rate_by_diagnosis.png" alt="Readmission rate by diagnosis"><figcaption>30-day readmission rate by diagnosis</figcaption></figure>
+      <figure class="shot wide"><img src="../assets/projects/claims/charts/monthly_spend_by_plan.png" alt="Monthly spend by plan"><figcaption>Monthly spend by plan type</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <h2>How it's built</h2>
+    <h3>Generate &amp; store</h3>
+    <ul>
+      <li><code>generate_data.py</code> synthesizes 150,000 realistic claims — billed vs. allowed vs. paid amounts, diagnosis and procedure categories, denial reasons and 30-day readmission flags.</li>
+      <li>The raw CSV lands in <b>HDFS</b>, append-only and immutable, so any transformation can be re-run without regenerating data.</li>
+    </ul>
+    <h3>Process (Spark)</h3>
+    <ul>
+      <li>A <b>PySpark</b> ETL job cleans the raw feed, casts types, and writes partitioned <b>Parquet</b> to the curated zone (partitioned by service month).</li>
+      <li>It computes six aggregates: diagnosis cost burden, provider cost outliers (2σ cohort test), denials by reason and by provider type, 30-day readmissions, and monthly spend by plan.</li>
+    </ul>
+    <h3>Serve &amp; show</h3>
+    <ul>
+      <li><b>Hive</b> external tables expose every curated output as SQL, so an analyst can answer the business questions with plain queries.</li>
+      <li>A Python + matplotlib layer renders the final charts. The whole pipeline is wired together with a <code>Makefile</code> and shell scripts, and stood up on <b>Docker</b> containers.</li>
+    </ul>
+  </section>
+
+  <nav class="p-nav">
+    <a href="iot-aqi.html"><span>Previous project</span>← IoT Air Quality Monitor</a>
+    <a href="../index.html#projects"><span>Back to</span>All projects →</a>
+  </nav>
+</div>
+
+<footer>© <span id="yr"></span> Thushar Thorenur Govindaraju · Buffalo, NY</footer>
+<div class="lb" id="lb"><img alt="" /></div>
+<script src="../assets/js/site.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="../assets/projects/claims/claims-data.js"></script>
+<script>
+(function(){
+  var canvas=document.getElementById('claimsChart');
+  if(!canvas||!window.Chart||!window.CLAIMS) return;
+  var INK='#111110', MUT='#6b6a63', LINE='#d9d3c5', SOFT='#c9c2b2';
+  var C=window.CLAIMS, chart, q='cost';
+  function money(n){return '$'+n.toLocaleString()}
+  function statCard(n,t){return '<div class="metric"><div class="n">'+n+'</div><div class="t">'+t+'</div></div>'}
+
+  var Q={
+    cost:{
+      note:'Total amount paid per diagnosis category, over all 150,000 claims. Source: Hive table agg_diagnosis_cost.',
+      build:function(){
+        var r=C.cost;
+        return {labels:r.map(x=>x.name), values:r.map(x=>x.paid),
+          colors:r.map((x,i)=>i===0?INK:SOFT), unit:'$M paid',
+          fmt:v=>'$'+v.toFixed(1)+'M',
+          stats:statCard('$498.6M','Total paid across all conditions')+
+                statCard(r[0].name.split(' ')[0],'Costliest category ($'+r[0].paid.toFixed(1)+'M)')+
+                statCard('$'+r[0].avg.toLocaleString(),'Avg paid / claim ('+r[0].name.split(' ')[0]+')')+
+                statCard('12','Diagnosis categories tracked')};
+      }},
+    providers:{
+      note:'Average billed per claim by provider. Red = flagged cost outlier (above the $7,919 threshold — 2σ over the $5,049 cohort mean). Source: agg_provider_outliers.',
+      build:function(){
+        var r=C.providers.rows;
+        return {labels:r.map(x=>x.name+' · '+x.type), values:r.map(x=>x.billed),
+          colors:r.map(x=>x.outlier?INK:SOFT), unit:'$ avg billed / claim',
+          fmt:v=>money(v),
+          stats:statCard('5','Providers flagged as cost outliers')+
+                statCard(money(C.providers.threshold),'Outlier threshold (2σ)')+
+                statCard(money(C.providers.cohort),'Cohort mean billed / claim')+
+                statCard(money(r[0].billed),'Top biller — '+r[0].name)};
+      }},
+    rejections:{
+      note:'Denied claims by reason, with billed value denied. 7.96% of all claims (11,940) were denied. Source: agg_denial_by_reason.',
+      build:function(){
+        var r=C.rejections.rows;
+        return {labels:r.map(x=>x.name), values:r.map(x=>x.claims),
+          colors:r.map((x,i)=>i===0?INK:SOFT), unit:'denied claims',
+          fmt:v=>v.toLocaleString()+' claims',
+          extra:function(i){return '  ·  $'+C.rejections.rows[i].billed.toFixed(1)+'M billed'},
+          stats:statCard('7.96%','Overall denial rate')+
+                statCard('11,940','Claims denied')+
+                statCard(r[0].name.split(' ')[0],'Top denial reason')+
+                statCard('7','Distinct denial reasons')};
+      }},
+    readmissions:{
+      note:'30-day readmission rate by diagnosis. Overall rate across inpatient stays is 10.16%. Source: agg_readmissions.',
+      build:function(){
+        var r=C.readmissions.rows;
+        return {labels:r.map(x=>x.name), values:r.map(x=>x.rate),
+          colors:r.map((x,i)=>i===0?INK:SOFT), unit:'% readmitted in 30 days',
+          fmt:v=>v.toFixed(1)+'%',
+          extra:function(i){return '  ·  '+C.readmissions.rows[i].readmits+'/'+C.readmissions.rows[i].inpatient+' stays'},
+          stats:statCard('10.16%','Overall 30-day readmission rate')+
+                statCard(r[0].rate.toFixed(1)+'%','Highest — '+r[0].name.split(' ')[0])+
+                statCard(r[r.length-1].rate.toFixed(1)+'%','Lowest — '+r[r.length-1].name.split(' ')[0])+
+                statCard('12','Conditions compared')};
+      }}
+  };
+
+  function render(){
+    var cfg=Q[q].build();
+    document.getElementById('qStats').innerHTML=cfg.stats;
+    document.getElementById('qNote').textContent=Q[q].note;
+    var data={labels:cfg.labels,datasets:[{data:cfg.values,backgroundColor:cfg.colors,
+      borderWidth:0,borderRadius:3,barThickness:'flex',maxBarThickness:26}]};
+    var options={
+      indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false},
+        tooltip:{backgroundColor:INK,padding:12,callbacks:{
+          label:function(it){var s=cfg.fmt(it.parsed.x); if(cfg.extra) s+=cfg.extra(it.dataIndex); return s;}}}},
+      scales:{
+        x:{ticks:{color:MUT,callback:function(v){return cfg.fmt(v)}},grid:{color:LINE},title:{display:true,text:cfg.unit,color:MUT,font:{size:11}}},
+        y:{ticks:{color:INK,font:{size:11}},grid:{display:false}}
+      }
+    };
+    if(chart){chart.data=data;chart.options=options;chart.update();}
+    else chart=new Chart(canvas,{type:'bar',data:data,options:options});
+  }
+
+  document.getElementById('qToggle').addEventListener('click',function(e){
+    var b=e.target.closest('.seg-btn'); if(!b) return;
+    this.querySelectorAll('.seg-btn').forEach(x=>x.classList.remove('is-active'));
+    b.classList.add('is-active'); q=b.dataset.q; render();
+  });
+  render();
+})();
+</script>
+</body>
+</html>
