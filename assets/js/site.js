@@ -228,6 +228,46 @@ if (lb) {
   }
 
   // mirror typed text next to the block cursor
+  function setInput(v) {
+    input.value = v; lineEl.textContent = v;
+    try { input.setSelectionRange(v.length, v.length); } catch (e) {}
+  }
+
+  // bash-style Tab completion
+  function commonPrefix(list) {
+    return list.reduce(function (a, b) {
+      var i = 0; while (i < a.length && i < b.length && a[i] === b[i]) i++;
+      return a.slice(0, i);
+    });
+  }
+  function complete() {
+    var val = input.value;
+    var sp = val.indexOf(' ');
+    var head = (sp < 0 ? val : val.slice(0, sp)).toLowerCase();
+    var candidates, before, token;
+    if (sp < 0) {
+      token = head; before = '';
+      candidates = COMMANDS.map(function (c) { return c.name; }).filter(function (n) { return n.indexOf(token) === 0; });
+    } else if (head === 'open' || head === 'cd') {
+      token = val.slice(sp + 1).toLowerCase(); before = val.slice(0, sp + 1);
+      candidates = [];
+      PROJECTS.forEach(function (p) {
+        if (p.key.indexOf(token) === 0) candidates.push(p.key);
+        (p.alias || []).forEach(function (a) { if (a.indexOf(token) === 0) candidates.push(a); });
+      });
+    } else { return; }
+
+    if (!candidates.length) return;
+    if (candidates.length === 1) {
+      var only = candidates[0], full = before + only;
+      if (sp < 0) { var c = COMMANDS.find(function (x) { return x.name === only; }); if (c && c.arg) full += ' '; }
+      setInput(full); return;
+    }
+    var common = commonPrefix(candidates);
+    if (common.length > token.length) { setInput(before + common); }
+    else { prompt(val); echo(candidates.map(esc).join('   '), 'dim'); }
+  }
+
   input.addEventListener('input', function () { lineEl.textContent = input.value; });
   input.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') {
@@ -235,6 +275,9 @@ if (lb) {
       var v = input.value;
       input.value = ''; lineEl.textContent = '';
       run(v);
+    } else if (e.key === 'Tab') {
+      e.preventDefault();
+      complete();
     }
   });
   // keep focus on the input so the caret/keyboard stay live
