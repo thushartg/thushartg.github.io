@@ -82,14 +82,15 @@ if (lb) {
   overlay.innerHTML =
     '<div class="term" role="dialog" aria-label="Terminal">' +
       '<div class="term-bar"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span>' +
-      '<span class="tt">thushar@portfolio — zsh</span><span class="tx" id="termClose">exit ✕</span></div>' +
+      '<span class="tt">thushartg — -zsh</span><span class="tx" id="termClose">✕</span></div>' +
       '<div class="term-body" id="termBody"><div class="inner">' +
         '<div class="term-out" id="termOut"></div>' +
-        '<div class="term-inrow"><span class="term-prompt">thushar@portfolio <span class="tilde">~</span> %</span>' +
-        '<input class="term-in" id="termIn" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="command"/></div>' +
-        '<div class="term-sug" id="termSug"></div>' +
+        '<div class="term-inrow">' +
+          '<span class="term-prompt">thushartg@Thushars-MacBook-Pro ~ %</span>' +
+          '<span class="term-line" id="termLine"></span><span class="term-cursor" id="termCur"></span>' +
+          '<input class="term-in" id="termIn" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="command"/>' +
+        '</div>' +
       '</div></div>' +
-      '<div class="term-foot"><span><kbd>↑↓</kbd> navigate</span><span><kbd>Tab</kbd> complete</span><span><kbd>↵</kbd> run</span><span><kbd>Esc</kbd> close</span></div>' +
     '</div>';
   document.body.appendChild(overlay);
 
@@ -106,9 +107,9 @@ if (lb) {
 
   var out = overlay.querySelector('#termOut');
   var input = overlay.querySelector('#termIn');
-  var sugBox = overlay.querySelector('#termSug');
+  var lineEl = overlay.querySelector('#termLine');
   var body = overlay.querySelector('#termBody');
-  var booted = false, active = 0, sugs = [];
+  var booted = false;
 
   function echo(html, cls) {
     var d = document.createElement('div');
@@ -118,16 +119,22 @@ if (lb) {
     body.scrollTop = body.scrollHeight;
   }
   function esc(s){ return String(s).replace(/[&<>]/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
-  function prompt(line){ echo('<span class="grn">thushar@portfolio ~ %</span> <span class="cmd">' + esc(line) + '</span>'); }
+  function prompt(line){ echo('<span class="grn">thushartg@Thushars-MacBook-Pro ~ %</span> <span class="cmd">' + esc(line) + '</span>'); }
 
+  function stamp() {
+    var d = new Date(), p = function(n){ return ('0' + n).slice(-2); };
+    var wd = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()];
+    var mo = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()];
+    return wd + ' ' + mo + ' ' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
+  }
   function open() {
     overlay.classList.add('open');
     if (!booted) {
       booted = true;
-      echo('<span class="grn">thushar-portfolio</span> <span class="dim">v1.0 — interactive shell</span>');
-      echo('<span class="dim">type </span><span class="grn">help</span><span class="dim"> · try </span><span class="grn">about</span><span class="dim">, </span><span class="grn">skills</span><span class="dim">, </span><span class="grn">ls</span><span class="dim">, or </span><span class="grn">open hadoop</span>');
+      echo('<span class="dim">Last login: ' + stamp() + ' on ttys001</span>');
+      echo('<span class="dim">type </span><span class="grn">help</span><span class="dim"> for a list of commands</span>');
     }
-    setTimeout(function(){ input.focus(); refreshSug(); }, 30);
+    setTimeout(function(){ input.focus(); }, 30);
   }
   function close() { overlay.classList.remove('open'); input.blur(); }
   function go(url) { echo('<span class="dim">→ ' + esc(url) + '</span>'); setTimeout(function(){ location.href = url; }, 180); }
@@ -220,46 +227,19 @@ if (lb) {
     }
   }
 
-  // suggestions
-  function buildSugs(text) {
-    text = text.replace(/^\s+/, '');
-    var lower = text.toLowerCase();
-    var sp = text.indexOf(' ');
-    var cmd = (sp < 0 ? lower : lower.slice(0, sp));
-    if ((cmd === 'open' || cmd === 'cd') && sp > -1) {
-      var term = text.slice(sp + 1).trim().toLowerCase();
-      return PROJECTS.filter(function (p) {
-        return !term || p.key.indexOf(term) > -1 || p.n === term || p.name.toLowerCase().indexOf(term) > -1 || (p.alias && p.alias.some(function(a){return a.indexOf(term) > -1;}));
-      }).map(function (p) { return { value: 'open ' + p.key, k: p.n + '  ' + p.key, d: p.name }; });
-    }
-    return COMMANDS.filter(function (c) { return !cmd || c.name.indexOf(cmd) === 0; })
-      .map(function (c) { return { value: c.name + (c.arg ? ' ' : ''), k: c.name + (c.arg ? ' <name>' : ''), d: c.desc }; });
-  }
-  function refreshSug() {
-    sugs = buildSugs(input.value);
-    if (active >= sugs.length) active = 0;
-    sugBox.innerHTML = sugs.map(function (s, i) {
-      return '<div class="sug' + (i === active ? ' active' : '') + '" data-i="' + i + '"><span class="k">' + esc(s.k) + '</span><span class="d">' + esc(s.d) + '</span></div>';
-    }).join('');
-  }
-  sugBox.addEventListener('click', function (e) {
-    var el = e.target.closest('.sug'); if (!el) return;
-    var s = sugs[+el.dataset.i];
-    if (/\s$/.test(s.value)) { input.value = s.value; active = 0; refreshSug(); input.focus(); }
-    else { input.value = ''; refreshSug(); run(s.value); }
-  });
-
-  input.addEventListener('input', function () { active = 0; refreshSug(); });
+  // mirror typed text next to the block cursor
+  input.addEventListener('input', function () { lineEl.textContent = input.value; });
   input.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') {
       e.preventDefault();
-      var v = input.value.trim();
-      if (!v && sugs[active]) v = sugs[active].value.trim();
-      input.value = ''; active = 0;
-      run(v); refreshSug();
-    } else if (e.key === 'ArrowDown') { e.preventDefault(); if (sugs.length) { active = (active + 1) % sugs.length; refreshSug(); } }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); if (sugs.length) { active = (active - 1 + sugs.length) % sugs.length; refreshSug(); } }
-    else if (e.key === 'Tab') { e.preventDefault(); if (sugs[active]) { input.value = sugs[active].value; active = 0; refreshSug(); } }
+      var v = input.value;
+      input.value = ''; lineEl.textContent = '';
+      run(v);
+    }
+  });
+  // keep focus on the input so the caret/keyboard stay live
+  body.addEventListener('mousedown', function (e) {
+    if (e.target.tagName !== 'A') { setTimeout(function(){ input.focus(); }, 0); }
   });
 
   navBtn.addEventListener('click', function () { if (navLinks) navLinks.classList.remove('open'); open(); });
