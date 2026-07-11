@@ -39,3 +39,203 @@ if (lb) {
   lb.addEventListener('click', function () { lb.classList.remove('open'); });
   addEventListener('keydown', function (e) { if (e.key === 'Escape') lb.classList.remove('open'); });
 }
+
+/* ---------- TERMINAL COMMAND PALETTE (site-wide) ---------- */
+(function () {
+  var LINKS = {
+    github: 'https://github.com/thushartg',
+    linkedin: 'https://www.linkedin.com/in/thushar-thorenur-govindaraju-945712186',
+    email: 'mailto:thushartg25@gmail.com'
+  };
+  var PROJECTS = [
+    { key: 'financial', n: '01', name: 'Financial Markets Data Platform', url: '/projects/financial-markets-data-platform.html' },
+    { key: 'hadoop',    n: '02', name: 'Hadoop Healthcare Claims Pipeline', url: '/projects/hadoop-claims-pipeline.html', alias: ['claims'] },
+    { key: 'crop',      n: '03', name: 'US Crop Price & Supply-Chain Risk', url: '/projects/usda-crop-price-risk.html', alias: ['usda'] },
+    { key: 'cleanunet', n: '04', name: 'CleanUNet Speech Denoising', url: '/projects/cleanunet-speech-denoising.html', alias: ['speech','denoise'] },
+    { key: 'emoji',     n: '05', name: 'Emoji Generation GAN', url: '/projects/emoji-gan.html', alias: ['gan'] },
+    { key: 'taskq',     n: '06', name: 'TaskQ — Async Task Router', url: '/projects/taskq.html' },
+    { key: 'iot',       n: '07', name: 'IoT Air Quality Monitor', url: '/projects/iot-aqi.html', alias: ['aqi'] }
+  ];
+  var COMMANDS = [
+    { name: 'help', desc: 'list every command' },
+    { name: 'ls', desc: 'list all projects' },
+    { name: 'open', desc: 'open a project — e.g. open hadoop', arg: true },
+    { name: 'sql', desc: 'jump to the live SQL console' },
+    { name: 'dag', desc: 'jump to the running Airflow DAG' },
+    { name: 'whoami', desc: 'who is this' },
+    { name: 'resume', desc: 'print résumé summary' },
+    { name: 'home', desc: 'go to the homepage' },
+    { name: 'about', desc: 'about section' },
+    { name: 'skills', desc: 'skills section' },
+    { name: 'experience', desc: 'experience & education' },
+    { name: 'contact', desc: 'contact section' },
+    { name: 'github', desc: 'open GitHub ↗' },
+    { name: 'linkedin', desc: 'open LinkedIn ↗' },
+    { name: 'email', desc: 'compose an email' },
+    { name: 'clear', desc: 'clear the screen' },
+    { name: 'exit', desc: 'close the terminal (Esc)' }
+  ];
+
+  // build DOM
+  var hint = document.createElement('button');
+  hint.className = 'term-hint';
+  hint.innerHTML = '<kbd>⌘</kbd>K <span class="lbl">terminal</span>';
+  var overlay = document.createElement('div');
+  overlay.className = 'term-overlay';
+  overlay.innerHTML =
+    '<div class="term" role="dialog" aria-label="Terminal">' +
+      '<div class="term-bar"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span>' +
+      '<span class="tt">thushar@portfolio — zsh</span></div>' +
+      '<div class="term-body" id="termBody">' +
+        '<div class="term-out" id="termOut"></div>' +
+        '<div class="term-inrow"><span class="term-prompt">thushar@portfolio <span class="tilde">~</span> %</span>' +
+        '<input class="term-in" id="termIn" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="command"/></div>' +
+        '<div class="term-sug" id="termSug"></div>' +
+      '</div>' +
+      '<div class="term-foot"><span><kbd>↑↓</kbd> navigate</span><span><kbd>Tab</kbd> complete</span><span><kbd>↵</kbd> run</span><span><kbd>Esc</kbd> close</span></div>' +
+    '</div>';
+  document.body.appendChild(hint);
+  document.body.appendChild(overlay);
+
+  var out = overlay.querySelector('#termOut');
+  var input = overlay.querySelector('#termIn');
+  var sugBox = overlay.querySelector('#termSug');
+  var body = overlay.querySelector('#termBody');
+  var booted = false, active = 0, sugs = [];
+
+  function echo(html, cls) {
+    var d = document.createElement('div');
+    d.className = 'ln' + (cls ? ' ' + cls : '');
+    d.innerHTML = html;
+    out.appendChild(d);
+    body.scrollTop = body.scrollHeight;
+  }
+  function esc(s){ return String(s).replace(/[&<>]/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
+  function prompt(line){ echo('<span class="grn">thushar@portfolio ~ %</span> <span class="cmd">' + esc(line) + '</span>'); }
+
+  function open() {
+    overlay.classList.add('open');
+    if (!booted) {
+      booted = true;
+      echo('<span class="dim">thushar-portfolio · type </span><span class="grn">help</span><span class="dim"> to get started</span>');
+    }
+    setTimeout(function(){ input.focus(); refreshSug(); }, 30);
+  }
+  function close() { overlay.classList.remove('open'); input.blur(); }
+  function go(url) { echo('<span class="dim">→ ' + esc(url) + '</span>'); setTimeout(function(){ location.href = url; }, 180); }
+
+  function findProject(term) {
+    term = (term || '').trim().toLowerCase();
+    if (!term) return null;
+    return PROJECTS.find(function (p) {
+      return p.key === term || p.n === term || p.name.toLowerCase().indexOf(term) > -1 ||
+             (p.alias && p.alias.indexOf(term) > -1) || p.key.indexOf(term) > -1;
+    }) || null;
+  }
+
+  function run(line) {
+    var t = line.trim();
+    if (!t) return;
+    prompt(t);
+    var sp = t.indexOf(' ');
+    var cmd = (sp < 0 ? t : t.slice(0, sp)).toLowerCase();
+    var arg = sp < 0 ? '' : t.slice(sp + 1).trim();
+
+    switch (cmd) {
+      case 'help':
+        echo('<span class="dim">available commands:</span>');
+        COMMANDS.forEach(function (c) { echo('  <span class="grn">' + c.name + (c.arg ? ' &lt;name&gt;' : '') + '</span>  <span class="dim">' + c.desc + '</span>'); });
+        break;
+      case 'ls': case 'projects':
+        PROJECTS.forEach(function (p) { echo('  <span class="amb">' + p.n + '</span>  <span class="cmd">' + esc(p.key) + '</span>  <span class="dim">' + esc(p.name) + '</span>'); });
+        echo('<span class="dim">→ open one with </span><span class="grn">open ' + PROJECTS[1].key + '</span>');
+        break;
+      case 'open': case 'cd': {
+        var p = findProject(arg);
+        if (!p) { echo('open: no project matching “' + esc(arg) + '” — try <span class="grn">ls</span>', 'err'); break; }
+        echo('opening <span class="cmd">' + esc(p.name) + '</span>…'); go(p.url); break;
+      }
+      case 'sql': echo('booting the in-browser DuckDB console…'); go('/projects/hadoop-claims-pipeline.html#query'); break;
+      case 'dag': echo('triggering the Airflow DAG…'); go('/projects/financial-markets-data-platform.html#orchestration'); break;
+      case 'whoami':
+        echo('<span class="cmd">Thushar Thorenur Govindaraju</span>');
+        echo('<span class="dim">AI/ML &amp; Data Engineer · Buffalo, NY</span>');
+        echo('<span class="dim">M.S. Computer Science (AI/ML) — University at Buffalo</span>');
+        echo('<span class="dim">I build ML systems and end-to-end data pipelines.</span>');
+        break;
+      case 'resume': case 'cat':
+        echo('<span class="amb">— education —</span>');
+        echo('  M.S. Computer Science (AI/ML), University at Buffalo · GPA 3.5');
+        echo('  B.E. Electronics &amp; Communication, Global Academy of Technology');
+        echo('<span class="amb">— experience —</span>');
+        echo('  Data Engineering Intern · CloudBC Labs (2023)');
+        echo('<span class="amb">— stack —</span>');
+        echo('  Python · SQL · PyTorch · Spark · Hadoop · Hive · Airflow · dbt · BigQuery · Docker');
+        echo('<span class="dim">tip: type </span><span class="grn">ls</span><span class="dim"> to browse the work.</span>');
+        break;
+      case 'home': case '~': go('/index.html'); break;
+      case 'about': case 'skills': case 'experience': case 'contact': go('/index.html#' + cmd); break;
+      case 'github': echo('opening GitHub ↗'); window.open(LINKS.github, '_blank', 'noopener'); break;
+      case 'linkedin': echo('opening LinkedIn ↗'); window.open(LINKS.linkedin, '_blank', 'noopener'); break;
+      case 'email': case 'mail': echo('opening mail client…'); location.href = LINKS.email; break;
+      case 'clear': out.innerHTML = ''; break;
+      case 'exit': case 'q': close(); break;
+      default: {
+        var pj = findProject(t);
+        if (pj) { echo('opening <span class="cmd">' + esc(pj.name) + '</span>…'); go(pj.url); }
+        else echo('command not found: ' + esc(cmd) + ' — type <span class="grn">help</span>', 'err');
+      }
+    }
+  }
+
+  // suggestions
+  function buildSugs(text) {
+    text = text.replace(/^\s+/, '');
+    var lower = text.toLowerCase();
+    var sp = text.indexOf(' ');
+    var cmd = (sp < 0 ? lower : lower.slice(0, sp));
+    if ((cmd === 'open' || cmd === 'cd') && sp > -1) {
+      var term = text.slice(sp + 1).trim().toLowerCase();
+      return PROJECTS.filter(function (p) {
+        return !term || p.key.indexOf(term) > -1 || p.n === term || p.name.toLowerCase().indexOf(term) > -1 || (p.alias && p.alias.some(function(a){return a.indexOf(term) > -1;}));
+      }).map(function (p) { return { value: 'open ' + p.key, k: p.n + '  ' + p.key, d: p.name }; });
+    }
+    return COMMANDS.filter(function (c) { return !cmd || c.name.indexOf(cmd) === 0; })
+      .map(function (c) { return { value: c.name + (c.arg ? ' ' : ''), k: c.name + (c.arg ? ' <name>' : ''), d: c.desc }; });
+  }
+  function refreshSug() {
+    sugs = buildSugs(input.value);
+    if (active >= sugs.length) active = 0;
+    sugBox.innerHTML = sugs.map(function (s, i) {
+      return '<div class="sug' + (i === active ? ' active' : '') + '" data-i="' + i + '"><span class="k">' + esc(s.k) + '</span><span class="d">' + esc(s.d) + '</span></div>';
+    }).join('');
+  }
+  sugBox.addEventListener('click', function (e) {
+    var el = e.target.closest('.sug'); if (!el) return;
+    var s = sugs[+el.dataset.i];
+    if (/\s$/.test(s.value)) { input.value = s.value; active = 0; refreshSug(); input.focus(); }
+    else { input.value = ''; refreshSug(); run(s.value); }
+  });
+
+  input.addEventListener('input', function () { active = 0; refreshSug(); });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      var v = input.value.trim();
+      if (!v && sugs[active]) v = sugs[active].value.trim();
+      input.value = ''; active = 0;
+      run(v); refreshSug();
+    } else if (e.key === 'ArrowDown') { e.preventDefault(); if (sugs.length) { active = (active + 1) % sugs.length; refreshSug(); } }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); if (sugs.length) { active = (active - 1 + sugs.length) % sugs.length; refreshSug(); } }
+    else if (e.key === 'Tab') { e.preventDefault(); if (sugs[active]) { input.value = sugs[active].value; active = 0; refreshSug(); } }
+  });
+
+  hint.addEventListener('click', open);
+  overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+  addEventListener('keydown', function (e) {
+    var typing = /^(INPUT|TEXTAREA)$/.test((e.target.tagName || '')) || e.target.isContentEditable;
+    if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); overlay.classList.contains('open') ? close() : open(); }
+    else if (e.key === 'Escape' && overlay.classList.contains('open')) { close(); }
+    else if (e.key === '/' && !overlay.classList.contains('open') && !typing) { e.preventDefault(); open(); }
+  });
+})();
