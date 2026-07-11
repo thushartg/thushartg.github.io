@@ -77,25 +77,32 @@ if (lb) {
   ];
 
   // build DOM
-  var hint = document.createElement('button');
-  hint.className = 'term-hint';
-  hint.innerHTML = '<kbd>⌘</kbd>K <span class="lbl">terminal</span>';
   var overlay = document.createElement('div');
   overlay.className = 'term-overlay';
   overlay.innerHTML =
     '<div class="term" role="dialog" aria-label="Terminal">' +
       '<div class="term-bar"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span>' +
-      '<span class="tt">thushar@portfolio — zsh</span></div>' +
-      '<div class="term-body" id="termBody">' +
+      '<span class="tt">thushar@portfolio — zsh</span><span class="tx" id="termClose">exit ✕</span></div>' +
+      '<div class="term-body" id="termBody"><div class="inner">' +
         '<div class="term-out" id="termOut"></div>' +
         '<div class="term-inrow"><span class="term-prompt">thushar@portfolio <span class="tilde">~</span> %</span>' +
         '<input class="term-in" id="termIn" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="command"/></div>' +
         '<div class="term-sug" id="termSug"></div>' +
-      '</div>' +
+      '</div></div>' +
       '<div class="term-foot"><span><kbd>↑↓</kbd> navigate</span><span><kbd>Tab</kbd> complete</span><span><kbd>↵</kbd> run</span><span><kbd>Esc</kbd> close</span></div>' +
     '</div>';
-  document.body.appendChild(hint);
   document.body.appendChild(overlay);
+
+  // nav trigger — sits among the section links (About / Projects / Skills…)
+  var navLinks = document.getElementById('menu');
+  var navBtn = document.createElement('button');
+  navBtn.className = 'nav-term';
+  navBtn.type = 'button';
+  navBtn.innerHTML = '<span>&gt;_ terminal</span><span class="kbd">⌘K</span>';
+  if (navLinks) {
+    var ctaEl = navLinks.querySelector('.nav-cta');
+    ctaEl ? navLinks.insertBefore(navBtn, ctaEl) : navLinks.appendChild(navBtn);
+  }
 
   var out = overlay.querySelector('#termOut');
   var input = overlay.querySelector('#termIn');
@@ -117,7 +124,8 @@ if (lb) {
     overlay.classList.add('open');
     if (!booted) {
       booted = true;
-      echo('<span class="dim">thushar-portfolio · type </span><span class="grn">help</span><span class="dim"> to get started</span>');
+      echo('<span class="grn">thushar-portfolio</span> <span class="dim">v1.0 — interactive shell</span>');
+      echo('<span class="dim">type </span><span class="grn">help</span><span class="dim"> · try </span><span class="grn">about</span><span class="dim">, </span><span class="grn">skills</span><span class="dim">, </span><span class="grn">ls</span><span class="dim">, or </span><span class="grn">open hadoop</span>');
     }
     setTimeout(function(){ input.focus(); refreshSug(); }, 30);
   }
@@ -173,8 +181,32 @@ if (lb) {
         echo('  Python · SQL · PyTorch · Spark · Hadoop · Hive · Airflow · dbt · BigQuery · Docker');
         echo('<span class="dim">tip: type </span><span class="grn">ls</span><span class="dim"> to browse the work.</span>');
         break;
-      case 'home': case '~': go('/index.html'); break;
-      case 'about': case 'skills': case 'experience': case 'contact': go('/index.html#' + cmd); break;
+      case 'about':
+        echo("I'm an AI/ML &amp; Data Engineer with a Master's in Computer Science (AI/ML) from the");
+        echo('University at Buffalo. My work spans two connected worlds — building ML models');
+        echo('(speech-denoising autoencoders, GANs, computer vision) and engineering the data');
+        echo('platforms that feed them: <span class="amb">ingest → model → orchestrate → serve</span>.');
+        break;
+      case 'skills':
+        echo('<span class="amb">languages</span>   Python · SQL · C/C++ · Swift');
+        echo('<span class="amb">data eng</span>    Airflow · dbt · BigQuery · Hadoop/HDFS · Spark · Hive · Docker · ETL/ELT');
+        echo('<span class="amb">ml &amp; ai</span>     PyTorch · GANs · Computer Vision · NLP · Speech Denoising · Prophet');
+        echo('<span class="amb">cloud / bi</span>  Google Cloud · Looker Studio · Tableau · Pandas · REST APIs · Git');
+        break;
+      case 'experience': case 'exp':
+        echo('<span class="amb">— experience —</span>');
+        echo('  Data Engineering Intern · CloudBC Labs · Oct–Dec 2023 · Bangalore');
+        echo('  <span class="dim">Built a Python data-ingestion pipeline (scraping + filtering) for talent analytics.</span>');
+        echo('<span class="amb">— education —</span>');
+        echo('  M.S. Computer Science (AI/ML) · University at Buffalo · 2024–2025 · GPA 3.5');
+        echo('  B.E. Electronics &amp; Communication · Global Academy of Technology · 2020–2024');
+        break;
+      case 'contact':
+        echo('<span class="amb">email</span>     <a href="' + LINKS.email + '">thushartg25@gmail.com</a>');
+        echo('<span class="amb">github</span>    <a href="' + LINKS.github + '" target="_blank" rel="noopener">github.com/thushartg ↗</a>');
+        echo('<span class="amb">linkedin</span>  <a href="' + LINKS.linkedin + '" target="_blank" rel="noopener">linkedin.com/in/thushar-thorenur-govindaraju ↗</a>');
+        break;
+      case 'home': case '~': echo('<span class="dim">closing terminal…</span>'); setTimeout(close, 180); break;
       case 'github': echo('opening GitHub ↗'); window.open(LINKS.github, '_blank', 'noopener'); break;
       case 'linkedin': echo('opening LinkedIn ↗'); window.open(LINKS.linkedin, '_blank', 'noopener'); break;
       case 'email': case 'mail': echo('opening mail client…'); location.href = LINKS.email; break;
@@ -230,8 +262,8 @@ if (lb) {
     else if (e.key === 'Tab') { e.preventDefault(); if (sugs[active]) { input.value = sugs[active].value; active = 0; refreshSug(); } }
   });
 
-  hint.addEventListener('click', open);
-  overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+  navBtn.addEventListener('click', function () { if (navLinks) navLinks.classList.remove('open'); open(); });
+  overlay.querySelector('#termClose').addEventListener('click', close);
   addEventListener('keydown', function (e) {
     var typing = /^(INPUT|TEXTAREA)$/.test((e.target.tagName || '')) || e.target.isContentEditable;
     if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); overlay.classList.contains('open') ? close() : open(); }
