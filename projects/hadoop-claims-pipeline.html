@@ -32,7 +32,7 @@
   <h1 class="p-title">Hadoop Healthcare<br>Claims Pipeline</h1>
   <p class="p-sub">A distributed data pipeline that turns <b>150,000 raw medical claims</b> into answers a health insurer actually cares about — which conditions cost the most, which providers overcharge, how often claims get denied and why, and which patients come back too soon. Raw data lands in <b>HDFS</b>, <b>Spark</b> cleans and crunches it, <b>Hive</b> serves it as SQL tables, and Python draws the charts.</p>
   <div class="p-meta">
-    <span class="tag">Hadoop / HDFS</span><span class="tag">Apache Spark</span><span class="tag">Hive</span><span class="tag">Python</span><span class="tag">Docker</span><span class="tag">Parquet</span>
+    <span class="tag">Hadoop / HDFS</span><span class="tag">Apache Spark</span><span class="tag">Hive</span><span class="tag">Snowflake</span><span class="tag">Python</span><span class="tag">Docker</span><span class="tag">Parquet</span>
   </div>
   <div class="p-actions">
     <a class="btn" href="https://github.com/thushartg" target="_blank" rel="noopener">View code on GitHub ↗</a>
@@ -52,7 +52,12 @@
       <div class="node">Hive — SQL tables</div><span class="arr">→</span>
       <div class="node">Python — charts</div>
     </div>
-    <p class="note">Why Hadoop &amp; Spark? A spreadsheet chokes on 150,000+ rows across many files. These tools split the work across many machines at once — that's the whole reason they exist.</p>
+    <div class="flow" style="margin-top:12px">
+      <div class="node">Parquet — curated</div><span class="arr">→</span>
+      <div class="node">Snowflake — live warehouse</div><span class="arr">→</span>
+      <div class="node">Cross-verified vs. Spark &amp; pandas</div>
+    </div>
+    <p class="note">Why Hadoop &amp; Spark? A spreadsheet chokes on 150,000+ rows across many files. These tools split the work across many machines at once — that's the whole reason they exist. The curated output was also migrated to a live Snowflake warehouse as a second, independently verified serving layer.</p>
   </section>
 
   <section class="p-section">
@@ -145,6 +150,17 @@ ORDER BY paid_millions DESC;</textarea>
       <li><b>Hive</b> external tables expose every curated output as SQL, so an analyst can answer the business questions with plain queries.</li>
       <li>A Python + matplotlib layer renders the final charts. The whole pipeline is wired together with a <code>Makefile</code> and shell scripts, and stood up on <b>Docker</b> containers.</li>
     </ul>
+  </section>
+
+  <section class="p-section">
+    <h2>Cross-verification — migrating to Snowflake</h2>
+    <p>The curated output was also migrated to a live <b>Snowflake</b> warehouse — all 150,000 rows, loaded via key-pair-authenticated <code>snowsql</code>. Three headline metrics (PMPM, denial rate, and readmission rate) were recomputed independently in Snowflake and cross-checked against both Spark's output and a from-scratch pandas recomputation.</p>
+    <div class="metrics">
+      <div class="metric"><div class="n">150K</div><div class="t">Rows migrated to Snowflake</div></div>
+      <div class="metric"><div class="n">3-way</div><div class="t">Cross-check: Snowflake vs. Spark vs. pandas</div></div>
+      <div class="metric"><div class="n">2</div><div class="t">Real bugs caught &amp; fixed</div></div>
+    </div>
+    <p class="note">Cross-verification paid off — it surfaced two real bugs before they reached a report: an incorrect denominator in the readmission-rate calculation, and a case-sensitivity mismatch on <code>claim_status</code> that was silently under-counting denials.</p>
   </section>
 
   <nav class="p-nav">
