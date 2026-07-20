@@ -162,7 +162,13 @@ ORDER BY paid_millions DESC;</textarea>
 (function(){
   var canvas=document.getElementById('claimsChart');
   if(!canvas||!window.Chart||!window.CLAIMS) return;
-  var INK='#111110', MUT='#6b6a63', LINE='#d9d3c5', SOFT='#c9c2b2';
+  function cssVar(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
+  var INK, MUT, LINE, SOFT, CREAM;
+  function readColors(){
+    INK=cssVar('--ink'); MUT=cssVar('--muted'); LINE=cssVar('--line');
+    SOFT=cssVar('--accent2'); CREAM=cssVar('--cream');
+  }
+  readColors();
   var C=window.CLAIMS, chart, q='cost';
   function money(n){return '$'+n.toLocaleString()}
   function statCard(n,t){return '<div class="metric"><div class="n">'+n+'</div><div class="t">'+t+'</div></div>'}
@@ -229,7 +235,7 @@ ORDER BY paid_millions DESC;</textarea>
     var options={
       indexAxis:'y', responsive:true, maintainAspectRatio:false,
       plugins:{legend:{display:false},
-        tooltip:{backgroundColor:INK,padding:12,callbacks:{
+        tooltip:{backgroundColor:INK,titleColor:CREAM,bodyColor:CREAM,padding:12,callbacks:{
           label:function(it){var s=cfg.fmt(it.parsed.x); if(cfg.extra) s+=cfg.extra(it.dataIndex); return s;}}}},
       scales:{
         x:{ticks:{color:MUT,callback:function(v){return cfg.fmt(v)}},grid:{color:LINE},title:{display:true,text:cfg.unit,color:MUT,font:{size:11}}},
@@ -246,6 +252,11 @@ ORDER BY paid_millions DESC;</textarea>
     b.classList.add('is-active'); q=b.dataset.q; render();
   });
   render();
+  if(window.matchMedia){
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){
+      readColors(); render();
+    });
+  }
 })();
 </script>
 

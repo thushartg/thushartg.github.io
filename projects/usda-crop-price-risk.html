@@ -119,9 +119,16 @@
 (function(){
   var canvas = document.getElementById('forecastChart');
   if(!canvas || !window.Chart || !window.CROP_FORECAST) return;
-  var INK='#111110', MUT='#6b6a63', LINE='#d9d3c5';
-  var chart;
+  function cssVar(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
+  var INK, MUT, LINE, CREAM, INK_RGB;
+  function readColors(){
+    INK=cssVar('--ink'); MUT=cssVar('--muted'); LINE=cssVar('--line');
+    CREAM=cssVar('--cream'); INK_RGB=cssVar('--ink-rgb');
+  }
+  readColors();
+  var chart, currentCrop='soybeans';
   function build(crop){
+    currentCrop=crop;
     var d = window.CROP_FORECAST[crop];
     var labels = d.rows.map(function(r){return r.d});
     var price  = d.rows.map(function(r){return r.p});
@@ -134,7 +141,7 @@
       type:'line',
       data:{labels:labels, datasets:[
         {label:'Upper 90%', data:hi, borderWidth:0, pointRadius:0, fill:'+1',
-         backgroundColor:'rgba(17,17,16,0.07)', tension:.25},
+         backgroundColor:'rgba('+INK_RGB+',0.07)', tension:.25},
         {label:'Lower 90%', data:lo, borderWidth:0, pointRadius:0, fill:false, tension:.25},
         {label:d.label+' price ($/unit)', data:price, borderColor:INK, borderWidth:2,
          pointRadius:ptR, pointBackgroundColor:INK, tension:.25,
@@ -144,7 +151,7 @@
         responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
         plugins:{
           legend:{display:false},
-          tooltip:{backgroundColor:INK, padding:12, callbacks:{
+          tooltip:{backgroundColor:INK, titleColor:CREAM, bodyColor:CREAM, padding:12, callbacks:{
             title:function(it){return it[0].label},
             label:function(it){
               var i=it.dataIndex, r=window.CROP_FORECAST[crop].rows[i];
@@ -169,6 +176,11 @@
     b.classList.add('is-active');
     build(b.dataset.crop);
   });
+  if(window.matchMedia){
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){
+      readColors(); build(currentCrop);
+    });
+  }
 })();
 </script>
 </body>

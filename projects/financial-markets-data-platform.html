@@ -128,9 +128,9 @@
         </svg>
       </div>
       <div class="dag-legend">
-        <span><i style="background:#c9c2b2"></i> queued</span>
-        <span><i style="background:#c9a24b"></i> running</span>
-        <span><i style="background:#7d9b6a"></i> success</span>
+        <span><i style="background:var(--accent2)"></i> queued</span>
+        <span><i style="background:var(--accent-amber)"></i> running</span>
+        <span><i style="background:var(--accent-success)"></i> success</span>
         <span style="margin-left:auto">7 tasks · simulated run</span>
       </div>
     </div>
@@ -213,7 +213,13 @@
 (function(){
   var canvas=document.getElementById('tickerChart');
   if(!canvas||!window.Chart||!window.TICKERS) return;
-  var INK='#111110', MUT='#6b6a63', LINE='#d9d3c5';
+  function cssVar(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
+  var INK, MUT, LINE, CREAM, INK_RGB;
+  function readColors(){
+    INK=cssVar('--ink'); MUT=cssVar('--muted'); LINE=cssVar('--line');
+    CREAM=cssVar('--cream'); INK_RGB=cssVar('--ink-rgb');
+  }
+  readColors();
   var state={t:'SPY', v:'price'}, chart;
 
   var asof=window.TICKERS.meta.asof;
@@ -247,12 +253,12 @@
         tension:.2, fill:true,
         backgroundColor:function(c){
           var a=c.chart.ctx.createLinearGradient(0,0,0,c.chart.height||400);
-          a.addColorStop(0,'rgba(17,17,16,0.14)');a.addColorStop(1,'rgba(17,17,16,0)');return a;
+          a.addColorStop(0,'rgba('+INK_RGB+',0.14)');a.addColorStop(1,'rgba('+INK_RGB+',0)');return a;
         }
       }]},
       options:{
         responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
-        plugins:{legend:{display:false},tooltip:{backgroundColor:INK,padding:12,callbacks:{
+        plugins:{legend:{display:false},tooltip:{backgroundColor:INK,titleColor:CREAM,bodyColor:CREAM,padding:12,callbacks:{
           label:function(it){return (state.v==='price'?'$':'')+it.parsed.y+(state.v==='return'?'%':'')}
         }}},
         scales:{
@@ -276,6 +282,11 @@
   }
   wire('tickerToggle','t'); wire('viewToggle','v');
   render();
+  if(window.matchMedia){
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){
+      readColors(); render();
+    });
+  }
 })();
 </script>
 
