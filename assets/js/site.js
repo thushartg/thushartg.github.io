@@ -197,9 +197,11 @@ if (lb) {
         break;
       case 'skills':
         echo('<span class="amb">languages</span>   Python · SQL · C/C++ · Swift');
-        echo('<span class="amb">data eng</span>    Airflow · dbt · BigQuery · Hadoop/HDFS · Spark · Hive · Docker · ETL/ELT');
-        echo('<span class="amb">ml &amp; ai</span>     PyTorch · GANs · Computer Vision · NLP · Speech Denoising · Prophet');
-        echo('<span class="amb">cloud / bi</span>  Google Cloud · Looker Studio · Tableau · Pandas · REST APIs · Git');
+        echo('<span class="amb">data eng</span>    Airflow · dbt · BigQuery · Hadoop/HDFS · Spark · PySpark · Hive · Snowflake · DuckDB · Docker · ETL/ELT');
+        echo('<span class="amb">ml &amp; ai</span>     PyTorch · scikit-learn · GANs · Computer Vision · NLP · Speech Denoising · Prophet · Time-Series Forecasting');
+        echo('<span class="amb">full-stack</span>  FastAPI · Next.js · React · PostgreSQL · Redis · Supabase');
+        echo('<span class="amb">cloud / bi</span>  Google Cloud · Vercel · Looker Studio · Tableau · Power BI · Pandas · NumPy · REST APIs');
+        echo('<span class="amb">workflow</span>    Git · Git-based CI/CD · UNIX Shell Scripting · Claude Code · Cursor');
         break;
       case 'experience': case 'exp':
         echo('<span class="amb">— experience —</span>');
