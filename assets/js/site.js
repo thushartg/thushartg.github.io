@@ -54,7 +54,8 @@ if (lb) {
     { key: 'cleanunet', n: '04', name: 'CleanUNet Speech Denoising', url: '/projects/cleanunet-speech-denoising.html', alias: ['speech','denoise'] },
     { key: 'emoji',     n: '05', name: 'Emoji Generation GAN', url: '/projects/emoji-gan.html', alias: ['gan'] },
     { key: 'taskq',     n: '06', name: 'TaskQ — Async Task Router', url: '/projects/taskq.html' },
-    { key: 'iot',       n: '07', name: 'IoT Air Quality Monitor', url: '/projects/iot-aqi.html', alias: ['aqi'] }
+    { key: 'iot',       n: '07', name: 'IoT Air Quality Monitor', url: '/projects/iot-aqi.html', alias: ['aqi'] },
+    { key: 'tastenet',  n: '08', name: 'TasteNet — Taste-Matched Restaurant Reviews', url: '/projects/tastenet.html', alias: ['taste'] }
   ];
   var COMMANDS = [
     { name: 'help', desc: 'list every command' },

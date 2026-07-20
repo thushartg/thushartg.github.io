@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TasteNet — Taste-Matched Restaurant Reviews — Thushar T. Govindaraju</title>
+<meta name="description" content="TasteNet: a Buffalo-based MVP matching restaurant reviews to your palate via a five-dimension taste quiz and cosine-similarity scoring. Next.js + Supabase." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../assets/css/site.css" />
+</head>
+<body>
+
+<header id="top">
+  <div class="wrap nav">
+    <a href="../index.html" class="logo">Thushar<sup>®</sup></a>
+    <nav class="nav-links" id="menu">
+      <a href="../index.html#threads">Threads</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#skills">Skills</a>
+      <a href="../index.html#experience">Experience</a>
+      <a href="../index.html#contact" class="nav-cta">Get in touch</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="wrap p-hero">
+  <a href="../index.html#projects" class="back">← All projects</a>
+  <div class="p-kicker">08 · Full-Stack · In Progress</div>
+  <h1 class="p-title">TasteNet<br>Taste-Matched Restaurant Reviews</h1>
+  <p class="p-sub">A Buffalo-based MVP that matches restaurant reviews to your palate instead of a generic star average. New users take a five-dimension taste quiz — spice, sweetness, saltiness, adventurousness, authenticity — and TasteNet scores that profile against reviewers with cosine similarity, surfacing the reviews (and restaurants) from people who actually taste the way you do.</p>
+  <div class="p-meta">
+    <span class="tag">Next.js (App Router)</span><span class="tag">Supabase</span><span class="tag">PostgreSQL</span><span class="tag">Vercel</span>
+  </div>
+  <div class="p-actions">
+    <a class="btn" href="https://tastenetcom.vercel.app/preview" target="_blank" rel="noopener">Open live preview ↗</a>
+    <a class="btn ghost" href="https://github.com/thushartg/tastenet.com" target="_blank" rel="noopener">View code on GitHub ↗</a>
+    <a class="btn ghost" href="../index.html#contact">Get in touch</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="p-section">
+    <h2>Architecture</h2>
+    <div class="flow">
+      <div class="node">5-question taste quiz</div><span class="arr">→</span>
+      <div class="node">Taste-profile vector</div><span class="arr">→</span>
+      <div class="node">Cosine similarity vs. reviewers</div><span class="arr">→</span>
+      <div class="node">Weighted, taste-matched reviews</div>
+    </div>
+    <p class="note">MVP status: the Supabase schema and the matching algorithm are built and cross-verified; the restaurant-listing and review-submission frontend is still being scaffolded. The embed below is the live, in-progress build.</p>
+  </section>
+
+  <section class="p-section">
+    <h2>Live preview</h2>
+    <p>The onboarding quiz below is running live on Vercel — set your own spice, sweetness, saltiness, adventurousness and authenticity preferences and click "Show my matches".</p>
+    <div class="embed">
+      <iframe src="https://tastenetcom.vercel.app/preview" title="TasteNet live preview" loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <h2>Features</h2>
+    <ul>
+      <li>Onboarding quiz captures a taste profile across five slider dimensions instead of a single rating.</li>
+      <li>Cosine similarity matches a reader's profile against individual reviewers, not just the restaurant average.</li>
+      <li>Weighted rating system re-ranks reviews by how closely a reviewer's palate matches yours.</li>
+      <li>Restaurant listings surface a personalized taste-match score per user.</li>
+      <li>Auth and Postgres data layer handled by Supabase; hosted and deployed on Vercel.</li>
+    </ul>
+  </section>
+
+  <section class="p-section">
+    <h2>Stack</h2>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Layer</th><th>Tech</th></tr>
+        <tr><td>Frontend</td><td>Next.js (App Router)</td></tr>
+        <tr><td>Backend / API</td><td>Next.js API routes</td></tr>
+        <tr><td>Auth &amp; Database</td><td>Supabase (PostgreSQL)</td></tr>
+        <tr><td>Matching</td><td>Cosine similarity over taste-profile vectors</td></tr>
+        <tr><td>Deployment</td><td>Vercel</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <nav class="p-nav">
+    <a href="iot-aqi.html"><span>Previous project</span>← IoT AQI Monitor</a>
+    <a href="../index.html#projects"><span>Back to</span>All projects →</a>
+  </nav>
+</div>
+
+<footer>© <span id="yr"></span> Thushar Thorenur Govindaraju · Buffalo, NY</footer>
+<div class="lb" id="lb"><img alt="" /></div>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>
