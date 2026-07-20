@@ -179,7 +179,7 @@
     <h3>Transformation (dbt)</h3>
     <ul>
       <li><b>Staging</b> — <code>stg_stock_prices</code>, <code>stg_macro_indicators</code> materialize as views: clean column names, cast types, remove nulls.</li>
-      <li><b>Marts</b> — <code>mart_stock_macro_analysis</code> materializes as a table: daily returns via a LAG window function, 30-day rolling average prices, and macro conditions joined to each trading day.</li>
+      <li><b>Marts</b> — <code>mart_stock_macro_analysis</code> materializes as a table: VWAP (volume-weighted average price) and EMA (exponential moving average) technical indicators, with macro conditions joined to each trading day.</li>
     </ul>
 
     <h3>Data quality &amp; orchestration</h3>
@@ -191,7 +191,7 @@
 
   <section class="p-section">
     <h2>Output — live dashboard</h2>
-    <p>The mart layer feeds an interactive Looker Studio dashboard with ticker filtering, returns, rolling averages and macro overlays.</p>
+    <p>The mart layer feeds an interactive Looker Studio dashboard with ticker filtering, VWAP/EMA overlays and macro conditions.</p>
     <div class="p-actions">
       <a class="btn" id="dashLink" href="https://datastudio.google.com/s/h6DyKaUf8oY" target="_blank" rel="noopener">Open live Looker Studio dashboard ↗</a>
       <a class="btn ghost" href="https://github.com/thushartg/Financial-Markets-Data-Platform" target="_blank" rel="noopener">View code on GitHub ↗</a>
