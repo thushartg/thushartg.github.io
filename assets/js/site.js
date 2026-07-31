@@ -87,7 +87,7 @@ if (lb) {
       '<div class="term-body" id="termBody"><div class="inner">' +
         '<div class="term-out" id="termOut"></div>' +
         '<div class="term-inrow">' +
-          '<span class="term-prompt">thushartg@Thushars-MacBook-Pro ~ %</span>' +
+          '<span class="term-prompt">thushartg ~ %</span>' +
           '<span class="term-line" id="termLine"></span><span class="term-cursor" id="termCur"></span>' +
           '<input class="term-in" id="termIn" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="command"/>' +
         '</div>' +
@@ -120,7 +120,7 @@ if (lb) {
     body.scrollTop = body.scrollHeight;
   }
   function esc(s){ return String(s).replace(/[&<>]/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
-  function prompt(line){ echo('<span class="grn">thushartg@Thushars-MacBook-Pro ~ %</span> <span class="cmd">' + esc(line) + '</span>'); }
+  function prompt(line){ echo('<span class="grn">thushartg ~ %</span> <span class="cmd">' + esc(line) + '</span>'); }
 
   function stamp() {
     var d = new Date(), p = function(n){ return ('0' + n).slice(-2); };
