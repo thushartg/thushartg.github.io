@@ -45,7 +45,8 @@ if (lb) {
   var LINKS = {
     github: 'https://github.com/thushartg',
     linkedin: 'https://www.linkedin.com/in/thushar-thorenur-govindaraju-945712186',
-    email: 'mailto:thushartg25@gmail.com'
+    email: 'mailto:thushartg01@gmail.com',
+    emailAlt: 'mailto:thushartg25@gmail.com'
   };
   var PROJECTS = [
     { key: 'financial', n: '01', name: 'Financial Markets Data Platform', url: '/projects/financial-markets-data-platform.html' },
@@ -212,7 +213,8 @@ if (lb) {
         echo('  B.E. Electronics &amp; Communication · Global Academy of Technology · 2020–2024');
         break;
       case 'contact':
-        echo('<span class="amb">email</span>     <a href="' + LINKS.email + '">thushartg25@gmail.com</a>');
+        echo('<span class="amb">email</span>     <a href="' + LINKS.email + '">thushartg01@gmail.com</a>');
+        echo('<span class="amb">alt</span>       <a href="' + LINKS.emailAlt + '">thushartg25@gmail.com</a>');
         echo('<span class="amb">github</span>    <a href="' + LINKS.github + '" target="_blank" rel="noopener">github.com/thushartg ↗</a>');
         echo('<span class="amb">linkedin</span>  <a href="' + LINKS.linkedin + '" target="_blank" rel="noopener">linkedin.com/in/thushar-thorenur-govindaraju ↗</a>');
         break;

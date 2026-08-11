@@ -176,6 +176,9 @@ a.card{color:inherit}
 .contact h2{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(38px,7vw,84px);line-height:.96;text-transform:uppercase;margin:8px 0 22px}
 .contact p{max-width:52ch;margin:0 auto 30px;color:var(--panel-soft);font-size:17px}
 .contact .btn{background:var(--cream);color:var(--ink)}
+.contact p.alt-email{margin:16px auto 0;font-size:14px;color:var(--panel-muted)}
+.contact p.alt-email a{color:var(--panel-soft);text-decoration:underline;text-underline-offset:3px}
+.contact p.alt-email a:hover{color:var(--cream)}
 .contact .links{display:flex;gap:26px;justify-content:center;margin-top:34px;flex-wrap:wrap;font-size:14px;font-weight:600}
 .contact .links a{color:var(--panel-soft)}
 .contact .links a:hover{color:var(--cream)}
