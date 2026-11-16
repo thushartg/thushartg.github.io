@@ -3,209 +3,209 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Financial Markets Data Platform — Thushar T. Govindaraju</title>
-<meta name="description" content="End-to-end data engineering pipeline: Yahoo Finance + FRED → BigQuery → dbt → Airflow → Looker Studio." />
+<title>Financial Markets Data Platform — Thushar Govindaraju</title>
+<meta name="description" content="Automated weekday market data pipeline across Yahoo Finance, FRED, BigQuery, dbt, Apache Airflow, and Looker Studio." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../assets/css/site.css" />
 </head>
 <body>
 
-<header id="top">
-  <div class="wrap nav">
-    <a href="../index.html" class="logo">Thushar<sup>®</sup></a>
-    <nav class="nav-links" id="menu">
-      <a href="../index.html#about">About</a>
-      <a href="../index.html#projects">Projects</a>
-      <a href="../index.html#skills">Skills</a>
-      <a href="../index.html#experience">Experience</a>
-      <a href="../index.html#contact" class="nav-cta">Get in touch</a>
+<div class="tb-case-page">
+
+  <aside class="tb-sidebar" aria-label="Case study overview">
+    <div class="tb-side-top">
+      <a class="tb-pill" href="../index.html#work">Work</a>
+      <a class="tb-pill" href="../index.html#contact">Contact</a>
+    </div>
+
+    <h1 class="tb-side-heading">Markets Platform</h1>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">About</h2>
+      <p class="tb-side-copy">
+        Containerized weekday ELT ingesting daily equity bars from Yahoo Finance and macroeconomic series from FRED into Google BigQuery, modeled in dbt and scheduled via Apache Airflow.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Grain Alignment</h2>
+      <p class="tb-side-copy">
+        Joining daily equity bars directly with monthly and quarterly FRED releases breaks BI aggregations. Separate BigQuery staging views and explicit forward-fill logic inside a dedicated dbt mart keep trading-day calendars consistent.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Quality Gates</h2>
+      <p class="tb-side-copy">
+        Seven dbt schema, uniqueness, and non-null checks gate downstream publication so Looker Studio never refreshes on partial or duplicate pulls.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Stack &amp; Links</h2>
+      <dl class="tb-side-dl">
+        <div>
+          <dt>Stack</dt>
+          <dd>BigQuery, dbt, Apache Airflow, Python, Docker, Looker Studio</dd>
+        </div>
+        <div>
+          <dt>Schedule</dt>
+          <dd>Weekdays 06:00 UTC (<code>0 6 * * 1-5</code>)</dd>
+        </div>
+        <div>
+          <dt>Links</dt>
+          <dd>
+            <a href="https://datastudio.google.com/s/h6DyKaUf8oY" target="_blank" rel="noopener">Looker Studio ↗</a>
+            ·
+            <a href="https://github.com/thushartg/Financial-Markets-Data-Platform" target="_blank" rel="noopener">GitHub ↗</a>
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    <nav class="tb-side-bottom" aria-label="Project navigation">
+      <a class="tb-pill" href="hadoop-claims-pipeline.html">← Back</a>
+      <a class="tb-pill" href="usda-crop-price-risk.html">Next +</a>
     </nav>
-    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
-  </div>
-</header>
 
-<div class="wrap p-hero">
-  <a href="../index.html#projects" class="back">← All projects</a>
-  <div class="p-kicker">01 · Data Engineering</div>
-  <h1 class="p-title">Financial Markets<br>Data Platform</h1>
-  <p class="p-sub">An end-to-end data engineering pipeline that ingests real-time stock prices and macroeconomic indicators, transforms them into analytics-ready models, and serves insight through a live dashboard — orchestrated to run every weekday at 6am.</p>
-  <div class="p-meta">
-    <span class="tag">Python</span><span class="tag">Google BigQuery</span><span class="tag">dbt</span><span class="tag">Apache Airflow</span><span class="tag">Looker Studio</span><span class="tag">Docker</span>
-  </div>
-  <div class="p-actions">
-    <a class="btn" href="https://github.com/thushartg/Financial-Markets-Data-Platform" target="_blank" rel="noopener">View code on GitHub ↗</a>
-    <a class="btn ghost" href="../index.html#contact">Get in touch</a>
-  </div>
-</div>
-
-<div class="wrap">
-  <section class="p-section">
-    <h2>Architecture</h2>
-    <p>A classic ELT pipeline. Two source APIs land raw, immutable data into BigQuery; dbt transforms it into staging and mart layers; Airflow orchestrates the whole run on a weekday cron; Looker Studio serves the result.</p>
-    <div class="flow">
-      <div class="node">Yahoo Finance API</div><span class="arr">+</span>
-      <div class="node">FRED API</div><span class="arr">→</span>
-      <div class="node">Python ingestion</div><span class="arr">→</span>
-      <div class="node">BigQuery — raw</div><span class="arr">→</span>
-      <div class="node">dbt — staging &amp; marts</div><span class="arr">→</span>
-      <div class="node">Looker Studio</div>
-    </div>
-    <p class="note">Orchestrated end to end by an Apache Airflow DAG (Dockerized), running every weekday at 6am.</p>
-  </section>
-
-  <section class="p-section" id="orchestration">
-    <h2>Orchestration — watch the DAG run</h2>
-    <p>This is the Airflow DAG that runs every weekday morning, drawn like Airflow's own Graph view. Hit <b>Trigger DAG</b> and watch tasks move through <b>queued → running → success</b> in dependency order — ingestion fans out, staging runs in parallel, then the mart, data-quality tests and dashboard refresh.</p>
-    <div class="dag-wrap">
-      <div class="dag-top">
-        <span class="dname">market_elt</span>
-        <span class="dsched">schedule: 0 6 * * 1-5 · Docker · LocalExecutor</span>
-        <span class="dclock" id="dagClock">idle</span>
-        <button class="dag-run" id="dagRun">▶ Trigger DAG</button>
-      </div>
-      <div class="dag-scroll">
-        <svg class="dag" viewBox="0 0 1270 360" role="img" aria-label="Airflow DAG for the market_elt pipeline">
-          <g class="edges">
-            <path class="edge" id="e-ingest_stocks-stg_stocks" d="M215 96 C255 96,245 96,285 96"/>
-            <path class="edge" id="e-ingest_macro-stg_macro"  d="M215 264 C255 264,245 264,285 264"/>
-            <path class="edge" id="e-stg_stocks-mart_analysis" d="M475 96 C520 96,510 180,555 180"/>
-            <path class="edge" id="e-stg_macro-mart_analysis"  d="M475 264 C520 264,510 180,555 180"/>
-            <path class="edge" id="e-mart_analysis-dbt_tests"  d="M745 180 C780 180,770 180,805 180"/>
-            <path class="edge" id="e-dbt_tests-publish_looker" d="M995 180 C1030 180,1020 180,1045 180"/>
-          </g>
-
-          <g class="node queued" id="n-ingest_stocks">
-            <rect x="25" y="68" width="190" height="56" rx="11"/>
-            <circle class="led" cx="43" cy="96" r="5"/>
-            <text class="ntitle" x="57" y="92">ingest_stocks</text>
-            <text class="nsub" x="57" y="108">Yahoo Finance API</text>
-            <path class="check" d="M185 98 l5 6 l10 -13"/>
-          </g>
-          <g class="node queued" id="n-ingest_macro">
-            <rect x="25" y="236" width="190" height="56" rx="11"/>
-            <circle class="led" cx="43" cy="264" r="5"/>
-            <text class="ntitle" x="57" y="260">ingest_macro</text>
-            <text class="nsub" x="57" y="276">FRED API</text>
-            <path class="check" d="M185 266 l5 6 l10 -13"/>
-          </g>
-          <g class="node queued" id="n-stg_stocks">
-            <rect x="285" y="68" width="190" height="56" rx="11"/>
-            <circle class="led" cx="303" cy="96" r="5"/>
-            <text class="ntitle" x="317" y="92">stg_stocks</text>
-            <text class="nsub" x="317" y="108">dbt · view</text>
-            <path class="check" d="M445 98 l5 6 l10 -13"/>
-          </g>
-          <g class="node queued" id="n-stg_macro">
-            <rect x="285" y="236" width="190" height="56" rx="11"/>
-            <circle class="led" cx="303" cy="264" r="5"/>
-            <text class="ntitle" x="317" y="260">stg_macro</text>
-            <text class="nsub" x="317" y="276">dbt · view</text>
-            <path class="check" d="M445 266 l5 6 l10 -13"/>
-          </g>
-          <g class="node queued" id="n-mart_analysis">
-            <rect x="555" y="152" width="190" height="56" rx="11"/>
-            <circle class="led" cx="573" cy="180" r="5"/>
-            <text class="ntitle" x="587" y="176">mart_analysis</text>
-            <text class="nsub" x="587" y="192">dbt · table</text>
-            <path class="check" d="M715 182 l5 6 l10 -13"/>
-          </g>
-          <g class="node queued" id="n-dbt_tests">
-            <rect x="805" y="152" width="190" height="56" rx="11"/>
-            <circle class="led" cx="823" cy="180" r="5"/>
-            <text class="ntitle" x="837" y="176">dbt_tests</text>
-            <text class="nsub" x="837" y="192">7 data-quality tests</text>
-            <path class="check" d="M965 182 l5 6 l10 -13"/>
-          </g>
-          <g class="node queued" id="n-publish_looker">
-            <rect x="1045" y="152" width="190" height="56" rx="11"/>
-            <circle class="led" cx="1063" cy="180" r="5"/>
-            <text class="ntitle" x="1077" y="176">publish_looker</text>
-            <text class="nsub" x="1077" y="192">refresh dashboard</text>
-            <path class="check" d="M1205 182 l5 6 l10 -13"/>
-          </g>
+    <div class="tb-side-mark">
+      <a class="tb-mark" href="../index.html" aria-label="Home" style="width:20px;height:20px">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" aria-hidden="true">
+          <path d="M3 6h12M9 6v16M25 9h-8v13h8v-6h-4" />
         </svg>
-      </div>
-      <div class="dag-legend">
-        <span><i style="background:var(--accent2)"></i> queued</span>
-        <span><i style="background:var(--accent-amber)"></i> running</span>
-        <span><i style="background:var(--accent-success)"></i> success</span>
-        <span style="margin-left:auto">7 tasks · simulated run</span>
-      </div>
+      </a>
     </div>
-  </section>
+  </aside>
 
-  <section class="p-section">
-    <h2>At a glance</h2>
-    <div class="metrics">
-      <div class="metric"><div class="n">5</div><div class="t">Tickers — SPY, AAPL, MSFT, TSLA, NVDA</div></div>
-      <div class="metric"><div class="n">5</div><div class="t">FRED macro indicators</div></div>
-      <div class="metric"><div class="n">7</div><div class="t">Automated dbt data-quality tests</div></div>
-      <div class="metric"><div class="n">3</div><div class="t">Transformation layers (raw → staging → mart)</div></div>
-    </div>
-  </section>
+  <main class="tb-showcase">
 
-  <section class="p-section" id="explore">
-    <h2>Explore the data</h2>
-    <p>Pick a ticker to chart its daily closing price over the last year — the same securities the pipeline ingests. Toggle between absolute price and percentage return.</p>
-    <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:6px">
-      <div class="seg" id="tickerToggle">
-        <button class="seg-btn is-active" data-t="SPY">SPY</button>
-        <button class="seg-btn" data-t="AAPL">AAPL</button>
-        <button class="seg-btn" data-t="MSFT">MSFT</button>
-        <button class="seg-btn" data-t="TSLA">TSLA</button>
-        <button class="seg-btn" data-t="NVDA">NVDA</button>
+    <section class="tb-hero-showcase navy">
+      <div class="tb-card-top">
+        <span class="tb-micro">Financial Markets Data Platform</span>
+        <span class="tb-micro">Cloud ELT</span>
       </div>
-      <div class="seg" id="viewToggle">
-        <button class="seg-btn is-active" data-v="price">Price&nbsp;$</button>
-        <button class="seg-btn" data-v="return">Return&nbsp;%</button>
+
+      <div class="tb-hero-center">
+        <h2 class="tb-showcase-wordmark">Weekday Market ELT</h2>
+        <p class="tb-showcase-sub">
+          Yahoo Finance daily bars + FRED macro series unified inside Google BigQuery through dbt staging models, 7 schema tests, and Airflow orchestration.
+        </p>
       </div>
-    </div>
-    <div class="metrics" id="tickerStats"></div>
-    <div class="chart-wrap"><canvas id="tickerChart"></canvas></div>
-    <p class="note" id="asofNote">Daily close from Yahoo Finance. Snapshot — not live.</p>
-  </section>
 
-  <section class="p-section">
-    <h2>What it does</h2>
-    <h3>Ingestion</h3>
-    <p>Two Python scripts land raw data into BigQuery's raw layer unchanged. Raw data is append-only and immutable — if a downstream transformation breaks, data can be reprocessed without re-hitting the APIs.</p>
-    <ul>
-      <li><b>Yahoo Finance</b> — daily OHLCV prices for SPY, AAPL, MSFT, TSLA, NVDA (1 year of history).</li>
-      <li><b>FRED API</b> — Federal Funds Rate, CPI, Unemployment Rate, 10Y–2Y yield curve spread, and GDP (from 2020).</li>
-    </ul>
+      <div class="tb-card-bottom">
+        <span class="tb-micro">01</span>
+        <span class="tb-micro">BigQuery · dbt · Apache Airflow</span>
+      </div>
+    </section>
 
-    <h3>Transformation (dbt)</h3>
-    <ul>
-      <li><b>Staging</b> — <code>stg_stock_prices</code>, <code>stg_macro_indicators</code> materialize as views: clean column names, cast types, remove nulls.</li>
-      <li><b>Marts</b> — <code>mart_stock_macro_analysis</code> materializes as a table: daily returns via a LAG window function, 30-day rolling average prices, and macro conditions joined to each trading day.</li>
-    </ul>
+    <section id="dag" class="stage-card dark-well">
+      <div class="stage-head">
+        <div>
+          <h2>Airflow DAG Execution</h2>
+          <p>Interactive simulation of the 7-task <code>market_elt</code> dependency graph running weekday mornings.</p>
+        </div>
+      </div>
+      <div class="dag-wrap">
+        <div class="dag-top">
+          <span>market_elt · 0 6 * * 1-5</span>
+          <span class="dclock" id="dagClock">idle</span>
+          <button class="dag-run" id="dagRun" type="button">Trigger DAG</button>
+        </div>
+        <div class="dag-scroll">
+          <svg class="dag" viewBox="0 0 1270 320" role="img" aria-label="Airflow DAG for market_elt">
+            <g class="edges">
+              <path class="edge" id="e-ingest_stocks-stg_stocks" d="M215 84 C255 84,245 84,285 84"/>
+              <path class="edge" id="e-ingest_macro-stg_macro"  d="M215 236 C255 236,245 236,285 236"/>
+              <path class="edge" id="e-stg_stocks-mart_analysis" d="M475 84 C520 84,510 160,555 160"/>
+              <path class="edge" id="e-stg_macro-mart_analysis"  d="M475 236 C520 236,510 160,555 160"/>
+              <path class="edge" id="e-mart_analysis-dbt_tests"  d="M745 160 C780 160,770 160,805 160"/>
+              <path class="edge" id="e-dbt_tests-publish_looker" d="M995 160 C1030 160,1020 160,1045 160"/>
+            </g>
+            <g class="node queued" id="n-ingest_stocks">
+              <rect x="25" y="56" width="190" height="56"/>
+              <circle class="led" cx="43" cy="84" r="3.5"/>
+              <text class="ntitle" x="56" y="80">ingest_stocks</text>
+              <text class="nsub" x="56" y="96">Yahoo Finance</text>
+              <path class="check" d="M187 85 l4 5 l9 -11"/>
+            </g>
+            <g class="node queued" id="n-ingest_macro">
+              <rect x="25" y="208" width="190" height="56"/>
+              <circle class="led" cx="43" cy="236" r="3.5"/>
+              <text class="ntitle" x="56" y="232">ingest_macro</text>
+              <text class="nsub" x="56" y="248">FRED API</text>
+              <path class="check" d="M187 237 l4 5 l9 -11"/>
+            </g>
+            <g class="node queued" id="n-stg_stocks">
+              <rect x="285" y="56" width="190" height="56"/>
+              <circle class="led" cx="303" cy="84" r="3.5"/>
+              <text class="ntitle" x="316" y="80">stg_stocks</text>
+              <text class="nsub" x="316" y="96">dbt view</text>
+              <path class="check" d="M447 85 l4 5 l9 -11"/>
+            </g>
+            <g class="node queued" id="n-stg_macro">
+              <rect x="285" y="208" width="190" height="56"/>
+              <circle class="led" cx="303" cy="236" r="3.5"/>
+              <text class="ntitle" x="316" y="232">stg_macro</text>
+              <text class="nsub" x="316" y="248">dbt view</text>
+              <path class="check" d="M447 237 l4 5 l9 -11"/>
+            </g>
+            <g class="node queued" id="n-mart_analysis">
+              <rect x="555" y="132" width="190" height="56"/>
+              <circle class="led" cx="573" cy="160" r="3.5"/>
+              <text class="ntitle" x="586" y="156">mart_analysis</text>
+              <text class="nsub" x="586" y="172">dbt table</text>
+              <path class="check" d="M717 161 l4 5 l9 -11"/>
+            </g>
+            <g class="node queued" id="n-dbt_tests">
+              <rect x="805" y="132" width="190" height="56"/>
+              <circle class="led" cx="823" cy="160" r="3.5"/>
+              <text class="ntitle" x="836" y="156">dbt_tests</text>
+              <text class="nsub" x="836" y="172">7 quality checks</text>
+              <path class="check" d="M967 161 l4 5 l9 -11"/>
+            </g>
+            <g class="node queued" id="n-publish_looker">
+              <rect x="1045" y="132" width="190" height="56"/>
+              <circle class="led" cx="1063" cy="160" r="3.5"/>
+              <text class="ntitle" x="1076" y="156">publish_looker</text>
+              <text class="nsub" x="1076" y="172">refresh mart</text>
+              <path class="check" d="M1207 161 l4 5 l9 -11"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
 
-    <h3>Data quality &amp; orchestration</h3>
-    <ul>
-      <li>7 dbt tests run after every transformation — not-null checks on key columns and accepted-values checks on ticker symbols.</li>
-      <li>An Airflow DAG runs the full ingest → transform → test flow on a weekday cron, fully containerized with Docker.</li>
-    </ul>
-  </section>
+    <section id="explore" class="stage-card dark-well">
+      <div class="stage-head">
+        <div>
+          <h2>Ingested Equity Series</h2>
+          <p>Toggle daily closing price ($) and normalized 1-year return (%) across the five tracked BigQuery tickers.</p>
+        </div>
+      </div>
+      <div class="seg-bar">
+        <div class="seg" id="tickerToggle">
+          <button class="seg-btn is-active" type="button" data-t="SPY">SPY</button>
+          <button class="seg-btn" type="button" data-t="AAPL">AAPL</button>
+          <button class="seg-btn" type="button" data-t="MSFT">MSFT</button>
+          <button class="seg-btn" type="button" data-t="TSLA">TSLA</button>
+          <button class="seg-btn" type="button" data-t="NVDA">NVDA</button>
+        </div>
+        <div class="seg" id="viewToggle">
+          <button class="seg-btn is-active" type="button" data-v="price">Price ($)</button>
+          <button class="seg-btn" type="button" data-v="return">Return (%)</button>
+        </div>
+      </div>
+      <div class="stat-row" id="tickerStats"></div>
+      <div class="chart-wrap"><canvas id="tickerChart"></canvas></div>
+      <p class="caption" id="asofNote">Daily close from Yahoo Finance.</p>
+    </section>
 
-  <section class="p-section">
-    <h2>Output — live dashboard</h2>
-    <p>The mart layer feeds an interactive Looker Studio dashboard with ticker filtering, returns, rolling averages and macro overlays.</p>
-    <div class="p-actions">
-      <a class="btn" id="dashLink" href="https://datastudio.google.com/s/h6DyKaUf8oY" target="_blank" rel="noopener">Open live Looker Studio dashboard ↗</a>
-      <a class="btn ghost" href="https://github.com/thushartg/Financial-Markets-Data-Platform" target="_blank" rel="noopener">View code on GitHub ↗</a>
-    </div>
-  </section>
+  </main>
 
-  <nav class="p-nav">
-    <a href="../index.html#projects"><span>Back to</span>All projects</a>
-    <a href="hadoop-claims-pipeline.html"><span>Next project</span>Hadoop Claims Pipeline →</a>
-  </nav>
 </div>
 
-<footer>© <span id="yr"></span> Thushar Thorenur Govindaraju · Buffalo, NY</footer>
-<div class="lb" id="lb"><img alt="" /></div>
 <script src="../assets/js/site.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="../assets/projects/financial/ticker-data.js"></script>
@@ -213,20 +213,12 @@
 (function(){
   var canvas=document.getElementById('tickerChart');
   if(!canvas||!window.Chart||!window.TICKERS) return;
-  function cssVar(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
-  var INK, MUT, LINE, CREAM, INK_RGB;
-  function readColors(){
-    INK=cssVar('--ink'); MUT=cssVar('--muted'); LINE=cssVar('--line');
-    CREAM=cssVar('--cream'); INK_RGB=cssVar('--ink-rgb');
-  }
-  readColors();
+  var INK='#e7e7d6', MUT='#8d8d88', LINE='rgba(231,231,214,0.12)', BG='#191918', LIME='#e5ee4a';
   var state={t:'SPY', v:'price'}, chart;
 
   var asof=window.TICKERS.meta.asof;
   var note=document.getElementById('asofNote');
-  if(note) note.textContent='Daily close from Yahoo Finance · snapshot as of '+asof+' (not live).';
-
-  function fmt(n){return n>=1e9?(n/1e9).toFixed(1)+'B':n>=1e6?(n/1e6).toFixed(1)+'M':n.toLocaleString()}
+  if(note) note.textContent='Daily close from Yahoo Finance · snapshot as of '+asof+'.';
 
   function render(){
     var rows=window.TICKERS.data[state.t];
@@ -240,30 +232,25 @@
     var up=chg>=0;
 
     document.getElementById('tickerStats').innerHTML=
-      '<div class="metric"><div class="n">$'+last.toFixed(2)+'</div><div class="t">Last close ('+state.t+')</div></div>'+
-      '<div class="metric"><div class="n">'+(up?'+':'')+chg.toFixed(1)+'%</div><div class="t">1-year change</div></div>'+
-      '<div class="metric"><div class="n">$'+hi.toFixed(0)+'</div><div class="t">52-week high</div></div>'+
-      '<div class="metric"><div class="n">$'+lo.toFixed(0)+'</div><div class="t">52-week low</div></div>';
+      '<div class="stat-item"><div class="n">$'+last.toFixed(2)+'</div><div class="t">Last close ('+state.t+')</div></div>'+
+      '<div class="stat-item"><div class="n">'+(up?'+':'')+chg.toFixed(1)+'%</div><div class="t">1-year change</div></div>'+
+      '<div class="stat-item"><div class="n">$'+hi.toFixed(0)+'</div><div class="t">52-week high</div></div>'+
+      '<div class="stat-item"><div class="n">$'+lo.toFixed(0)+'</div><div class="t">52-week low</div></div>';
 
-    var unit=state.v==='price'?'$':'%';
     var cfg={
       type:'line',
       data:{labels:labels,datasets:[{
-        label:state.t, data:series, borderColor:INK, borderWidth:2, pointRadius:0,
-        tension:.2, fill:true,
-        backgroundColor:function(c){
-          var a=c.chart.ctx.createLinearGradient(0,0,0,c.chart.height||400);
-          a.addColorStop(0,'rgba('+INK_RGB+',0.14)');a.addColorStop(1,'rgba('+INK_RGB+',0)');return a;
-        }
+        label:state.t, data:series, borderColor:LIME, borderWidth:2, pointRadius:0,
+        tension:.18, fill:false
       }]},
       options:{
         responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
-        plugins:{legend:{display:false},tooltip:{backgroundColor:INK,titleColor:CREAM,bodyColor:CREAM,padding:12,callbacks:{
+        plugins:{legend:{display:false},tooltip:{backgroundColor:INK,titleColor:BG,bodyColor:BG,padding:10,displayColors:false,callbacks:{
           label:function(it){return (state.v==='price'?'$':'')+it.parsed.y+(state.v==='return'?'%':'')}
         }}},
         scales:{
-          x:{ticks:{color:MUT,maxTicksLimit:8,autoSkip:true},grid:{display:false}},
-          y:{ticks:{color:MUT,callback:function(v){return state.v==='price'?'$'+v:v+'%'}},grid:{color:LINE}}
+          x:{ticks:{color:MUT,maxTicksLimit:7,autoSkip:true,font:{family:'JetBrains Mono, monospace',size:10.5}},grid:{display:false},border:{color:LINE}},
+          y:{ticks:{color:MUT,font:{family:'JetBrains Mono, monospace',size:10.5},callback:function(v){return state.v==='price'?'$'+v:v+'%'}},grid:{color:LINE},border:{display:false}}
         }
       }
     };
@@ -282,21 +269,14 @@
   }
   wire('tickerToggle','t'); wire('viewToggle','v');
   render();
-  if(window.matchMedia){
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){
-      readColors(); render();
-    });
-  }
 })();
 </script>
-
-<!-- Animated Airflow DAG: tasks execute in dependency order -->
 <script>
 (function(){
   var svg=document.querySelector('svg.dag'); if(!svg) return;
   var runBtn=document.getElementById('dagRun');
   var clock=document.getElementById('dagClock');
-  var SPEED=820; // ms of real time per simulated second
+  var SPEED=820;
 
   var NODES=[
     {id:'ingest_stocks', dur:1.3, deps:[]},
@@ -313,7 +293,6 @@
     ['mart_analysis','dbt_tests'],['dbt_tests','publish_looker']
   ];
   var by={}; NODES.forEach(function(n){by[n.id]=n;});
-  // topological schedule
   function start(n){ return n.deps.length? Math.max.apply(null,n.deps.map(function(d){return end(by[d]);})) : 0; }
   function end(n){ return start(n)+n.dur; }
   NODES.forEach(function(n){ n.start=start(n); n.end=end(n); });
@@ -347,25 +326,24 @@
     var sim=(now-t0)/SPEED;
     if(sim>=TOTAL){
       draw(TOTAL);
-      clock.textContent='✓ success · 7 tasks · '+TOTAL.toFixed(1)+'s';
-      runBtn.disabled=false; runBtn.textContent='↻ Re-run';
+      clock.textContent='done · '+TOTAL.toFixed(1)+'s';
+      runBtn.disabled=false; runBtn.textContent='Re-run';
       return;
     }
     draw(sim);
     var done=NODES.filter(function(n){return sim>=n.end;}).length;
-    clock.textContent='running · '+sim.toFixed(1)+'s · '+done+'/7 tasks';
+    clock.textContent=sim.toFixed(1)+'s · '+done+'/7';
     raf=requestAnimationFrame(frame);
   }
   function run(){
     cancelAnimationFrame(raf);
     reset();
-    runBtn.disabled=true; runBtn.textContent='running…';
+    runBtn.disabled=true; runBtn.textContent='Running…';
     t0=performance.now();
     raf=requestAnimationFrame(frame);
   }
   runBtn.addEventListener('click',run);
 
-  // auto-run once when scrolled into view
   var seen=false;
   if('IntersectionObserver' in window){
     var io=new IntersectionObserver(function(en){

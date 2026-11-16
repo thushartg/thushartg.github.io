@@ -3,69 +3,144 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>IoT Air Quality Index Monitor — Thushar T. Govindaraju</title>
-<meta name="description" content="A real-time IoT pipeline streaming sensor AQI readings to ThingSpeak Cloud with a Swift/Xcode mobile dashboard." />
+<title>Air Quality Telemetry — Thushar Govindaraju</title>
+<meta name="description" content="Hardware-to-mobile IoT telemetry pipeline streaming particulate and gas AQI readings to ThingSpeak Cloud and a native Swift iOS app." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../assets/css/site.css" />
 </head>
 <body>
 
-<header id="top">
-  <div class="wrap nav">
-    <a href="../index.html" class="logo">Thushar<sup>®</sup></a>
-    <nav class="nav-links" id="menu">
-      <a href="../index.html#about">About</a>
-      <a href="../index.html#projects">Projects</a>
-      <a href="../index.html#skills">Skills</a>
-      <a href="../index.html#experience">Experience</a>
-      <a href="../index.html#contact" class="nav-cta">Get in touch</a>
-    </nav>
-    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
-  </div>
-</header>
+<div class="tb-case-page">
 
-<div class="wrap p-hero">
-  <a href="../index.html#projects" class="back">← All projects</a>
-  <div class="p-kicker">07 · IoT · Mobile</div>
-  <h1 class="p-title">IoT Air Quality<br>Index Monitor</h1>
-  <p class="p-sub">An IoT-based AQI monitoring system that collects real-time readings from hardware sensors, streams them to the cloud, and serves live metrics through a mobile dashboard. Built as my undergraduate capstone — a complete demonstration of pipeline design from physical sensors to cloud to app.</p>
-  <div class="p-meta">
-    <span class="tag">Swift</span><span class="tag">Xcode</span><span class="tag">ThingSpeak IoT Cloud</span><span class="tag">Hardware Sensors</span>
-  </div>
-  <div class="p-actions">
-    <a class="btn" href="https://github.com/thushartg" target="_blank" rel="noopener">View on GitHub ↗</a>
-    <a class="btn ghost" href="../index.html#contact">Get in touch</a>
-  </div>
-</div>
-
-<div class="wrap">
-  <section class="p-section">
-    <h2>End-to-end flow</h2>
-    <div class="flow">
-      <div class="node">Hardware AQI sensors</div><span class="arr">→</span>
-      <div class="node">Real-time ingestion</div><span class="arr">→</span>
-      <div class="node">ThingSpeak IoT Cloud</div><span class="arr">→</span>
-      <div class="node">Cloud analytics</div><span class="arr">→</span>
-      <div class="node">Mobile dashboard (Xcode)</div>
+  <aside class="tb-sidebar" aria-label="Case study overview">
+    <div class="tb-side-top">
+      <a class="tb-pill" href="../index.html#work">Work</a>
+      <a class="tb-pill" href="../index.html#contact">Contact</a>
     </div>
-    <ul>
-      <li>Built a real-time ingestion pipeline collecting AQI readings from hardware sensors and streaming to ThingSpeak IoT Cloud.</li>
-      <li>Integrated multiple sensor streams into a unified cloud analytics layer with normalization and threshold-based alerting.</li>
-      <li>A Swift/Xcode mobile app served as the presentation layer for live metric visualization.</li>
-      <li>Demonstrated the full pipeline — ingestion, storage, and serving — covering every layer end to end.</li>
-    </ul>
-  </section>
 
-  <nav class="p-nav">
-    <a href="taskq.html"><span>Previous project</span>← TaskQ</a>
-    <a href="tastenet.html"><span>Next project</span>TasteNet →</a>
-  </nav>
+    <h1 class="tb-side-heading">AQI Telemetry</h1>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">About</h2>
+      <p class="tb-side-copy">
+        Hardware-to-mobile telemetry pipeline streaming particulate and gas sensor readings to ThingSpeak Cloud and surfacing live AQI trends and threshold alerts in a native Swift iOS client.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Calibration</h2>
+      <p class="tb-side-copy">
+        Raw sensor voltages drift with ambient temperature and humidity unless calibrated before cloud ingestion. Microcontroller ADC normalization stabilized channels prior to streaming.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Mobile Client</h2>
+      <p class="tb-side-copy">
+        A native Swift iOS dashboard polls ThingSpeak time-series channels and triggers local threshold alerts when particulate concentrations cross safe indoor bands.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Specifications</h2>
+      <dl class="tb-side-dl">
+        <div>
+          <dt>Stack</dt>
+          <dd>Swift, Xcode, ThingSpeak Cloud, Embedded Sensors</dd>
+        </div>
+        <div>
+          <dt>Context</dt>
+          <dd>B.E. ECE Capstone · Global Academy of Technology</dd>
+        </div>
+      </dl>
+    </div>
+
+    <nav class="tb-side-bottom" aria-label="Project navigation">
+      <a class="tb-pill" href="emoji-gan.html">← Back</a>
+      <a class="tb-pill" href="../index.html#work">All Work +</a>
+    </nav>
+
+    <div class="tb-side-mark">
+      <a class="tb-mark" href="../index.html" aria-label="Home" style="width:20px;height:20px">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" aria-hidden="true">
+          <path d="M3 6h12M9 6v16M25 9h-8v13h8v-6h-4" />
+        </svg>
+      </a>
+    </div>
+  </aside>
+
+  <main class="tb-showcase">
+
+    <section class="tb-hero-showcase stone">
+      <div class="tb-card-top">
+        <span class="tb-micro">Air Quality Telemetry</span>
+        <span class="tb-micro">Embedded IoT &amp; Swift iOS</span>
+      </div>
+
+      <div class="tb-hero-center">
+        <h2 class="tb-showcase-wordmark">Sensor → iOS Stream</h2>
+        <p class="tb-showcase-sub">
+          Continuous particulate and gas sampling into cloud time-series channels polled by a native Swift mobile dashboard.
+        </p>
+        <div class="tb-flow-pills">
+          <span class="tb-flow-node">Particulate Sensors</span>
+          <span class="tb-flow-arrow">→</span>
+          <span class="tb-flow-node">ADC Calibration</span>
+          <span class="tb-flow-arrow">→</span>
+          <span class="tb-flow-node">ThingSpeak Cloud</span>
+          <span class="tb-flow-arrow">→</span>
+          <span class="tb-flow-node">Swift iOS Alerts</span>
+        </div>
+      </div>
+
+      <div class="tb-card-bottom">
+        <span class="tb-micro">01</span>
+        <span class="tb-micro">Swift · ThingSpeak · Embedded ADC</span>
+      </div>
+    </section>
+
+    <div class="tb-showcase-grid">
+      <div class="tb-nest-outer slate">
+        <div class="tb-nest-inner">
+          <div class="tb-card-top">
+            <span class="tb-micro">Edge Layer</span>
+            <span class="tb-micro">ADC Norm</span>
+          </div>
+          <div class="tb-nest-body">
+            <h3>Baseline Voltage Compensation</h3>
+            <p>Microcontroller firmware samples baseline clean-air resistance curves and normalizes analog-to-digital readings before transmitting payloads upstream.</p>
+          </div>
+          <div class="tb-card-bottom">
+            <span class="tb-micro">02</span>
+            <span class="tb-micro">AQI Telemetry</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tb-nest-outer paper">
+        <div class="tb-nest-inner">
+          <div class="tb-card-top">
+            <span class="tb-micro">iOS App</span>
+            <span class="tb-micro">Live AQI</span>
+          </div>
+          <div class="tb-nest-body">
+            <h3>Threshold Alerting &amp; History</h3>
+            <p>Built natively in Xcode with Swift to visualize rolling indoor/outdoor AQI series and surface immediate push warnings on hazardous spikes.</p>
+          </div>
+          <div class="tb-card-bottom">
+            <span class="tb-micro">03</span>
+            <span class="tb-micro">AQI Telemetry</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
 </div>
 
-<footer>© <span id="yr"></span> Thushar Thorenur Govindaraju · Buffalo, NY</footer>
-<div class="lb" id="lb"><img alt="" /></div>
 <script src="../assets/js/site.js"></script>
 </body>
 </html>

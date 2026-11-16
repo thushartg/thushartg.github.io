@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Flashback — Thushar Govindaraju</title>
+<meta name="description" content="Flashback: native macOS 14+ menu bar utility with hardware H.264 RAM screen history, Live Text, and MP4 drag export." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../assets/css/site.css" />
+</head>
+<body>
+
+<div class="tb-case-page">
+
+  <!-- Sticky Left Case-Study Sidebar -->
+  <aside class="tb-sidebar" aria-label="App overview">
+    <div class="tb-side-top">
+      <a class="tb-pill" href="../index.html#apps">Apps</a>
+      <a class="tb-pill" href="../index.html#contact">Contact</a>
+    </div>
+
+    <h1 class="tb-side-heading">Flashback</h1>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">About</h2>
+      <p class="tb-side-copy">
+        Native macOS 14+ menu bar utility that keeps the last 1–30 seconds of your screen as hardware-encoded H.264 video in RAM so you can scrub back, copy vanished text via Live Text, or drag out an MP4 clip.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Challenge</h2>
+      <p class="tb-side-copy">
+        Full-day screen recorders burn SSD write cycles and index sensitive windows onto disk when all you needed was an error toast or SQL result that disappeared five seconds ago.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Memory Hygiene</h2>
+      <p class="tb-side-copy">
+        Zero third-party dependencies and zero continuous disk writes. Compressed H.264 segments stay strictly in volatile RAM and purge automatically on pause, manual clear, or display sleep.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Specifications</h2>
+      <dl class="tb-side-dl">
+        <div>
+          <dt>Release</dt>
+          <dd>v0.1.0 · Apple Silicon (arm64)</dd>
+        </div>
+        <div>
+          <dt>Frameworks</dt>
+          <dd>ScreenCaptureKit, VideoToolbox, Vision, AppKit</dd>
+        </div>
+        <div>
+          <dt>Checksums</dt>
+          <dd><a href="../downloads/SHA256SUMS.txt">SHA256SUMS.txt ↗</a></dd>
+        </div>
+      </dl>
+    </div>
+
+    <nav class="tb-side-bottom" aria-label="App navigation">
+      <a class="tb-pill" href="../index.html#apps">← Back</a>
+      <a class="tb-pill" href="maccontrol.html">Next +</a>
+    </nav>
+
+    <div class="tb-side-mark">
+      <a class="tb-mark" href="../index.html" aria-label="Home" style="width:20px;height:20px">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" aria-hidden="true">
+          <path d="M3 6h12M9 6v16M25 9h-8v13h8v-6h-4" />
+        </svg>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Right Scrollable Showcase Column -->
+  <main class="tb-showcase">
+
+    <!-- Showcase 01: Hero Banner & Direct Download -->
+    <section class="tb-hero-showcase navy">
+      <div class="tb-card-top">
+        <span class="tb-micro">Flashback · v0.1.0</span>
+        <span class="tb-micro">macOS 14.0+ Native Utility</span>
+      </div>
+
+      <div class="tb-hero-center">
+        <h2 class="tb-showcase-wordmark">Flashback</h2>
+        <p class="tb-showcase-sub">
+          Summon the last 30 seconds of your display with ⌘⇧Z. Scrub frames, highlight vanished text via macOS Vision, or drag an MP4 clip straight into Finder.
+        </p>
+        <div class="dl-actions" style="justify-content:center;margin-top:6px">
+          <a class="tb-pill-cream" href="../downloads/Flashback-0.1.0-macOS.zip" download>Download Flashback.app · 713 KB</a>
+          <a class="tb-pill" href="../downloads/SHA256SUMS.txt">SHA-256 Checksum ↗</a>
+        </div>
+        <div class="dl-hash">
+          SHA-256: f53f6b00f4a34f90e5ac988c59edf441740105ed2b581a23fad04b59fda9e080
+        </div>
+      </div>
+
+      <div class="tb-card-bottom">
+        <span class="tb-micro">01</span>
+        <span class="tb-micro">ScreenCaptureKit + VideoToolbox H.264</span>
+      </div>
+    </section>
+
+    <!-- Showcase 02: Interactive Scrubber & First-Launch Terminal Command -->
+    <section class="stage-card dark-well">
+      <div class="stage-head">
+        <div>
+          <h2>Interactive Buffer Preview &amp; First Launch</h2>
+          <p>Ad-hoc signed outside the Mac App Store — clear the quarantine attribute once after moving into <code>/Applications</code>.</p>
+        </div>
+      </div>
+
+      <div class="fb-stage" style="margin-top:0">
+        <div class="fb-top">
+          <span>⌘⇧Z · Hardware H.264 RAM Ring Buffer</span>
+          <span class="fb-badge" id="fbTime">-8.5s</span>
+        </div>
+        <div class="fb-screen" id="fbOcrLine">
+          SELECT diagnosis_category, ROUND(SUM(paid_amount)/1e6, 2) FROM claims<br>
+          <span class="fb-ocr-hit">150,000 rows · 14.2 ms · Vision Live Text</span>
+        </div>
+        <div class="fb-scrubber">
+          <span>-30s</span>
+          <input type="range" id="fbScrub" min="-30" max="0" step="0.5" value="-8.5" aria-label="Scrub Flashback 30-second screen buffer" />
+          <span>LIVE</span>
+        </div>
+      </div>
+
+      <div class="pipeline-line" style="margin-top:14px">
+        unzip Flashback-0.1.0-macOS.zip<span class="sep">&amp;&amp;</span>mv Flashback.app /Applications/<span class="sep">&amp;&amp;</span>xattr -cr /Applications/Flashback.app
+      </div>
+      <p class="caption">
+        Open <code>/Applications/Flashback.app</code> and grant <strong>Screen Recording</strong> in System Settings → Privacy &amp; Security when prompted. Hover near the top-center bezel for 180 ms or press <strong>⌘⇧Z</strong> to summon the scrubber.
+      </p>
+    </section>
+
+    <!-- Showcase 03-04: Nested Capability Cards -->
+    <div class="tb-showcase-grid">
+      <div class="tb-nest-outer sky">
+        <div class="tb-nest-inner">
+          <div class="tb-card-top">
+            <span class="tb-micro">Vision Framework</span>
+            <span class="tb-micro">25%–600%</span>
+          </div>
+          <div class="tb-nest-body">
+            <h3>Live Text &amp; 600% Zoom</h3>
+            <p>Pinch or press <code>−</code> / <code>＋</code> to inspect buffered frames up to 600% magnification and select text directly out of vanished logs, stack traces, or slides.</p>
+          </div>
+          <div class="tb-card-bottom">
+            <span class="tb-micro">02</span>
+            <span class="tb-micro">Flashback</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tb-nest-outer">
+        <div class="tb-nest-inner">
+          <div class="tb-card-top">
+            <span class="tb-micro">Export &amp; Hygiene</span>
+            <span class="tb-micro">MP4 / PNG</span>
+          </div>
+          <div class="tb-nest-body">
+            <h3>Instant Drag MP4 &amp; Sleep Purge</h3>
+            <p>Drag the MP4 pill straight into Slack, Finder, or Linear, or copy a full-resolution PNG frame. Capture stops and clears automatically on display sleep or session lock.</p>
+          </div>
+          <div class="tb-card-bottom">
+            <span class="tb-micro">03</span>
+            <span class="tb-micro">Flashback</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+</div>
+
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

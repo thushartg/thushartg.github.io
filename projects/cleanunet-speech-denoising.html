@@ -3,74 +3,142 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>CleanUNet for Speech Denoising — Thushar T. Govindaraju</title>
-<meta name="description" content="A CleanUNet denoising autoencoder for real-time speech enhancement on the Microsoft DNS Challenge dataset." />
+<title>CleanUNet Speech Denoising — Thushar Govindaraju</title>
+<meta name="description" content="CleanUNet 1D U-Net denoising autoencoder in PyTorch trained on the Microsoft DNS Challenge speech dataset." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../assets/css/site.css" />
 </head>
 <body>
 
-<header id="top">
-  <div class="wrap nav">
-    <a href="../index.html" class="logo">Thushar<sup>®</sup></a>
-    <nav class="nav-links" id="menu">
-      <a href="../index.html#about">About</a>
-      <a href="../index.html#projects">Projects</a>
-      <a href="../index.html#skills">Skills</a>
-      <a href="../index.html#experience">Experience</a>
-      <a href="../index.html#contact" class="nav-cta">Get in touch</a>
-    </nav>
-    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
-  </div>
-</header>
+<div class="tb-case-page">
 
-<div class="wrap p-hero">
-  <a href="../index.html#projects" class="back">← All projects</a>
-  <div class="p-kicker">04 · Deep Learning · Audio</div>
-  <h1 class="p-title">CleanUNet<br>Speech Denoising</h1>
-  <p class="p-sub">A CleanUNet-based denoising autoencoder for real-time speech enhancement, trained on the Microsoft DNS Challenge dataset. It operates directly on raw waveforms to preserve phase information — rather than on spectrograms — using gated 1D convolutions and transposed layers.</p>
-  <div class="p-meta">
-    <span class="tag">PyTorch</span><span class="tag">Deep Learning</span><span class="tag">Signal Processing</span><span class="tag">Autoencoder</span>
-  </div>
-  <div class="p-actions">
-    <a class="btn" href="https://github.com/thushartg" target="_blank" rel="noopener">View on GitHub ↗</a>
-    <a class="btn ghost" href="../index.html#contact">Get in touch</a>
-  </div>
-</div>
-
-<div class="wrap">
-  <section class="p-section">
-    <h2>Approach</h2>
-    <div class="flow">
-      <div class="node">Noisy raw waveform</div><span class="arr">→</span>
-      <div class="node">Gated 1D conv encoder</div><span class="arr">→</span>
-      <div class="node">Bottleneck</div><span class="arr">→</span>
-      <div class="node">Transposed-conv decoder</div><span class="arr">→</span>
-      <div class="node">Clean waveform</div>
+  <aside class="tb-sidebar" aria-label="Case study overview">
+    <div class="tb-side-top">
+      <a class="tb-pill" href="../index.html#work">Work</a>
+      <a class="tb-pill" href="../index.html#contact">Contact</a>
     </div>
-    <ul>
-      <li>Works on <b>raw time-domain waveforms</b>, preserving phase information that spectrogram methods discard.</li>
-      <li>Encoder–decoder (U-Net style) with <b>gated 1D convolutions</b> and transposed layers for upsampling.</li>
-      <li>Trained and evaluated on the <b>Microsoft DNS Challenge</b> dataset.</li>
-      <li>Achieved significant, audible noise suppression on held-out samples.</li>
-    </ul>
-  </section>
 
-  <section class="p-section">
-    <h2>Why it matters</h2>
-    <p>Real-time speech enhancement is a core building block for calls, transcription and voice interfaces. Operating on raw waveforms avoids the phase-reconstruction artifacts of spectrogram-based denoisers, producing more natural output — a strong demonstration of applied deep learning on a hard signal-processing problem.</p>
-  </section>
+    <h1 class="tb-side-heading">CleanUNet</h1>
 
-  <nav class="p-nav">
-    <a href="usda-crop-price-risk.html"><span>Previous project</span>← Crop Price Risk Model</a>
-    <a href="emoji-gan.html"><span>Next project</span>Emoji GAN →</a>
-  </nav>
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">About</h2>
+      <p class="tb-side-copy">
+        Time-domain 1D U-Net denoising autoencoder built in PyTorch and trained on the Microsoft Deep Noise Suppression (DNS) Challenge corpus for speech enhancement.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Why Time-Domain</h2>
+      <p class="tb-side-copy">
+        Spectrogram-masking models discard phase or reuse noisy input phase during inverse STFT reconstruction, producing metallic artifacts under loud non-stationary noise.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Loss Design</h2>
+      <p class="tb-side-copy">
+        Combining waveform L1 error with multi-resolution STFT spectral convergence preserves crisp consonant transients without phase estimation drift.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Specifications</h2>
+      <dl class="tb-side-dl">
+        <div>
+          <dt>Stack</dt>
+          <dd>PyTorch, Torchaudio, NumPy</dd>
+        </div>
+        <div>
+          <dt>Architecture</dt>
+          <dd>Gated 1D U-Net · L1 + multi-res STFT loss</dd>
+        </div>
+        <div>
+          <dt>Corpus</dt>
+          <dd>Microsoft DNS Challenge</dd>
+        </div>
+      </dl>
+    </div>
+
+    <nav class="tb-side-bottom" aria-label="Project navigation">
+      <a class="tb-pill" href="tastenet.html">← Back</a>
+      <a class="tb-pill" href="taskq.html">Next +</a>
+    </nav>
+
+    <div class="tb-side-mark">
+      <a class="tb-mark" href="../index.html" aria-label="Home" style="width:20px;height:20px">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" aria-hidden="true">
+          <path d="M3 6h12M9 6v16M25 9h-8v13h8v-6h-4" />
+        </svg>
+      </a>
+    </div>
+  </aside>
+
+  <main class="tb-showcase">
+
+    <section class="tb-hero-showcase obsidian">
+      <div class="tb-card-top">
+        <span class="tb-micro">CleanUNet Speech Denoising</span>
+        <span class="tb-micro">Deep Learning · Audio</span>
+      </div>
+
+      <div class="tb-hero-center">
+        <h2 class="tb-showcase-wordmark">Gated 1D U-Net</h2>
+        <p class="tb-showcase-sub">
+          Operating directly on raw 1D waveform tensors preserves phase coherence and vocal transients across non-stationary background noise.
+        </p>
+        <div class="pipeline-line">
+          noisy waveform x(t)<span class="sep">→</span>strided gated 1D conv encoder<span class="sep">→</span>bottleneck + skip connections<span class="sep">→</span>transposed 1D decoder<span class="sep">→</span>clean speech
+        </div>
+      </div>
+
+      <div class="tb-card-bottom">
+        <span class="tb-micro">01</span>
+        <span class="tb-micro">PyTorch · Microsoft DNS</span>
+      </div>
+    </section>
+
+    <div class="tb-showcase-grid">
+      <div class="tb-nest-outer slate">
+        <div class="tb-nest-inner">
+          <div class="tb-card-top">
+            <span class="tb-micro">Encoder</span>
+            <span class="tb-micro">tanh × σ</span>
+          </div>
+          <div class="tb-nest-body">
+            <h3>Gated 1D Conv Blocks</h3>
+            <p>Pairing tanh activations with sigmoid gates at each downsampling stride attenuates broadband noise bursts while passing voiced harmonics forward across skip connections.</p>
+          </div>
+          <div class="tb-card-bottom">
+            <span class="tb-micro">02</span>
+            <span class="tb-micro">CleanUNet</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tb-nest-outer paper">
+        <div class="tb-nest-inner">
+          <div class="tb-card-top">
+            <span class="tb-micro">Supervision</span>
+            <span class="tb-micro">L1 + STFT</span>
+          </div>
+          <div class="tb-nest-body">
+            <h3>Multi-Resolution Spectral Loss</h3>
+            <p>Evaluating FFT windows across multiple frame lengths prevents high-frequency muffling on unseen speakers while keeping waveform amplitude calibrated.</p>
+          </div>
+          <div class="tb-card-bottom">
+            <span class="tb-micro">03</span>
+            <span class="tb-micro">CleanUNet</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
 </div>
 
-<footer>© <span id="yr"></span> Thushar Thorenur Govindaraju · Buffalo, NY</footer>
-<div class="lb" id="lb"><img alt="" /></div>
 <script src="../assets/js/site.js"></script>
 </body>
 </html>

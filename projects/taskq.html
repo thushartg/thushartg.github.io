@@ -3,89 +3,146 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>TaskQ — Async Task Router — Thushar T. Govindaraju</title>
-<meta name="description" content="A minimal async task router built with FastAPI, Redis, PostgreSQL and OpenAI." />
+<title>TaskQ — Thushar Govindaraju</title>
+<meta name="description" content="Asynchronous prompt router built with FastAPI, Redis, PostgreSQL, SQLAlchemy, React, and Docker Compose." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../assets/css/site.css" />
 </head>
 <body>
 
-<header id="top">
-  <div class="wrap nav">
-    <a href="../index.html" class="logo">Thushar<sup>®</sup></a>
-    <nav class="nav-links" id="menu">
-      <a href="../index.html#about">About</a>
-      <a href="../index.html#projects">Projects</a>
-      <a href="../index.html#skills">Skills</a>
-      <a href="../index.html#experience">Experience</a>
-      <a href="../index.html#contact" class="nav-cta">Get in touch</a>
+<div class="tb-case-page">
+
+  <aside class="tb-sidebar" aria-label="Case study overview">
+    <div class="tb-side-top">
+      <a class="tb-pill" href="../index.html#work">Work</a>
+      <a class="tb-pill" href="../index.html#contact">Contact</a>
+    </div>
+
+    <h1 class="tb-side-heading">TaskQ</h1>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">About</h2>
+      <p class="tb-side-copy">
+        Containerized asynchronous prompt router built with FastAPI, Redis, PostgreSQL, and React that classifies incoming tasks and runs LLM completions off the HTTP loop.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Challenge</h2>
+      <p class="tb-side-copy">
+        Calling upstream inference APIs synchronously inside web handlers blocks worker threads whenever completion latency spikes. Separating admission from execution keeps API latency flat.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Persistence</h2>
+      <p class="tb-side-copy">
+        Prompts, intent labels, status transitions, and worker outputs are keyed to client UUIDs in PostgreSQL via SQLAlchemy so sessions survive reloads cleanly.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Stack &amp; Source</h2>
+      <dl class="tb-side-dl">
+        <div>
+          <dt>Stack</dt>
+          <dd>FastAPI, Redis, PostgreSQL, SQLAlchemy, React, Docker Compose</dd>
+        </div>
+        <div>
+          <dt>Repository</dt>
+          <dd><a href="https://github.com/thushartg/taskq" target="_blank" rel="noopener">github.com/thushartg/taskq ↗</a></dd>
+        </div>
+      </dl>
+    </div>
+
+    <nav class="tb-side-bottom" aria-label="Project navigation">
+      <a class="tb-pill" href="cleanunet-speech-denoising.html">← Back</a>
+      <a class="tb-pill" href="emoji-gan.html">Next +</a>
     </nav>
-    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
-  </div>
-</header>
 
-<div class="wrap p-hero">
-  <a href="../index.html#projects" class="back">← All projects</a>
-  <div class="p-kicker">06 · Backend · LLM</div>
-  <h1 class="p-title">TaskQ<br>Async Task Router</h1>
-  <p class="p-sub">A minimal async task router: users submit a text prompt, GPT detects the task type (summarize, rewrite, explain), and the work is routed to a Redis-backed background worker. A chat-style React UI keeps conversation memory via UUIDs, and the whole stack runs with Docker Compose.</p>
-  <div class="p-meta">
-    <span class="tag">FastAPI</span><span class="tag">Redis</span><span class="tag">PostgreSQL</span><span class="tag">SQLAlchemy</span><span class="tag">React + Tailwind</span><span class="tag">Docker</span><span class="tag">OpenAI</span>
-  </div>
-  <div class="p-actions">
-    <a class="btn" href="https://github.com/thushartg/taskq" target="_blank" rel="noopener">View code on GitHub ↗</a>
-    <a class="btn ghost" href="../index.html#contact">Get in touch</a>
-  </div>
+    <div class="tb-side-mark">
+      <a class="tb-mark" href="../index.html" aria-label="Home" style="width:20px;height:20px">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" aria-hidden="true">
+          <path d="M3 6h12M9 6v16M25 9h-8v13h8v-6h-4" />
+        </svg>
+      </a>
+    </div>
+  </aside>
+
+  <main class="tb-showcase">
+
+    <section class="tb-hero-showcase paper">
+      <div class="tb-card-top">
+        <span class="tb-micro">TaskQ Prompt Router</span>
+        <span class="tb-micro">Backend Systems</span>
+      </div>
+
+      <div class="tb-hero-center">
+        <h2 class="tb-showcase-wordmark">Async Queue Router</h2>
+        <p class="tb-showcase-sub">
+          FastAPI classifies intent, records pending state in PostgreSQL, enqueues onto Redis, and returns immediately while background workers process completions.
+        </p>
+        <div class="tb-flow-pills">
+          <span class="tb-flow-node">React UUID</span>
+          <span class="tb-flow-arrow">→</span>
+          <span class="tb-flow-node">FastAPI</span>
+          <span class="tb-flow-arrow">→</span>
+          <span class="tb-flow-node">Redis Queue</span>
+          <span class="tb-flow-arrow">→</span>
+          <span class="tb-flow-node">Worker</span>
+          <span class="tb-flow-arrow">→</span>
+          <span class="tb-flow-node">PostgreSQL</span>
+        </div>
+      </div>
+
+      <div class="tb-card-bottom">
+        <span class="tb-micro">01</span>
+        <span class="tb-micro">FastAPI · Redis · PostgreSQL · Docker</span>
+      </div>
+    </section>
+
+    <div class="tb-showcase-grid">
+      <div class="tb-nest-outer slate">
+        <div class="tb-nest-inner">
+          <div class="tb-card-top">
+            <span class="tb-micro">Admission</span>
+            <span class="tb-micro">Redis Broker</span>
+          </div>
+          <div class="tb-nest-body">
+            <h3>Non-Blocking HTTP Admission</h3>
+            <p>HTTP handlers acknowledge queued jobs in milliseconds while Redis worker containers scale independently inside Docker Compose without starving request threads.</p>
+          </div>
+          <div class="tb-card-bottom">
+            <span class="tb-micro">02</span>
+            <span class="tb-micro">TaskQ</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tb-nest-outer">
+        <div class="tb-nest-inner">
+          <div class="tb-card-top">
+            <span class="tb-micro">State Store</span>
+            <span class="tb-micro">SQLAlchemy</span>
+          </div>
+          <div class="tb-nest-body">
+            <h3>UUID Session State Machine</h3>
+            <p>Every task transitions cleanly across queued, running, completed, and failed states in PostgreSQL so clients reconnect without losing in-flight generations.</p>
+          </div>
+          <div class="tb-card-bottom">
+            <span class="tb-micro">03</span>
+            <span class="tb-micro">TaskQ</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
 </div>
 
-<div class="wrap">
-  <section class="p-section">
-    <h2>Architecture</h2>
-    <div class="flow">
-      <div class="node">React chat UI</div><span class="arr">→</span>
-      <div class="node">FastAPI</div><span class="arr">→</span>
-      <div class="node">Redis queue</div><span class="arr">→</span>
-      <div class="node">Background worker (GPT)</div><span class="arr">→</span>
-      <div class="node">PostgreSQL history</div>
-    </div>
-  </section>
-
-  <section class="p-section">
-    <h2>Features</h2>
-    <ul>
-      <li>Detects task type using GPT, then routes to the appropriate handler.</li>
-      <li>Asynchronous background processing via a Redis queue — the API stays responsive.</li>
-      <li>PostgreSQL stores task history and per-conversation memory keyed by UUID.</li>
-      <li>Chat-like React + Tailwind interface with scrollback and a fixed input bar.</li>
-      <li>Dockerized with Compose for one-command local development.</li>
-    </ul>
-  </section>
-
-  <section class="p-section">
-    <h2>Stack</h2>
-    <div class="table-wrap">
-      <table>
-        <tr><th>Layer</th><th>Tech</th></tr>
-        <tr><td>Frontend</td><td>React (Vite) + TailwindCSS</td></tr>
-        <tr><td>Backend</td><td>FastAPI + SQLAlchemy</td></tr>
-        <tr><td>Queue</td><td>Redis</td></tr>
-        <tr><td>Database</td><td>PostgreSQL</td></tr>
-        <tr><td>LLM</td><td>OpenAI GPT-3.5</td></tr>
-        <tr><td>Deployment</td><td>Docker Compose</td></tr>
-      </table>
-    </div>
-  </section>
-
-  <nav class="p-nav">
-    <a href="emoji-gan.html"><span>Previous project</span>← Emoji GAN</a>
-    <a href="iot-aqi.html"><span>Next project</span>IoT AQI Monitor →</a>
-  </nav>
-</div>
-
-<footer>© <span id="yr"></span> Thushar Thorenur Govindaraju · Buffalo, NY</footer>
-<div class="lb" id="lb"><img alt="" /></div>
 <script src="../assets/js/site.js"></script>
 </body>
 </html>

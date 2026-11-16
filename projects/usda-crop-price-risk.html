@@ -3,114 +3,147 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>US Crop Price &amp; Supply-Chain Risk Model — Thushar T. Govindaraju</title>
-<meta name="description" content="14 years of USDA + FRED data analyzed for crop price volatility, with a Prophet 6-month forecast and Tableau dashboard." />
+<title>US Crop Price &amp; Supply-Chain Risk — Thushar Govindaraju</title>
+<meta name="description" content="14-year USDA NASS and FRED commodity volatility study with 6-month Prophet price forecasts across corn, wheat, and soybeans." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../assets/css/site.css" />
 </head>
 <body>
 
-<header id="top">
-  <div class="wrap nav">
-    <a href="../index.html" class="logo">Thushar<sup>®</sup></a>
-    <nav class="nav-links" id="menu">
-      <a href="../index.html#about">About</a>
-      <a href="../index.html#projects">Projects</a>
-      <a href="../index.html#skills">Skills</a>
-      <a href="../index.html#experience">Experience</a>
-      <a href="../index.html#contact" class="nav-cta">Get in touch</a>
+<div class="tb-case-page">
+
+  <aside class="tb-sidebar" aria-label="Case study overview">
+    <div class="tb-side-top">
+      <a class="tb-pill" href="../index.html#work">Work</a>
+      <a class="tb-pill" href="../index.html#contact">Contact</a>
+    </div>
+
+    <h1 class="tb-side-heading">Crop Price &amp; Risk</h1>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">About</h2>
+      <p class="tb-side-copy">
+        Fourteen years of monthly USDA NASS farm-gate commodity prices joined with FRED consumer price indices across 10,000+ observations to measure volatility, state exposure, and 6-month Prophet horizons.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Co-Movement</h2>
+      <p class="tb-side-copy">
+        Joining state-level farm-gate prices with FRED commodity CPI series showed tight co-movement across wheat, corn, and soybeans (<i>r</i> = 0.90–0.96), with corn exhibiting the highest coefficient of variation at 28.5%.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Forecasting</h2>
+      <p class="tb-side-copy">
+        Seasonal Prophet fits with 90% uncertainty intervals projected a +17% 6-month recovery for soybeans from late-2024 lows while corn and wheat held near support.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Stack &amp; Source</h2>
+      <dl class="tb-side-dl">
+        <div>
+          <dt>Stack</dt>
+          <dd>Python, Pandas, SciPy, Prophet, Matplotlib, USDA NASS &amp; FRED</dd>
+        </div>
+        <div>
+          <dt>Coverage</dt>
+          <dd>2010–2024 · 10,000+ monthly records</dd>
+        </div>
+        <div>
+          <dt>Repository</dt>
+          <dd><a href="https://github.com/thushartg/usda-crop-price-risk-analysis" target="_blank" rel="noopener">usda-crop-price-risk-analysis ↗</a></dd>
+        </div>
+      </dl>
+    </div>
+
+    <nav class="tb-side-bottom" aria-label="Project navigation">
+      <a class="tb-pill" href="financial-markets-data-platform.html">← Back</a>
+      <a class="tb-pill" href="tastenet.html">Next +</a>
     </nav>
-    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
-  </div>
-</header>
 
-<div class="wrap p-hero">
-  <a href="../index.html#projects" class="back">← All projects</a>
-  <div class="p-kicker">03 · Data Analysis · Forecasting</div>
-  <h1 class="p-title">US Crop Price &amp;<br>Supply-Chain Risk</h1>
-  <p class="p-sub"><b>Business question:</b> which US crops are most vulnerable to price volatility and supply disruptions — and can we predict price movement 3–6 months out? A full end-to-end analysis pipeline over 14 years of USDA farm-gate prices and FRED commodity CPI.</p>
-  <div class="p-meta">
-    <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">Prophet</span><span class="tag">SQLite</span><span class="tag">Tableau</span>
-  </div>
-  <div class="p-actions">
-    <a class="btn" href="https://github.com/thushartg/usda-crop-price-risk-analysis" target="_blank" rel="noopener">View code on GitHub ↗</a>
-    <a class="btn ghost" href="#outputs">Jump to charts ↓</a>
-  </div>
+    <div class="tb-side-mark">
+      <a class="tb-mark" href="../index.html" aria-label="Home" style="width:20px;height:20px">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" aria-hidden="true">
+          <path d="M3 6h12M9 6v16M25 9h-8v13h8v-6h-4" />
+        </svg>
+      </a>
+    </div>
+  </aside>
+
+  <main class="tb-showcase">
+
+    <section class="tb-hero-showcase paper">
+      <div class="tb-card-top">
+        <span class="tb-micro">USDA NASS &amp; FRED</span>
+        <span class="tb-micro">Time-Series &amp; Forecasting</span>
+      </div>
+
+      <div class="tb-hero-center">
+        <h2 class="tb-showcase-wordmark">2010–2024 Commodity Risk</h2>
+        <p class="tb-showcase-sub">
+          State-level price exposure, CPI pass-through correlation, and 6-month Prophet uncertainty bands across soybeans, corn, and wheat.
+        </p>
+      </div>
+
+      <div class="tb-card-bottom">
+        <span class="tb-micro">01</span>
+        <span class="tb-micro">10,000+ Monthly Observations</span>
+      </div>
+    </section>
+
+    <section id="forecast" class="stage-card dark-well">
+      <div class="stage-head">
+        <div>
+          <h2>Interactive 6-Month Prophet Forecast</h2>
+          <p>Historical national monthly prices (2010–2024), 90% confidence intervals, and 6-month forward horizon.</p>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-item"><div class="n">28.5%</div><div class="t">Corn volatility (CV)</div></div>
+        <div class="stat-item"><div class="n">+17%</div><div class="t">6-month soybean horizon</div></div>
+        <div class="stat-item"><div class="n">0.90–0.96</div><div class="t">Farm price vs. CPI (r)</div></div>
+        <div class="stat-item"><div class="n">10,000+</div><div class="t">Observations modeled</div></div>
+      </div>
+      <div class="seg-bar">
+        <div class="seg" id="cropToggle">
+          <button class="seg-btn is-active" type="button" data-crop="soybeans">Soybeans</button>
+          <button class="seg-btn" type="button" data-crop="corn">Corn</button>
+          <button class="seg-btn" type="button" data-crop="wheat">Wheat</button>
+        </div>
+      </div>
+      <div class="chart-wrap"><canvas id="forecastChart"></canvas></div>
+      <p class="caption">Shaded band = 90% confidence interval · dashed accent tail = 6-month Prophet forecast.</p>
+    </section>
+
+    <section id="outputs" class="stage-card paper-well">
+      <div class="stage-head">
+        <div>
+          <h2>Nine Analytical Figures</h2>
+          <p>Click any chart to inspect at full resolution.</p>
+        </div>
+      </div>
+      <div class="gallery">
+        <figure class="shot"><img src="../assets/projects/crop/01_price_trends.png" alt="Price trends"><figcaption>Farm-gate price trends, 2010–2024</figcaption></figure>
+        <figure class="shot"><img src="../assets/projects/crop/02_volatility_heatmap.png" alt="Volatility heatmap"><figcaption>Volatility heatmap across crops</figcaption></figure>
+        <figure class="shot"><img src="../assets/projects/crop/03_price_swings.png" alt="Price swings"><figcaption>Largest year-over-year price swings</figcaption></figure>
+        <figure class="shot"><img src="../assets/projects/crop/04_farm_price_vs_cpi.png" alt="Farm price vs CPI"><figcaption>Farm price vs. commodity CPI overlay</figcaption></figure>
+        <figure class="shot"><img src="../assets/projects/crop/05_rolling_volatility.png" alt="Rolling volatility"><figcaption>Rolling volatility regimes over time</figcaption></figure>
+        <figure class="shot"><img src="../assets/projects/crop/06_state_exposure.png" alt="State exposure"><figcaption>Price-risk exposure by state</figcaption></figure>
+        <figure class="shot"><img src="../assets/projects/crop/07_forecast_wheat.png" alt="Wheat forecast"><figcaption>Prophet 6-month forecast — Wheat</figcaption></figure>
+        <figure class="shot"><img src="../assets/projects/crop/08_forecast_corn.png" alt="Corn forecast"><figcaption>Prophet 6-month forecast — Corn</figcaption></figure>
+        <figure class="shot wide"><img src="../assets/projects/crop/09_forecast_soybeans.png" alt="Soybeans forecast"><figcaption>Prophet 6-month forecast — Soybeans (+17%)</figcaption></figure>
+      </div>
+    </section>
+
+  </main>
+
 </div>
 
-<div class="wrap">
-  <section class="p-section">
-    <h2>Key findings</h2>
-    <div class="metrics">
-      <div class="metric"><div class="n">28.5%</div><div class="t">Corn — most volatile crop (CV)</div></div>
-      <div class="metric"><div class="n">+17%</div><div class="t">Soybeans — forecast rise over 6 months</div></div>
-      <div class="metric"><div class="n">0.90–0.96</div><div class="t">Farm price ↔ CPI correlation (r)</div></div>
-      <div class="metric"><div class="n">10,000+</div><div class="t">Rows processed (USDA + FRED)</div></div>
-    </div>
-    <ul>
-      <li><b>Corn</b> is the most volatile crop (CV 28.5%), followed by Wheat (25.5%) and Soybeans (20.5%).</li>
-      <li><b>Colorado, Texas, Kansas and Nebraska</b> are the highest price-risk states.</li>
-      <li><b>Soybeans</b> are forecast to rise +17% over the next 6 months (Apr–Oct 2026).</li>
-      <li>Farm prices track commodity CPI with r = 0.90–0.96 — making CPI a reliable 4–6 week leading indicator.</li>
-    </ul>
-  </section>
-
-  <section class="p-section">
-    <h2>Pipeline</h2>
-    <div class="flow">
-      <div class="node">USDA NASS + FRED CSVs</div><span class="arr">→</span>
-      <div class="node">Clean → SQLite DB</div><span class="arr">→</span>
-      <div class="node">SQL analysis</div><span class="arr">→</span>
-      <div class="node">EDA charts</div><span class="arr">→</span>
-      <div class="node">Prophet forecast</div><span class="arr">→</span>
-      <div class="node">Tableau dashboard</div>
-    </div>
-    <ul>
-      <li><code>01_build_database.py</code> — clean raw CSVs into a SQLite database.</li>
-      <li><code>02_sql_analysis.py</code> — SQL for volatility, state exposure, CPI correlation.</li>
-      <li><code>03_eda.py</code> — six exploratory charts (trends, heatmap, swings, CPI overlay).</li>
-      <li><code>04_forecast.py</code> — Prophet time-series forecast (6-month horizon).</li>
-      <li><code>05_export_tableau.py</code> — flat CSVs for the Tableau dashboard.</li>
-    </ul>
-  </section>
-
-  <section class="p-section" id="forecast">
-    <h2>Interactive forecast</h2>
-    <p>The real Prophet model output — monthly farm-gate price (2010–2025) with a 90% confidence band and a 6-month forward forecast. Switch crops and hover any point.</p>
-    <div class="seg" id="cropToggle">
-      <button class="seg-btn is-active" data-crop="soybeans">Soybeans</button>
-      <button class="seg-btn" data-crop="corn">Corn</button>
-      <button class="seg-btn" data-crop="wheat">Wheat</button>
-    </div>
-    <div class="chart-wrap"><canvas id="forecastChart"></canvas></div>
-    <p class="note" id="chartNote">Shaded area = 90% confidence interval · the highlighted tail is the 6-month forecast.</p>
-  </section>
-
-  <section class="p-section" id="outputs">
-    <h2>Outputs — analysis charts</h2>
-    <p>Generated directly by the pipeline. Click any chart to enlarge.</p>
-    <div class="gallery">
-      <figure class="shot"><img src="../assets/projects/crop/01_price_trends.png" alt="Price trends"><figcaption>Farm-gate price trends, 2010–2024</figcaption></figure>
-      <figure class="shot"><img src="../assets/projects/crop/02_volatility_heatmap.png" alt="Volatility heatmap"><figcaption>Volatility heatmap across crops</figcaption></figure>
-      <figure class="shot"><img src="../assets/projects/crop/03_price_swings.png" alt="Price swings"><figcaption>Largest year-over-year price swings</figcaption></figure>
-      <figure class="shot"><img src="../assets/projects/crop/04_farm_price_vs_cpi.png" alt="Farm price vs CPI"><figcaption>Farm price vs. commodity CPI overlay</figcaption></figure>
-      <figure class="shot"><img src="../assets/projects/crop/05_rolling_volatility.png" alt="Rolling volatility"><figcaption>Rolling volatility over time</figcaption></figure>
-      <figure class="shot"><img src="../assets/projects/crop/06_state_exposure.png" alt="State exposure"><figcaption>Price-risk exposure by state</figcaption></figure>
-      <figure class="shot"><img src="../assets/projects/crop/07_forecast_wheat.png" alt="Wheat forecast"><figcaption>Prophet 6-month forecast — Wheat</figcaption></figure>
-      <figure class="shot"><img src="../assets/projects/crop/08_forecast_corn.png" alt="Corn forecast"><figcaption>Prophet 6-month forecast — Corn</figcaption></figure>
-      <figure class="shot wide"><img src="../assets/projects/crop/09_forecast_soybeans.png" alt="Soybeans forecast"><figcaption>Prophet 6-month forecast — Soybeans (+17%)</figcaption></figure>
-    </div>
-  </section>
-
-  <nav class="p-nav">
-    <a href="hadoop-claims-pipeline.html"><span>Previous project</span>← Hadoop Claims Pipeline</a>
-    <a href="cleanunet-speech-denoising.html"><span>Next project</span>CleanUNet Denoising →</a>
-  </nav>
-</div>
-
-<footer>© <span id="yr"></span> Thushar Thorenur Govindaraju · Buffalo, NY</footer>
 <div class="lb" id="lb"><img alt="" /></div>
 <script src="../assets/js/site.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -119,13 +152,7 @@
 (function(){
   var canvas = document.getElementById('forecastChart');
   if(!canvas || !window.Chart || !window.CROP_FORECAST) return;
-  function cssVar(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
-  var INK, MUT, LINE, CREAM, INK_RGB;
-  function readColors(){
-    INK=cssVar('--ink'); MUT=cssVar('--muted'); LINE=cssVar('--line');
-    CREAM=cssVar('--cream'); INK_RGB=cssVar('--ink-rgb');
-  }
-  readColors();
+  var INK='#e7e7d6', MUT='#8d8d88', LINE='rgba(231,231,214,0.12)', BG='#191918', ORANGE='#ff8c00';
   var chart, currentCrop='soybeans';
   function build(crop){
     currentCrop=crop;
@@ -135,52 +162,58 @@
     var lo     = d.rows.map(function(r){return r.lo});
     var hi     = d.rows.map(function(r){return r.hi});
     var firstFc = d.rows.findIndex(function(r){return r.f});
-    // emphasize the forecast tail with a thicker segment + point styling
-    var ptR = d.rows.map(function(r){return r.f?3:0});
+    var ptRadius = d.rows.map(function(r){return r.f?2.6:0});
     var cfg = {
       type:'line',
-      data:{labels:labels, datasets:[
-        {label:'Upper 90%', data:hi, borderWidth:0, pointRadius:0, fill:'+1',
-         backgroundColor:'rgba('+INK_RGB+',0.07)', tension:.25},
-        {label:'Lower 90%', data:lo, borderWidth:0, pointRadius:0, fill:false, tension:.25},
-        {label:d.label+' price ($/unit)', data:price, borderColor:INK, borderWidth:2,
-         pointRadius:ptR, pointBackgroundColor:INK, tension:.25,
-         segment:{borderDash:function(ctx){return ctx.p0DataIndex>=firstFc-1?[5,4]:undefined}}}
-      ]},
+      data:{
+        labels:labels,
+        datasets:[
+          {label:'Upper 90%', data:hi, borderWidth:0, pointRadius:0, fill:'+1',
+           backgroundColor:'rgba(231, 231, 214, 0.09)', tension:.2},
+          {label:'Lower 90%', data:lo, borderWidth:0, pointRadius:0, fill:false, tension:.2},
+          {label:d.label, data:price, borderColor:INK, borderWidth:2,
+           pointRadius:ptRadius, pointBackgroundColor:ORANGE, pointBorderColor:ORANGE, tension:.2,
+           segment:{
+             borderDash: function(ctx){return ctx.p0DataIndex>=firstFc-1?[4,4]:undefined},
+             borderColor: function(ctx){return ctx.p0DataIndex>=firstFc-1?ORANGE:INK}
+           }}
+        ]
+      },
       options:{
-        responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+        responsive:true, maintainAspectRatio:false,
+        interaction:{mode:'index', intersect:false},
         plugins:{
           legend:{display:false},
-          tooltip:{backgroundColor:INK, titleColor:CREAM, bodyColor:CREAM, padding:12, callbacks:{
-            title:function(it){return it[0].label},
-            label:function(it){
-              var i=it.dataIndex, r=window.CROP_FORECAST[crop].rows[i];
-              if(it.datasetIndex===2) return (r.f?'Forecast: ':'Actual: ')+'$'+r.p+'  (90% CI '+r.lo+'–'+r.hi+')';
-              return null;
+          tooltip:{
+            backgroundColor:INK, titleColor:BG, bodyColor:BG, padding:10, displayColors:false,
+            callbacks:{
+              title:function(it){return it[0].label},
+              label:function(it){
+                var r=d.rows[it.dataIndex];
+                if(it.datasetIndex===2){
+                  return (r.f?'Forecast: ':'Actual: ')+'$'+r.p+' (90% CI '+r.lo+'–'+r.hi+')';
+                }
+                return null;
+              }
             }
-          }}
+          }
         },
         scales:{
-          x:{ticks:{color:MUT, maxTicksLimit:9, autoSkip:true}, grid:{display:false}},
-          y:{ticks:{color:MUT, callback:function(v){return '$'+v}}, grid:{color:LINE}}
+          x:{ticks:{color:MUT, maxTicksLimit:8, autoSkip:true, font:{family:'JetBrains Mono, monospace',size:10.5}}, grid:{display:false}, border:{color:LINE}},
+          y:{ticks:{color:MUT, font:{family:'JetBrains Mono, monospace',size:10.5}, callback:function(v){return '$'+v}}, grid:{color:LINE}, border:{display:false}}
         }
       }
     };
     if(chart){chart.data=cfg.data; chart.options=cfg.options; chart.update();}
-    else chart=new Chart(canvas, cfg);
+    else chart = new Chart(canvas, cfg);
   }
-  build('soybeans');
   document.getElementById('cropToggle').addEventListener('click', function(e){
-    var b=e.target.closest('.seg-btn'); if(!b) return;
+    var b = e.target.closest('.seg-btn'); if(!b) return;
     this.querySelectorAll('.seg-btn').forEach(function(x){x.classList.remove('is-active')});
     b.classList.add('is-active');
     build(b.dataset.crop);
   });
-  if(window.matchMedia){
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){
-      readColors(); build(currentCrop);
-    });
-  }
+  build('soybeans');
 })();
 </script>
 </body>

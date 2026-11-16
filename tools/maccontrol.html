@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MacControl — Thushar Govindaraju</title>
+<meta name="description" content="MacControl: native macOS host app, iPhone touchscreen/trackpad controller, and end-to-end encrypted WebSocket relay." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../assets/css/site.css" />
+</head>
+<body>
+
+<div class="tb-case-page">
+
+  <aside class="tb-sidebar" aria-label="App overview">
+    <div class="tb-side-top">
+      <a class="tb-pill" href="../index.html#apps">Apps</a>
+      <a class="tb-pill" href="../index.html#contact">Contact</a>
+    </div>
+
+    <h1 class="tb-side-heading">MacControl</h1>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">About</h2>
+      <p class="tb-side-copy">
+        Low-latency touchscreen and trackpad control of your Mac from an iPhone, built on ScreenCaptureKit, VideoToolbox H.264/HEVC, CoreGraphics HID injection, and CryptoKit end-to-end encryption.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Security Model</h2>
+      <p class="tb-side-copy">
+        Ephemeral X25519 + 6-digit PIN (HKDF-SHA256) key agreement encrypts every video, audio, clipboard, and pointer frame with ChaCha20-Poly1305—even when routed across the zero-knowledge WebSocket relay.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Wire Protocol</h2>
+      <p class="tb-side-copy">
+        Custom binary packet framing over <code>NWConnection</code> with <code>TCP_NODELAY</code> eliminates base64 overhead over local Wi-Fi, USB, or Tailscale.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Specifications</h2>
+      <dl class="tb-side-dl">
+        <div>
+          <dt>Release</dt>
+          <dd>v1.0.0 · Host (.app) + iOS &amp; Relay source</dd>
+        </div>
+        <div>
+          <dt>Platforms</dt>
+          <dd>macOS 14+ &amp; iOS 17+ (Swift)</dd>
+        </div>
+        <div>
+          <dt>Checksums</dt>
+          <dd><a href="../downloads/SHA256SUMS.txt">SHA256SUMS.txt ↗</a></dd>
+        </div>
+      </dl>
+    </div>
+
+    <nav class="tb-side-bottom" aria-label="App navigation">
+      <a class="tb-pill" href="flashback.html">← Back</a>
+      <a class="tb-pill" href="../index.html#work">Next +</a>
+    </nav>
+
+    <div class="tb-side-mark">
+      <a class="tb-mark" href="../index.html" aria-label="Home" style="width:20px;height:20px">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" aria-hidden="true">
+          <path d="M3 6h12M9 6v16M25 9h-8v13h8v-6h-4" />
+        </svg>
+      </a>
+    </div>
+  </aside>
+
+  <main class="tb-showcase">
+
+    <!-- Showcase 01: Cobalt Hero Banner & Downloads -->
+    <section class="tb-hero-showcase cobalt">
+      <div class="tb-card-top">
+        <span class="tb-micro">MacControl · v1.0.0</span>
+        <span class="tb-micro">macOS Host + iOS Companion</span>
+      </div>
+
+      <div class="tb-hero-center">
+        <h2 class="tb-showcase-wordmark">MacControl</h2>
+        <p class="tb-showcase-sub">
+          Install the prebuilt macOS Host directly; build the iOS target once onto your iPhone with Xcode personal signing and scan the pairing QR code.
+        </p>
+        <div class="dl-actions" style="justify-content:center;margin-top:6px">
+          <a class="tb-pill-cream" href="../downloads/MacControlHost-1.0.0-macOS.zip" download>Download MacControlHost.app · 3.2 MB</a>
+          <a class="tb-pill-dark" href="../downloads/MacControl-1.0.0-source.zip" download>iOS &amp; Relay Source · 3.2 MB</a>
+        </div>
+        <div class="dl-hash">
+          Host SHA-256: 7700a44d71d57d5bc86094a5a0d1ab3339baa7bed1494fc6282e017ca048dd45<br>
+          Source SHA-256: 8ee6422fea00b61d6c1df8166a2d680eb5fa3915e0719d7bc9f6c44207ae7efe
+        </div>
+      </div>
+
+      <div class="tb-card-bottom">
+        <span class="tb-micro">01</span>
+        <span class="tb-micro">ChaCha20-Poly1305 · 60 fps Stream</span>
+      </div>
+    </section>
+
+    <!-- Showcase 02: Interactive Trackpad + Setup -->
+    <section class="stage-card dark-well">
+      <div class="stage-head">
+        <div>
+          <h2>Interactive HID Surface &amp; Pairing Setup</h2>
+          <p>Grant Accessibility (pointer/keyboard injection) and Screen Recording when first launching <code>MacControlHost.app</code>.</p>
+        </div>
+      </div>
+
+      <div class="mc-stage" style="margin-top:0;background:#131c36">
+        <div class="fb-top" style="color:rgba(255,255,255,0.8)">
+          <span>X25519 + ChaCha20-Poly1305</span>
+          <span>60 fps · TCP_NODELAY</span>
+        </div>
+        <div class="mc-pad" id="mcPad" aria-label="Interactive HID trackpad preview">
+          <span class="mc-dot" id="mcDot"></span>
+          <span id="mcCoord">HID (1584, 792) · ChaCha20</span>
+          <span>iOS → Mac</span>
+        </div>
+        <div class="mc-keys">
+          <div class="mc-key-row">
+            <span class="mc-key">⌘</span>
+            <span class="mc-key">⌥</span>
+            <span class="mc-key">⌃</span>
+            <span class="mc-key">⇧</span>
+            <span class="mc-key">Esc</span>
+            <span class="mc-key">Fn</span>
+          </div>
+          <span class="tb-micro">CoreGraphics HID</span>
+        </div>
+      </div>
+
+      <div class="pipeline-line" style="margin-top:14px">
+        unzip MacControlHost-1.0.0-macOS.zip<span class="sep">&amp;&amp;</span>mv "MacControlHost.app" /Applications/<span class="sep">&amp;&amp;</span>xattr -cr /Applications/MacControlHost.app
+      </div>
+      <p class="caption">
+        Open <code>MacControl.xcodeproj</code> from the source archive, select your personal Apple ID team on <code>MacControliOS</code>, build to your iPhone, and scan the Host QR code.
+      </p>
+    </section>
+
+    <!-- Showcase 03-04: Nested Architecture Cards -->
+    <div class="tb-showcase-grid">
+      <div class="tb-nest-outer">
+        <div class="tb-nest-inner">
+          <div class="tb-card-top">
+            <span class="tb-micro">Input Modes</span>
+            <span class="tb-micro">5× Zoom</span>
+          </div>
+          <div class="tb-nest-body">
+            <h3>Direct Touch &amp; Trackpad Glide</h3>
+            <p>Tap, drag, and pinch-to-zoom up to 5× directly over live 60 fps desktop video, or switch to relative Magic Trackpad glide with drag-lock and smooth pixel scrolling.</p>
+          </div>
+          <div class="tb-card-bottom">
+            <span class="tb-micro">02</span>
+            <span class="tb-micro">MacControl</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tb-nest-outer sky">
+        <div class="tb-nest-inner">
+          <div class="tb-card-top">
+            <span class="tb-micro">System Deck</span>
+            <span class="tb-micro">E2EE Relay</span>
+          </div>
+          <div class="tb-nest-body">
+            <h3>Modifier Bar &amp; Zero-Knowledge Relay</h3>
+            <p>Dedicated modifier keys, Mac-to-iPhone PCM audio, volume, brightness, Mission Control, and clipboard sync—with an encrypted Node.js relay fallback across cellular networks.</p>
+          </div>
+          <div class="tb-card-bottom">
+            <span class="tb-micro">03</span>
+            <span class="tb-micro">MacControl</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+</div>
+
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

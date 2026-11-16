@@ -3,173 +3,175 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Hadoop Healthcare Claims Pipeline — Thushar T. Govindaraju</title>
-<meta name="description" content="A big-data pipeline on Hadoop, Spark and Hive that turns 150,000 raw medical claims into business answers — cost drivers, overcharging providers, denials and readmissions." />
+<title>Healthcare Claims Pipeline — Thushar Govindaraju</title>
+<meta name="description" content="ETL pipeline over 150,000 healthcare claims across HDFS, PySpark, Hive, and Snowflake, with an interactive DuckDB-WASM SQL console." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../assets/css/site.css" />
 </head>
 <body>
 
-<header id="top">
-  <div class="wrap nav">
-    <a href="../index.html" class="logo">Thushar<sup>®</sup></a>
-    <nav class="nav-links" id="menu">
-      <a href="../index.html#about">About</a>
-      <a href="../index.html#projects">Projects</a>
-      <a href="../index.html#skills">Skills</a>
-      <a href="../index.html#experience">Experience</a>
-      <a href="../index.html#contact" class="nav-cta">Get in touch</a>
+<div class="tb-case-page">
+
+  <aside class="tb-sidebar" aria-label="Case study overview">
+    <div class="tb-side-top">
+      <a class="tb-pill" href="../index.html#work">Work</a>
+      <a class="tb-pill" href="../index.html#contact">Contact</a>
+    </div>
+
+    <h1 class="tb-side-heading">Claims Pipeline</h1>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">About</h2>
+      <p class="tb-side-copy">
+        End-to-end ETL over 150,000 medical claims ($498.6M paid) across HDFS, PySpark, Hive, and Snowflake, paired with an in-browser DuckDB-WASM SQL console.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Challenge</h2>
+      <p class="tb-side-copy">
+        Raw flat CSVs arrived with mixed casing on status enums, skewed provider billing distributions, and inpatient/outpatient stays mixed in one table—causing naive SQL queries to misstate readmission denominators.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Reconciliation</h2>
+      <p class="tb-side-copy">
+        Normalizing string enums during the PySpark Parquet write and restricting 30-day readmission denominators to inpatient stays aligned Spark, Hive, and Snowflake at 10.16% readmissions and 7.96% denials (11,940 claims).
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Stack &amp; Source</h2>
+      <dl class="tb-side-dl">
+        <div>
+          <dt>Architecture</dt>
+          <dd>Hadoop HDFS, PySpark, Hive, Snowflake, Parquet, DuckDB-WASM</dd>
+        </div>
+        <div>
+          <dt>Dataset</dt>
+          <dd>150,000 claims · 18 columns · $498.6M paid</dd>
+        </div>
+        <div>
+          <dt>Repository</dt>
+          <dd><a href="https://github.com/thushartg/hadoop-claims-pipeline" target="_blank" rel="noopener">hadoop-claims-pipeline ↗</a></dd>
+        </div>
+      </dl>
+    </div>
+
+    <nav class="tb-side-bottom" aria-label="Project navigation">
+      <a class="tb-pill" href="../index.html#work">← Back</a>
+      <a class="tb-pill" href="financial-markets-data-platform.html">Next +</a>
     </nav>
-    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
-  </div>
-</header>
 
-<div class="wrap p-hero">
-  <a href="../index.html#projects" class="back">← All projects</a>
-  <div class="p-kicker">02 · Big Data Engineering</div>
-  <h1 class="p-title">Hadoop Healthcare<br>Claims Pipeline</h1>
-  <p class="p-sub">A distributed data pipeline that turns <b>150,000 raw medical claims</b> into answers a health insurer actually cares about — which conditions cost the most, which providers overcharge, how often claims get denied and why, and which patients come back too soon. Raw data lands in <b>HDFS</b>, <b>Spark</b> cleans and crunches it, <b>Hive</b> serves it as SQL tables, and Python draws the charts.</p>
-  <div class="p-meta">
-    <span class="tag">Hadoop / HDFS</span><span class="tag">Apache Spark</span><span class="tag">Hive</span><span class="tag">Snowflake</span><span class="tag">Python</span><span class="tag">Docker</span><span class="tag">Parquet</span>
-  </div>
-  <div class="p-actions">
-    <a class="btn" href="https://github.com/thushartg/hadoop-claims-pipeline" target="_blank" rel="noopener">View code on GitHub ↗</a>
-    <a class="btn ghost" href="#explore">Explore the results ↓</a>
-  </div>
-</div>
-
-<div class="wrap">
-  <section class="p-section">
-    <h2>Architecture</h2>
-    <p>Data flows through five stages, each a separate tool doing one job well — storage, heavy computation and easy querying kept apart. The whole stack runs locally on Docker containers standing in for a Hadoop cluster.</p>
-    <div class="flow">
-      <div class="node">generate_data.py</div><span class="arr">→</span>
-      <div class="node">HDFS — raw claims</div><span class="arr">→</span>
-      <div class="node">Spark — clean &amp; aggregate</div><span class="arr">→</span>
-      <div class="node">Parquet — curated</div><span class="arr">→</span>
-      <div class="node">Hive — SQL tables</div><span class="arr">→</span>
-      <div class="node">Python — charts</div>
+    <div class="tb-side-mark">
+      <a class="tb-mark" href="../index.html" aria-label="Home" style="width:20px;height:20px">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" aria-hidden="true">
+          <path d="M3 6h12M9 6v16M25 9h-8v13h8v-6h-4" />
+        </svg>
+      </a>
     </div>
-    <div class="flow" style="margin-top:12px">
-      <div class="node">Parquet — curated</div><span class="arr">→</span>
-      <div class="node">Snowflake — live warehouse</div><span class="arr">→</span>
-      <div class="node">Cross-verified vs. Spark &amp; pandas</div>
-    </div>
-    <p class="note">Why Hadoop &amp; Spark? A spreadsheet chokes on 150,000+ rows across many files. These tools split the work across many machines at once — that's the whole reason they exist. The curated output was also migrated to a live Snowflake warehouse as a second, independently verified serving layer.</p>
-  </section>
+  </aside>
 
-  <section class="p-section">
-    <h2>At a glance</h2>
-    <div class="metrics">
-      <div class="metric"><div class="n">150K</div><div class="t">Claims processed (Jan–Jul 2026)</div></div>
-      <div class="metric"><div class="n">$498.6M</div><div class="t">Total paid · from $756.9M billed</div></div>
-      <div class="metric"><div class="n">34.1%</div><div class="t">Billed-to-paid gap (allowed adjustments)</div></div>
-      <div class="metric"><div class="n">6</div><div class="t">Hive analytics tables served</div></div>
-    </div>
-  </section>
+  <main class="tb-showcase">
 
-  <section class="p-section" id="explore">
-    <h2>Explore the results</h2>
-    <p>Four business questions, each answered by a Hive table the Spark job writes. Pick one — every number here is computed directly over the 150,000 claims.</p>
-    <div class="seg" id="qToggle">
-      <button class="seg-btn is-active" data-q="cost">Costliest conditions</button>
-      <button class="seg-btn" data-q="providers">Provider outliers</button>
-      <button class="seg-btn" data-q="rejections">Denials</button>
-      <button class="seg-btn" data-q="readmissions">Readmissions</button>
-    </div>
-    <div class="metrics" id="qStats"></div>
-    <div class="chart-wrap" style="height:460px"><canvas id="claimsChart"></canvas></div>
-    <p class="note" id="qNote"></p>
-  </section>
-
-  <section class="p-section" id="query">
-    <h2>Query it yourself</h2>
-    <p>This isn't a screenshot. It's the <b>real 150,000-row claims dataset</b> loaded into an in-browser <b>DuckDB</b> engine — no server, no backend. Write SQL and run it against the <code>claims</code> table, exactly like querying the Hive layer. Pick a sample or write your own.</p>
-    <div class="sql-console">
-      <div class="sql-bar">
-        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-        <span class="title">duckdb · claims.parquet</span>
-        <span class="status" id="sqlStatus"><span class="sql-spin"></span> booting engine…</span>
+    <!-- Showcase 01: Hero Banner & Lineage -->
+    <section class="tb-hero-showcase navy">
+      <div class="tb-card-top">
+        <span class="tb-micro">Healthcare Claims Pipeline</span>
+        <span class="tb-micro">Data Engineering</span>
       </div>
-      <div class="sql-chips" id="sqlChips"></div>
-      <div class="sql-editor-wrap">
-        <textarea id="sqlInput" spellcheck="false">SELECT diagnosis_category,
+
+      <div class="tb-hero-center">
+        <h2 class="tb-showcase-wordmark">150,000 Claims · $498.6M</h2>
+        <p class="tb-showcase-sub">
+          Partitioned Parquet acts as the canonical contract between Spark cleaning, Hive payer marts, and Snowflake reconciliation checks.
+        </p>
+        <div class="pipeline-line" style="background:rgba(10,18,32,0.75)">
+          raw CSV<span class="sep">→</span>HDFS staging<span class="sep">→</span>PySpark clean &amp; partition (Parquet)<span class="sep">→</span>Hive marts<span class="sep">→</span>Snowflake audit
+        </div>
+      </div>
+
+      <div class="tb-card-bottom">
+        <span class="tb-micro">01</span>
+        <span class="tb-micro">HDFS · PySpark · Hive · Snowflake</span>
+      </div>
+    </section>
+
+    <!-- Showcase 02: Live DuckDB-WASM SQL Console -->
+    <section id="query" class="stage-card dark-well">
+      <div class="stage-head">
+        <div>
+          <h2>Query 150,000 Claims in Browser</h2>
+          <p>DuckDB-WASM loads <code>claims.parquet</code> directly in WebAssembly. Click any preset or run custom SQL with <code>⌘ + Enter</code>.</p>
+        </div>
+      </div>
+      <div class="sql-console">
+        <div class="sql-bar">
+          <span>claims.parquet · DuckDB-WASM</span>
+          <span id="sqlStatus">booting duckdb…</span>
+        </div>
+        <div class="sql-chips" id="sqlChips"></div>
+        <div class="sql-editor-wrap">
+          <textarea id="sqlInput" spellcheck="false">SELECT diagnosis_category,
        COUNT(*) AS claims,
        ROUND(SUM(paid_amount)/1e6, 2) AS paid_millions
 FROM claims
 GROUP BY 1
 ORDER BY paid_millions DESC;</textarea>
-        <div class="sql-actions">
-          <button class="sql-run" id="sqlRun" disabled>▶ Run query</button>
-          <span class="sql-hint"><kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>Enter</kbd> to run · 150,000 rows · 18 columns</span>
+          <div class="sql-actions">
+            <button class="sql-run" id="sqlRun" type="button" disabled>Run query</button>
+            <span class="sql-hint">⌘ + Enter · 150,000 rows · 18 columns</span>
+          </div>
+        </div>
+        <div class="sql-result" id="sqlResult"></div>
+      </div>
+    </section>
+
+    <!-- Showcase 03: Curated Insurer Marts Chart -->
+    <section id="explore" class="stage-card dark-well">
+      <div class="stage-head">
+        <div>
+          <h2>Curated Insurer Marts</h2>
+          <p>Provider billing outliers (2σ above $5,049 cohort mean), 30-day readmissions, condition cost burden, and claim denials.</p>
         </div>
       </div>
-      <div class="sql-result" id="sqlResult"></div>
-    </div>
-    <p class="note">Runs entirely client-side in WebAssembly — queries never leave your browser. Columns: claim_id, member_id, provider_id, provider_type, plan_type, member_age_band, member_state, claim_type, diagnosis_category, procedure_category, service_date, submission_date, billed_amount, allowed_amount, paid_amount, claim_status, denial_reason, is_readmission_within_30d.</p>
-  </section>
+      <div class="seg-bar">
+        <div class="seg" id="qToggle">
+          <button class="seg-btn is-active" type="button" data-q="providers">Provider outliers</button>
+          <button class="seg-btn" type="button" data-q="readmissions">Readmissions</button>
+          <button class="seg-btn" type="button" data-q="cost">Cost by condition</button>
+          <button class="seg-btn" type="button" data-q="rejections">Denials</button>
+        </div>
+      </div>
+      <div class="stat-row" id="qStats"></div>
+      <div class="chart-wrap" style="height:380px"><canvas id="claimsChart"></canvas></div>
+      <p class="caption" id="qNote"></p>
+    </section>
 
-  <section class="p-section">
-    <h2>What the data says</h2>
-    <ul>
-      <li><b>Cost is spread, not concentrated.</b> Spend is remarkably even across conditions ($40–43M each) — <b>Injury &amp; Trauma</b> ($43.2M) and <b>Chronic Kidney Disease</b> ($43.1M) edge out the rest. No single diagnosis dominates the book.</li>
-      <li><b>A handful of providers drive cost risk.</b> Five providers are flagged as statistical outliers, billing above the $7,919 threshold (2σ over the $5,049 cohort mean). <b>PRV-00244</b> bills $20,555 per claim — over 4× its peers.</li>
-      <li><b>Denials are broad-based.</b> 7.96% of claims are denied, spread fairly evenly across seven reasons; <b>incomplete documentation</b> denies the most billed value ($9.5M).</li>
-      <li><b>Readmissions cluster in chronic care.</b> 10.16% of inpatient stays end in a 30-day readmission, led by <b>Chronic Kidney Disease</b> (12.3%) and musculoskeletal (11.7%).</li>
-    </ul>
-  </section>
+    <!-- Showcase 04: Exported Validation Figures -->
+    <section id="outputs" class="stage-card paper-well">
+      <div class="stage-head">
+        <div>
+          <h2>Exported Validation Figures</h2>
+          <p>Static Python plots generated from Hive table exports during warehouse reconciliation. Click any chart to zoom.</p>
+        </div>
+      </div>
+      <div class="gallery">
+        <figure class="shot"><img src="../assets/projects/claims/charts/diagnosis_cost_burden.png" alt="Diagnosis cost burden"><figcaption>Total paid by diagnosis category</figcaption></figure>
+        <figure class="shot"><img src="../assets/projects/claims/charts/provider_cost_outliers.png" alt="Provider cost outliers"><figcaption>Provider cost outliers vs. cohort</figcaption></figure>
+        <figure class="shot"><img src="../assets/projects/claims/charts/denial_rate_by_provider_type.png" alt="Denial rate by provider type"><figcaption>Denial rate by provider type</figcaption></figure>
+        <figure class="shot"><img src="../assets/projects/claims/charts/readmission_rate_by_diagnosis.png" alt="Readmission rate by diagnosis"><figcaption>30-day readmission rate by diagnosis</figcaption></figure>
+        <figure class="shot wide"><img src="../assets/projects/claims/charts/monthly_spend_by_plan.png" alt="Monthly spend by plan"><figcaption>Monthly spend across plan types</figcaption></figure>
+      </div>
+    </section>
 
-  <section class="p-section" id="outputs">
-    <h2>Outputs — analysis charts</h2>
-    <p>Generated by the Python analytics layer straight from the Hive tables. Click any chart to enlarge.</p>
-    <div class="gallery">
-      <figure class="shot"><img src="../assets/projects/claims/charts/diagnosis_cost_burden.png" alt="Diagnosis cost burden"><figcaption>Total paid by diagnosis category</figcaption></figure>
-      <figure class="shot"><img src="../assets/projects/claims/charts/provider_cost_outliers.png" alt="Provider cost outliers"><figcaption>Provider cost outliers vs. cohort</figcaption></figure>
-      <figure class="shot"><img src="../assets/projects/claims/charts/denial_rate_by_provider_type.png" alt="Denial rate by provider type"><figcaption>Denial rate by provider type</figcaption></figure>
-      <figure class="shot"><img src="../assets/projects/claims/charts/readmission_rate_by_diagnosis.png" alt="Readmission rate by diagnosis"><figcaption>30-day readmission rate by diagnosis</figcaption></figure>
-      <figure class="shot wide"><img src="../assets/projects/claims/charts/monthly_spend_by_plan.png" alt="Monthly spend by plan"><figcaption>Monthly spend by plan type</figcaption></figure>
-    </div>
-  </section>
+  </main>
 
-  <section class="p-section">
-    <h2>How it's built</h2>
-    <h3>Generate &amp; store</h3>
-    <ul>
-      <li><code>generate_data.py</code> synthesizes 150,000 realistic claims — billed vs. allowed vs. paid amounts, diagnosis and procedure categories, denial reasons and 30-day readmission flags.</li>
-      <li>The raw CSV lands in <b>HDFS</b>, append-only and immutable, so any transformation can be re-run without regenerating data.</li>
-    </ul>
-    <h3>Process (Spark)</h3>
-    <ul>
-      <li>A <b>PySpark</b> ETL job cleans the raw feed, casts types, and writes partitioned <b>Parquet</b> to the curated zone (partitioned by service month).</li>
-      <li>It computes six aggregates: diagnosis cost burden, provider cost outliers (2σ cohort test), denials by reason and by provider type, 30-day readmissions, and monthly spend by plan.</li>
-    </ul>
-    <h3>Serve &amp; show</h3>
-    <ul>
-      <li><b>Hive</b> external tables expose every curated output as SQL, so an analyst can answer the business questions with plain queries.</li>
-      <li>A Python + matplotlib layer renders the final charts. The whole pipeline is wired together with a <code>Makefile</code> and shell scripts, and stood up on <b>Docker</b> containers.</li>
-    </ul>
-  </section>
-
-  <section class="p-section">
-    <h2>Cross-verification — migrating to Snowflake</h2>
-    <p>The curated output was also migrated to a live <b>Snowflake</b> warehouse — all 150,000 rows, loaded via key-pair-authenticated <code>snowsql</code>. Three headline metrics (PMPM, denial rate, and readmission rate) were recomputed independently in Snowflake and cross-checked against both Spark's output and a from-scratch pandas recomputation.</p>
-    <div class="metrics">
-      <div class="metric"><div class="n">150K</div><div class="t">Rows migrated to Snowflake</div></div>
-      <div class="metric"><div class="n">3-way</div><div class="t">Cross-check: Snowflake vs. Spark vs. pandas</div></div>
-      <div class="metric"><div class="n">2</div><div class="t">Real bugs caught &amp; fixed</div></div>
-    </div>
-    <p class="note">Cross-verification paid off — it surfaced two real bugs before they reached a report: an incorrect denominator in the readmission-rate calculation, and a case-sensitivity mismatch on <code>claim_status</code> that was silently under-counting denials.</p>
-  </section>
-
-  <nav class="p-nav">
-    <a href="financial-markets-data-platform.html"><span>Previous project</span>← Financial Markets Platform</a>
-    <a href="usda-crop-price-risk.html"><span>Next project</span>Crop Price Risk Model →</a>
-  </nav>
 </div>
 
-<footer>© <span id="yr"></span> Thushar Thorenur Govindaraju · Buffalo, NY</footer>
 <div class="lb" id="lb"><img alt="" /></div>
 <script src="../assets/js/site.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -178,67 +180,61 @@ ORDER BY paid_millions DESC;</textarea>
 (function(){
   var canvas=document.getElementById('claimsChart');
   if(!canvas||!window.Chart||!window.CLAIMS) return;
-  function cssVar(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
-  var INK, MUT, LINE, SOFT, CREAM;
-  function readColors(){
-    INK=cssVar('--ink'); MUT=cssVar('--muted'); LINE=cssVar('--line');
-    SOFT=cssVar('--accent2'); CREAM=cssVar('--cream');
-  }
-  readColors();
-  var C=window.CLAIMS, chart, q='cost';
+  var INK='#e7e7d6', MUT='#8d8d88', LINE='rgba(231,231,214,0.12)', SOFT='rgba(231,231,214,0.32)', BG='#191918', ORANGE='#ff8c00';
+  var C=window.CLAIMS, chart, q='providers';
   function money(n){return '$'+n.toLocaleString()}
-  function statCard(n,t){return '<div class="metric"><div class="n">'+n+'</div><div class="t">'+t+'</div></div>'}
+  function statCard(n,t){return '<div class="stat-item"><div class="n">'+n+'</div><div class="t">'+t+'</div></div>'}
 
   var Q={
     cost:{
-      note:'Total amount paid per diagnosis category, over all 150,000 claims. Source: Hive table agg_diagnosis_cost.',
+      note:'Total amount paid per diagnosis category across 150,000 claims (Hive table agg_diagnosis_cost).',
       build:function(){
         var r=C.cost;
         return {labels:r.map(x=>x.name), values:r.map(x=>x.paid),
-          colors:r.map((x,i)=>i===0?INK:SOFT), unit:'$M paid',
+          colors:r.map((x,i)=>i===0?ORANGE:SOFT), unit:'$M paid',
           fmt:v=>'$'+v.toFixed(1)+'M',
-          stats:statCard('$498.6M','Total paid across all conditions')+
-                statCard(r[0].name.split(' ')[0],'Costliest category ($'+r[0].paid.toFixed(1)+'M)')+
-                statCard('$'+r[0].avg.toLocaleString(),'Avg paid / claim ('+r[0].name.split(' ')[0]+')')+
-                statCard('12','Diagnosis categories tracked')};
+          stats:statCard('$498.6M','Total paid')+
+                statCard('$'+r[0].paid.toFixed(1)+'M',r[0].name)+
+                statCard('$'+r[0].avg.toLocaleString(),'Avg paid / claim')+
+                statCard('12','Categories')};
       }},
     providers:{
-      note:'Average billed per claim by provider. Red = flagged cost outlier (above the $7,919 threshold — 2σ over the $5,049 cohort mean). Source: agg_provider_outliers.',
+      note:'Average billed per claim by provider. Accent bars mark statistical outliers above $7,919 (2σ over cohort mean).',
       build:function(){
         var r=C.providers.rows;
         return {labels:r.map(x=>x.name+' · '+x.type), values:r.map(x=>x.billed),
-          colors:r.map(x=>x.outlier?INK:SOFT), unit:'$ avg billed / claim',
+          colors:r.map(x=>x.outlier?ORANGE:SOFT), unit:'$ avg billed / claim',
           fmt:v=>money(v),
-          stats:statCard('5','Providers flagged as cost outliers')+
-                statCard(money(C.providers.threshold),'Outlier threshold (2σ)')+
-                statCard(money(C.providers.cohort),'Cohort mean billed / claim')+
-                statCard(money(r[0].billed),'Top biller — '+r[0].name)};
+          stats:statCard('5','Outlier providers')+
+                statCard(money(C.providers.threshold),'2σ threshold')+
+                statCard(money(C.providers.cohort),'Cohort mean')+
+                statCard(money(r[0].billed),'Top biller ('+r[0].name+')')};
       }},
     rejections:{
-      note:'Denied claims by reason, with billed value denied. 7.96% of all claims (11,940) were denied. Source: agg_denial_by_reason.',
+      note:'Denied claims by reason (7.96% overall denial rate across 11,940 claims).',
       build:function(){
         var r=C.rejections.rows;
         return {labels:r.map(x=>x.name), values:r.map(x=>x.claims),
-          colors:r.map((x,i)=>i===0?INK:SOFT), unit:'denied claims',
-          fmt:v=>v.toLocaleString()+' claims',
-          extra:function(i){return '  ·  $'+C.rejections.rows[i].billed.toFixed(1)+'M billed'},
-          stats:statCard('7.96%','Overall denial rate')+
-                statCard('11,940','Claims denied')+
-                statCard(r[0].name.split(' ')[0],'Top denial reason')+
-                statCard('7','Distinct denial reasons')};
+          colors:r.map((x,i)=>i===0?ORANGE:SOFT), unit:'denied claims',
+          fmt:v=>v.toLocaleString(),
+          extra:function(i){return ' · $'+C.rejections.rows[i].billed.toFixed(1)+'M billed'},
+          stats:statCard('7.96%','Denial rate')+
+                statCard('11,940','Denied claims')+
+                statCard('$9.5M','Top billed denied')+
+                statCard('7','Reasons')};
       }},
     readmissions:{
-      note:'30-day readmission rate by diagnosis. Overall rate across inpatient stays is 10.16%. Source: agg_readmissions.',
+      note:'30-day readmission rate by diagnosis across inpatient stays.',
       build:function(){
         var r=C.readmissions.rows;
         return {labels:r.map(x=>x.name), values:r.map(x=>x.rate),
-          colors:r.map((x,i)=>i===0?INK:SOFT), unit:'% readmitted in 30 days',
+          colors:r.map((x,i)=>i===0?ORANGE:SOFT), unit:'% readmitted in 30d',
           fmt:v=>v.toFixed(1)+'%',
-          extra:function(i){return '  ·  '+C.readmissions.rows[i].readmits+'/'+C.readmissions.rows[i].inpatient+' stays'},
-          stats:statCard('10.16%','Overall 30-day readmission rate')+
-                statCard(r[0].rate.toFixed(1)+'%','Highest — '+r[0].name.split(' ')[0])+
-                statCard(r[r.length-1].rate.toFixed(1)+'%','Lowest — '+r[r.length-1].name.split(' ')[0])+
-                statCard('12','Conditions compared')};
+          extra:function(i){return ' · '+C.readmissions.rows[i].readmits+'/'+C.readmissions.rows[i].inpatient+' stays'},
+          stats:statCard('10.16%','Overall rate')+
+                statCard(r[0].rate.toFixed(1)+'%',r[0].name)+
+                statCard(r[r.length-1].rate.toFixed(1)+'%',r[r.length-1].name)+
+                statCard('12','Conditions')};
       }}
   };
 
@@ -247,15 +243,15 @@ ORDER BY paid_millions DESC;</textarea>
     document.getElementById('qStats').innerHTML=cfg.stats;
     document.getElementById('qNote').textContent=Q[q].note;
     var data={labels:cfg.labels,datasets:[{data:cfg.values,backgroundColor:cfg.colors,
-      borderWidth:0,borderRadius:3,barThickness:'flex',maxBarThickness:26}]};
+      borderWidth:0,borderRadius:4,barThickness:'flex',maxBarThickness:20}]};
     var options={
       indexAxis:'y', responsive:true, maintainAspectRatio:false,
       plugins:{legend:{display:false},
-        tooltip:{backgroundColor:INK,titleColor:CREAM,bodyColor:CREAM,padding:12,callbacks:{
+        tooltip:{backgroundColor:INK,titleColor:BG,bodyColor:BG,padding:10,displayColors:false,callbacks:{
           label:function(it){var s=cfg.fmt(it.parsed.x); if(cfg.extra) s+=cfg.extra(it.dataIndex); return s;}}}},
       scales:{
-        x:{ticks:{color:MUT,callback:function(v){return cfg.fmt(v)}},grid:{color:LINE},title:{display:true,text:cfg.unit,color:MUT,font:{size:11}}},
-        y:{ticks:{color:INK,font:{size:11}},grid:{display:false}}
+        x:{ticks:{color:MUT,font:{family:'JetBrains Mono, monospace',size:10.5},callback:function(v){return cfg.fmt(v)}},grid:{color:LINE},border:{display:false}},
+        y:{ticks:{color:INK,font:{family:'Inter, sans-serif',size:12}},grid:{display:false},border:{color:LINE}}
       }
     };
     if(chart){chart.data=data;chart.options=options;chart.update();}
@@ -268,15 +264,8 @@ ORDER BY paid_millions DESC;</textarea>
     b.classList.add('is-active'); q=b.dataset.q; render();
   });
   render();
-  if(window.matchMedia){
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){
-      readColors(); render();
-    });
-  }
 })();
 </script>
-
-<!-- Live in-browser SQL console (DuckDB-WASM over the real claims dataset) -->
 <script type="module">
 import * as duckdb from 'https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.0/+esm';
 
@@ -327,7 +316,7 @@ ORDER BY readmit_pct DESC;`},
 FROM claims
 GROUP BY 1
 ORDER BY gap_pct DESC;`},
-  {label:'Monthly spend trend', sql:
+  {label:'Monthly trend', sql:
 `SELECT strftime(service_date, '%Y-%m') AS month,
        COUNT(*) AS claims,
        ROUND(SUM(paid_amount)/1e6, 1) AS paid_m
@@ -338,34 +327,31 @@ ORDER BY 1;`},
 ];
 
 let conn = null;
-
-function setStatus(html){ statusEl.innerHTML = html; }
 function esc(s){ return String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
 
-// render chips
 SAMPLES.forEach(s => {
   const b = document.createElement('button');
-  b.className = 'sql-chip'; b.textContent = s.label;
+  b.className = 'sql-chip'; b.type = 'button'; b.textContent = s.label;
   b.addEventListener('click', () => { input.value = s.sql; runQuery(); });
   chipsEl.appendChild(b);
 });
 
-function renderTable(res){
+function renderTable(res, ms){
   const cols = res.schema.fields.map(f => f.name);
   const rows = res.toArray();
   const numeric = {};
   cols.forEach(c => numeric[c] = true);
   const cells = rows.map(r => cols.map(c => {
     let v = r[c];
-    if (v === null || v === undefined) { numeric[c] = false; return '<td class="nul">∅</td>'; }
+    if (v === null || v === undefined) { numeric[c] = false; return '<td>∅</td>'; }
     if (typeof v === 'bigint') v = Number(v);
     if (typeof v !== 'number') numeric[c] = false;
     return {v};
   }));
-  let html = '<div class="sql-meta">' + rows.length + ' row' + (rows.length===1?'':'s') + ' · ' + cols.length + ' columns</div>';
+  let html = '<div class="sql-meta">' + rows.length + ' rows · ' + ms + ' ms</div>';
   html += '<table><thead><tr>' + cols.map(c => '<th>' + esc(c) + '</th>').join('') + '</tr></thead><tbody>';
   html += cells.map(row => '<tr>' + row.map((cell, i) => {
-    if (typeof cell === 'string') return cell; // null placeholder
+    if (typeof cell === 'string') return cell;
     const cls = numeric[cols[i]] ? ' class="num"' : '';
     let val = cell.v;
     if (typeof val === 'number' && !Number.isInteger(val)) val = val.toLocaleString(undefined,{maximumFractionDigits:2});
@@ -381,16 +367,14 @@ async function runQuery(){
   const sql = input.value.trim();
   if (!sql) return;
   runBtn.disabled = true;
-  resultEl.innerHTML = '<div class="sql-loading"><span class="sql-spin"></span> running…</div>';
+  resultEl.innerHTML = '<div class="sql-meta">Running…</div>';
   const t0 = performance.now();
   try {
     const res = await conn.query(sql);
     const ms = Math.max(1, Math.round(performance.now() - t0));
-    renderTable(res);
-    const meta = resultEl.querySelector('.sql-meta');
-    if (meta) meta.innerHTML += ' · <b>' + ms + ' ms</b>';
+    renderTable(res, ms);
   } catch (e) {
-    resultEl.innerHTML = '<div class="sql-err">✖ ' + esc(e.message || e) + '</div>';
+    resultEl.innerHTML = '<div class="sql-err">' + esc(e.message || e) + '</div>';
   } finally {
     runBtn.disabled = false;
   }
@@ -408,18 +392,18 @@ input.addEventListener('keydown', e => {
     const worker  = await duckdb.createWorker(bundle.mainWorker);
     const db      = new duckdb.AsyncDuckDB(new duckdb.ConsoleLogger(), worker);
     await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
-    setStatus('<span class="sql-spin"></span> loading 150k claims…');
+    statusEl.textContent = 'loading 150,000 rows…';
     const resp = await fetch('../assets/projects/claims/claims.parquet');
     const buf  = new Uint8Array(await resp.arrayBuffer());
     await db.registerFileBuffer('claims.parquet', buf);
     conn = await db.connect();
     await conn.query("CREATE VIEW claims AS SELECT * FROM parquet_scan('claims.parquet')");
-    setStatus('<span class="live"></span> connected · 150,000 rows');
+    statusEl.textContent = 'ready · 150,000 rows';
     runBtn.disabled = false;
-    runQuery(); // run the prefilled query
+    runQuery();
   } catch (e) {
-    setStatus('engine failed to load');
-    resultEl.innerHTML = '<div class="sql-err">Could not start the SQL engine in this browser.\n' + esc(e.message || e) + '</div>';
+    statusEl.textContent = 'unavailable';
+    resultEl.innerHTML = '<div class="sql-err">Could not start DuckDB in this browser.\n' + esc(e.message || e) + '</div>';
   }
 })();
 </script>

@@ -3,68 +3,138 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Emoji Generation GAN — Thushar T. Govindaraju</title>
-<meta name="description" content="A GAN in PyTorch that generates novel emoji images — Master's capstone." />
+<title>Emoji Generation GAN — Thushar Govindaraju</title>
+<meta name="description" content="Deep Convolutional Generative Adversarial Network in PyTorch synthesizing 64x64 emoji icons from Gaussian noise." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../assets/css/site.css" />
 </head>
 <body>
 
-<header id="top">
-  <div class="wrap nav">
-    <a href="../index.html" class="logo">Thushar<sup>®</sup></a>
-    <nav class="nav-links" id="menu">
-      <a href="../index.html#about">About</a>
-      <a href="../index.html#projects">Projects</a>
-      <a href="../index.html#skills">Skills</a>
-      <a href="../index.html#experience">Experience</a>
-      <a href="../index.html#contact" class="nav-cta">Get in touch</a>
-    </nav>
-    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
-  </div>
-</header>
+<div class="tb-case-page">
 
-<div class="wrap p-hero">
-  <a href="../index.html#projects" class="back">← All projects</a>
-  <div class="p-kicker">05 · Generative ML · Master's Capstone</div>
-  <h1 class="p-title">Emoji<br>Generation GAN</h1>
-  <p class="p-sub">A Generative Adversarial Network built in PyTorch that learns to generate novel emoji images from an open-source dataset. The project covered the full lifecycle — data pipeline, generator/discriminator training loop, and quality evaluation through sampled generations across epochs.</p>
-  <div class="p-meta">
-    <span class="tag">PyTorch</span><span class="tag">GANs</span><span class="tag">Computer Vision</span><span class="tag">Generative AI</span>
-  </div>
-  <div class="p-actions">
-    <a class="btn" href="https://github.com/thushartg" target="_blank" rel="noopener">View on GitHub ↗</a>
-    <a class="btn ghost" href="../index.html#contact">Get in touch</a>
-  </div>
-</div>
-
-<div class="wrap">
-  <section class="p-section">
-    <h2>How it works</h2>
-    <div class="flow">
-      <div class="node">Random noise vector</div><span class="arr">→</span>
-      <div class="node">Generator</div><span class="arr">→</span>
-      <div class="node">Fake emoji</div><span class="arr">→</span>
-      <div class="node">Discriminator</div><span class="arr">→</span>
-      <div class="node">Real / fake</div>
+  <aside class="tb-sidebar" aria-label="Case study overview">
+    <div class="tb-side-top">
+      <a class="tb-pill" href="../index.html#work">Work</a>
+      <a class="tb-pill" href="../index.html#contact">Contact</a>
     </div>
-    <ul>
-      <li>Two networks trained adversarially — a generator that synthesizes emoji from noise, and a discriminator that learns to tell real from generated.</li>
-      <li>Built the <b>full training pipeline</b> in PyTorch: data loading, training loop, checkpointing, and sampling.</li>
-      <li>Evaluated output quality by sampling generations <b>across training epochs</b> to track how realism improves over time.</li>
-    </ul>
-  </section>
 
-  <nav class="p-nav">
-    <a href="cleanunet-speech-denoising.html"><span>Previous project</span>← CleanUNet Denoising</a>
-    <a href="taskq.html"><span>Next project</span>TaskQ →</a>
-  </nav>
+    <h1 class="tb-side-heading">Emoji-GAN</h1>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">About</h2>
+      <p class="tb-side-copy">
+        Deep Convolutional Generative Adversarial Network (DCGAN) in PyTorch synthesizing 64×64 RGB emoji icons from Gaussian latent vectors.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Challenge</h2>
+      <p class="tb-side-copy">
+        Unlike natural photographs, emoji sprites have crisp flat-color boundaries and strict circular symmetry, making checkerboard upsampling artifacts or mode collapse immediately visible.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Stabilization</h2>
+      <p class="tb-side-copy">
+        Compositing transparent channels prior to [-1, 1] tanh normalization and pairing strided LeakyReLU discriminator stages with calibrated Adam momentum stabilized facial synthesis.
+      </p>
+    </div>
+
+    <div class="tb-side-card">
+      <h2 class="tb-side-label">Specifications</h2>
+      <dl class="tb-side-dl">
+        <div>
+          <dt>Stack</dt>
+          <dd>PyTorch, Torchvision, NumPy</dd>
+        </div>
+        <div>
+          <dt>Context</dt>
+          <dd>M.S. CS Capstone · University at Buffalo</dd>
+        </div>
+      </dl>
+    </div>
+
+    <nav class="tb-side-bottom" aria-label="Project navigation">
+      <a class="tb-pill" href="taskq.html">← Back</a>
+      <a class="tb-pill" href="iot-aqi.html">Next +</a>
+    </nav>
+
+    <div class="tb-side-mark">
+      <a class="tb-mark" href="../index.html" aria-label="Home" style="width:20px;height:20px">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" aria-hidden="true">
+          <path d="M3 6h12M9 6v16M25 9h-8v13h8v-6h-4" />
+        </svg>
+      </a>
+    </div>
+  </aside>
+
+  <main class="tb-showcase">
+
+    <section class="tb-hero-showcase cobalt">
+      <div class="tb-card-top">
+        <span class="tb-micro">Emoji Generation GAN</span>
+        <span class="tb-micro">Generative Vision · UB Capstone</span>
+      </div>
+
+      <div class="tb-hero-center">
+        <h2 class="tb-showcase-wordmark">64×64 Sprite DCGAN</h2>
+        <p class="tb-showcase-sub">
+          Fixed-seed Gaussian latent grids tracked across adversarial epochs to synthesize crisp circular iconography without mode collapse.
+        </p>
+        <div class="pipeline-line" style="background:rgba(10,18,48,0.72)">
+          latent z ~ N(0, I)<span class="sep">→</span>ConvTranspose2d + BatchNorm<span class="sep">→</span>64×64 RGB sprite<span class="sep">→</span>strided Conv2d discriminator
+        </div>
+      </div>
+
+      <div class="tb-card-bottom">
+        <span class="tb-micro">01</span>
+        <span class="tb-micro">PyTorch · Torchvision</span>
+      </div>
+    </section>
+
+    <div class="tb-showcase-grid">
+      <div class="tb-nest-outer sky">
+        <div class="tb-nest-inner">
+          <div class="tb-card-top">
+            <span class="tb-micro">Preprocessing</span>
+            <span class="tb-micro">RGB [-1, 1]</span>
+          </div>
+          <div class="tb-nest-body">
+            <h3>Alpha Boundary Compositing</h3>
+            <p>Transparent PNG sprite alpha channels were cleanly composited before tanh scaling so undefined background pixels never leaked edge halos into generator gradients.</p>
+          </div>
+          <div class="tb-card-bottom">
+            <span class="tb-micro">02</span>
+            <span class="tb-micro">Emoji-GAN</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tb-nest-outer slate">
+        <div class="tb-nest-inner">
+          <div class="tb-card-top">
+            <span class="tb-micro">Optimization</span>
+            <span class="tb-micro">β₁ = 0.5</span>
+          </div>
+          <div class="tb-nest-body">
+            <h3>Adversarial Equilibrium</h3>
+            <p>Balanced strided convolutions and BatchNorm layers across generator and discriminator prevented early discriminator saturation during facial expression synthesis.</p>
+          </div>
+          <div class="tb-card-bottom">
+            <span class="tb-micro">03</span>
+            <span class="tb-micro">Emoji-GAN</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
 </div>
 
-<footer>© <span id="yr"></span> Thushar Thorenur Govindaraju · Buffalo, NY</footer>
-<div class="lb" id="lb"><img alt="" /></div>
 <script src="../assets/js/site.js"></script>
 </body>
 </html>
