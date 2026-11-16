@@ -1,3 +1,0 @@
-f53f6b00f4a34f90e5ac988c59edf441740105ed2b581a23fad04b59fda9e080  Flashback-0.1.0-macOS.zip
-8ee6422fea00b61d6c1df8166a2d680eb5fa3915e0719d7bc9f6c44207ae7efe  MacControl-1.0.0-source.zip
-7700a44d71d57d5bc86094a5a0d1ab3339baa7bed1494fc6282e017ca048dd45  MacControlHost-1.0.0-macOS.zip
