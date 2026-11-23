@@ -10,10 +10,10 @@
   var heroRole = document.getElementById('heroRoleBtn');
 
   var ROLES = [
-    { label: 'Data Engineering', cls: '' },
-    { label: 'Native macOS Software', cls: 'is-cream' },
-    { label: 'Applied Machine Learning', cls: 'is-hot' },
-    { label: 'Cloud Warehouses & ELT', cls: 'is-cream' }
+    { label: 'AI Agents & Evaluation', cls: '' },
+    { label: 'Data & Cloud ELT', cls: 'is-cream' },
+    { label: 'Native macOS Software', cls: 'is-hot' },
+    { label: 'Applied Machine Learning', cls: 'is-cream' }
   ];
   var roleIdx = 0;
 
